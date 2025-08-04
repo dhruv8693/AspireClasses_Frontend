@@ -1,0 +1,57 @@
+.creators-section {
+  background-color: var(--background-color);
+}
+
+.creators-intro {
+  text-align: center;
+  max-width: 700px;
+  margin: 0 auto 3rem auto;
+  font-size: 1.1rem;
+}
+
+.creators-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+}
+
+.creator-card {
+  background: var(--card-bg);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border-radius: var(--border-radius);
+  padding: 2rem;
+  text-align: center;
+  box-shadow: var(--box-shadow);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.creator-avatar {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  margin-bottom: 1rem;
+  border: 3px solid var(--primary-color);
+}
+
+.creator-name {
+  margin-bottom: 0.5rem;
+  font-size: 1.2rem;
+}
+
+.creator-role {
+  color: #555;
+  font-style: italic;
+}
+
+@media (min-width: 576px) {
+  .creators-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 992px) {
+  .creators-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
