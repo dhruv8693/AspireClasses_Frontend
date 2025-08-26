@@ -1,0 +1,153 @@
+/* src/pages/Login_Page.css */
+
+:root {
+  --primary-color: #3B82F6;     /* Vibrant blue */
+  --secondary-color: #10B981;   /* Emerald green */
+  --bg-color: #0d1425;
+  --surface-color: rgba(30, 41, 59, 0.5); /* Semi-transparent dark slate */
+  --text-color: #E2E8F0;        /* Light slate gray */
+  --muted-text-color: #94a3b8;  /* Lighter gray for subtitles */
+  --border-color: rgba(255, 255, 255, 0.1); /* Subtle border */
+  --error-color: #f87171; /* Red for errors */
+}
+
+.login-page {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-color: var(--bg-color);
+  background-image: radial-gradient(circle at 10% 20%, rgba(59, 130, 246, 0.1), transparent 30%),
+                    radial-gradient(circle at 90% 80%, rgba(16, 185, 129, 0.1), transparent 30%);
+  font-family: 'Inter', sans-serif;
+  padding: 1rem;
+}
+
+.login-container {
+  width: 100%;
+  max-width: 400px;
+  padding: 2.5rem;
+  background: var(--surface-color);
+  border-radius: 16px;
+  border: 1px solid var(--border-color);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+  position: relative;
+  overflow: hidden;
+}
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.form-title {
+  color: var(--text-color);
+  font-size: 2rem;
+  font-weight: 600;
+  text-align: center;
+  margin-bottom: 0.25rem;
+}
+
+.form-subtitle {
+  color: var(--muted-text-color);
+  font-size: 1rem;
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+.input-group {
+  position: relative;
+}
+
+.form-input {
+  width: 100%;
+  padding: 1rem;
+  background-color: transparent;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  color: var(--text-color);
+  font-size: 1rem;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.form-input:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.3);
+}
+
+.form-label {
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  color: var(--muted-text-color);
+  pointer-events: none;
+  transition: top 0.2s ease, left 0.2s ease, font-size 0.2s ease, color 0.2s ease;
+}
+
+/* Animation for label when input is focused or has value */
+.form-input:focus + .form-label,
+.form-input:not(:placeholder-shown) + .form-label {
+  top: -0.75rem;
+  left: 0.75rem;
+  font-size: 0.875rem;
+  color: var(--primary-color);
+  background-color: #1e293b; /* Match the surface color to create the "cutout" effect */
+  padding: 0 0.25rem;
+}
+
+.login-button {
+  padding: 1rem;
+  background-color: var(--primary-color);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.login-button:hover:not(:disabled) {
+  background-color: var(--secondary-color);
+  transform: translateY(-2px);
+}
+
+.login-button:disabled {
+  background-color: #334155;
+  cursor: not-allowed;
+}
+
+.error-message {
+  color: var(--error-color);
+  background-color: rgba(248, 113, 113, 0.1);
+  border: 1px solid rgba(248, 113, 113, 0.2);
+  border-radius: 8px;
+  padding: 1rem;
+  text-align: center;
+  font-size: 0.9rem;
+  opacity: 0;
+  transform: translateY(-10px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  visibility: hidden;
+}
+
+.error-message.show {
+  opacity: 1;
+  transform: translateY(0);
+  visibility: visible;
+}
+
+/* Responsive Design */
+@media (max-width: 480px) {
+  .login-container {
+    padding: 2rem;
+  }
+
+  .form-title {
+    font-size: 1.75rem;
+  }
+}

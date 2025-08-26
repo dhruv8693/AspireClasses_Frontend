@@ -407,3 +407,80 @@ section {
     }
 }
 
+
+
+/* Add these styles to landing_page.css */
+
+/* --- Adjustments in Navbar Section --- */
+
+.nav-menu {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem; /* Space between nav links and register button */
+}
+
+/* Style for the new Register button on desktop */
+.register-btn {
+  display: none; /* Hidden on mobile by default */
+  background-color: var(--primary-color);
+  color: white;
+  padding: 0.5rem 1.25rem;
+  border-radius: 6px;
+  text-decoration: none;
+  font-weight: 600;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.register-btn:hover {
+  background-color: #2563EB;
+  transform: scale(1.05);
+}
+
+/* Hide the mobile-only register link on desktop */
+.mobile-register-link {
+  display: none;
+}
+
+
+/* --- Adjustments in Media Queries Section --- */
+
+/* In the media query for tablets and desktops */
+@media (min-width: 768px) {
+  /* ... other rules ... */
+
+  /* Show the register button on desktop */
+  .register-btn {
+    display: inline-flex;
+    border-radius: 1.5rem; 
+  }
+}
+
+/* In the media query for mobile nav */
+@media (max-width: 767px) {
+  /* ... other rules ... */
+  
+  .nav-menu {
+    /* The nav-menu itself is just a wrapper on mobile, so no special style */
+    flex-grow: 1; /* Allow the inner nav-links to position correctly */
+  }
+
+  /* Position the mobile menu correctly */
+  .nav-links.active {
+    transform: translateX(0);
+    display: flex; /* Make sure it's visible */
+  }
+
+  /* Make the "Register" link appear in the mobile slide-out menu */
+  .mobile-register-link {
+    display: block;
+    margin-top: 1rem;
+  }
+  
+  .mobile-register-link a {
+    background-color: var(--primary-color);
+    color: white;
+    padding: 0.75rem 1.5rem;
+    border-radius: 8px;
+    font-weight: 600;
+  }
+}

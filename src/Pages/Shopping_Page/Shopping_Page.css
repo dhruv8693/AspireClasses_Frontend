@@ -1,0 +1,205 @@
+/* --- 1. Theme and Base Styles --- */
+:root {
+  --primary-color: #3B82F6;
+  --secondary-color: #10B981;
+  --bg-color: #0d1425;
+  --surface-color: rgba(30, 41, 59, 0.5); /* Semi-transparent for glass effect */
+  --text-color: #E2E8F0;
+  --muted-text-color: #94a3b8;
+  --border-color: rgba(255, 255, 255, 0.1);
+  --shadow-color: rgba(0, 0, 0, 0.2);
+}
+
+body {
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  font-family: 'Inter', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.shopping-page-container {
+  padding: 40px 5%;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.shopping-page-container h1 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 40px;
+  text-align: center;
+  color: var(--text-color);
+}
+
+/* --- 2. Grid Layout --- */
+.test-series-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 30px;
+}
+
+/* --- 3. Card Styling (Glassmorphism) --- */
+.test-series-card {
+  background: var(--surface-color);
+  border-radius: 16px;
+  border: 1px solid var(--border-color);
+  padding: 24px;
+  cursor: pointer;
+  overflow: hidden;
+  position: relative;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px); /* For Safari */
+  box-shadow: 0px 5px 15px var(--shadow-color);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  will-change: transform; /* Performance optimization */
+}
+
+.card-content-wrapper {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.test-series-card h2 {
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: var(--text-color);
+  margin: 0 0 10px;
+}
+
+.subject-tag {
+  background-color: rgba(59, 130, 246, 0.2);
+  color: #93c5fd;
+  font-size: 0.8rem;
+  font-weight: 500;
+  padding: 4px 10px;
+  border-radius: 20px;
+  margin-bottom: 15px;
+  align-self: flex-start;
+}
+
+.short-desc {
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: var(--muted-text-color);
+  flex-grow: 1; /* Pushes price to the bottom */
+  margin-bottom: 20px;
+}
+
+.price {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--secondary-color);
+  align-self: flex-end;
+}
+
+/* --- 4. Expanded View / Modal --- */
+.expanded-view-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(13, 20, 37, 0.8);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  padding: 20px;
+}
+
+.test-series-card.expanded {
+  width: 90%;
+  max-width: 700px;
+  max-height: 90vh;
+  cursor: default;
+  overflow-y: auto;
+}
+
+.expanded-content {
+  margin-top: 15px;
+}
+
+.full-desc {
+  color: var(--muted-text-color);
+  line-height: 1.7;
+  margin-bottom: 25px;
+}
+
+.test-details {
+  display: flex;
+  gap: 20px;
+  padding: 15px;
+  background-color: rgba(0,0,0,0.2);
+  border-radius: 8px;
+  margin-bottom: 25px;
+  flex-wrap: wrap;
+}
+
+.test-details span {
+  font-size: 0.9rem;
+  color: var(--text-color);
+}
+
+.test-details strong {
+  color: var(--muted-text-color);
+  margin-right: 8px;
+}
+
+.subject-tag.expanded-tag {
+  margin-bottom: 25px;
+}
+
+.buy-section {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: auto; /* Pushes to bottom */
+  padding-top: 20px;
+  border-top: 1px solid var(--border-color);
+}
+
+.buy-now-btn {
+  background: var(--primary-color);
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.buy-now-btn:hover {
+  background: #2563EB;
+  transform: translateY(-2px);
+}
+
+/* --- 5. Loading/Error States --- */
+.loading-state, .error-state {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 80vh;
+  font-size: 1.2rem;
+  color: var(--muted-text-color);
+}
+.error-state {
+  color: #f87171;
+}
+
+/* --- 6. Responsive Design --- */
+@media (max-width: 768px) {
+  .shopping-page-container h1 {
+    font-size: 2rem;
+  }
+  
+  .test-series-grid {
+    grid-template-columns: 1fr; /* Stack cards on mobile */
+    gap: 20px;
+  }
+}

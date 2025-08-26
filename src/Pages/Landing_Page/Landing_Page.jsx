@@ -1,6 +1,7 @@
 // src/landing_page.jsx
 
 import React, { useState, useRef } from "react";
+import { Link } from "react-router-dom";
 import { motion, useInView } from "framer-motion";
 import {
   FaBookOpen,
@@ -74,20 +75,36 @@ const Navbar = () => {
   return (
     <header className="navbar">
       <div className="container nav-container">
-        <a href="#home" className="nav-logo">
+        <a href="/#home" className="nav-logo">
           <img src={logo} alt="PrepSphere Logo" />
         </a>
-        <nav className={`nav-links ${isOpen ? "active" : ""}`}>
-          <ul>
-            {navLinks.map((link) => (
-              <li key={link}>
-                <a href={`#${link}`} onClick={handleLinkClick}>
-                  {link.replace("-", " ")}
-                </a>
+
+        {/* This wrapper helps group nav links and the button on desktop */}
+        <div className="nav-menu">
+          <nav className={`nav-links ${isOpen ? "active" : ""}`}>
+            <ul>
+              {navLinks.map((link) => (
+                <li key={link}>
+                  <a href={`/#${link}`} onClick={handleLinkClick}>
+                    {link.replace("-", " ")}
+                  </a>
+                </li>
+              ))}
+              {/* 2. Add a Register link specifically for the mobile menu */}
+              <li className="mobile-register-link">
+                <Link to="/register" onClick={handleLinkClick}>
+                  Register
+                </Link>
               </li>
-            ))}
-          </ul>
-        </nav>
+            </ul>
+          </nav>
+
+          {/* 3. Add the Register button for desktop view */}
+          <Link to="/register" className="register-btn">
+            Register Now
+          </Link>
+        </div>
+
         <div className="menu-toggle" onClick={() => setIsOpen(!isOpen)}>
           {isOpen ? <FaTimes /> : <FaBars />}
         </div>
