@@ -1,0 +1,122 @@
+/* === MY TESTS VIEW === */
+.tests-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: var(--spacing-6);
+}
+
+/* Test Card */
+.test-card {
+  display: flex;
+  flex-direction: column;
+  padding: var(--spacing-4);
+  border: 1px solid var(--color-border);
+  border-radius: var(--border-radius-md);
+  background: var(--background-card, #fff);
+  box-shadow: var(--shadow-sm);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.test-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.test-card-subject {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-2);
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  margin-bottom: var(--spacing-2);
+}
+
+.test-card-title {
+  font-size: 1.25rem;
+  margin-bottom: var(--spacing-1);
+  font-weight: 600;
+  flex-grow: 1; /* Pushes button to bottom */
+}
+
+.test-card-info {
+  color: var(--text-secondary);
+  margin-bottom: var(--spacing-4);
+  font-size: 0.95rem;
+}
+
+/* Start Test Button */
+.start-test-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-2);
+  width: 100%;
+  padding: 0.75rem;
+  border: none;
+  border-radius: var(--border-radius-md);
+  background-color: var(--color-primary);
+  color: var(--text-light);
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.15s ease;
+}
+
+.start-test-button:hover {
+  background-color: var(--color-primary-dark);
+  transform: scale(1.02);
+}
+
+/* Empty State */
+.empty-tests-container {
+  text-align: center;
+  padding: var(--spacing-8);
+  border: 2px dashed var(--color-border);
+  border-radius: var(--border-radius-md);
+  background: var(--background-muted, #fafafa);
+}
+
+.empty-tests-container h2 {
+  font-size: 1.5rem;
+  margin-bottom: var(--spacing-2);
+  font-weight: 600;
+}
+
+.empty-tests-container p {
+  max-width: 500px;
+  margin: 0 auto var(--spacing-6);
+  color: var(--text-secondary);
+  font-size: 1rem;
+}
+
+.browse-tests-button {
+  padding: 0.8rem 1.5rem;
+  border-radius: var(--border-radius-md);
+  border: none;
+  background-color: var(--color-success);
+  color: var(--text-light);
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity 0.2s, transform 0.15s ease;
+}
+
+.browse-tests-button:hover {
+  opacity: 0.9;
+  transform: scale(1.02);
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 480px) {
+  .tests-grid {
+    grid-template-columns: 1fr;
+    gap: var(--spacing-4);
+  }
+
+  .test-card {
+    padding: var(--spacing-3);
+  }
+
+  .test-card-title {
+    font-size: 1.1rem;
+  }
+}

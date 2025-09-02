@@ -7,7 +7,7 @@ import LoginPage from "./Pages/Login_Page/Login_Page.jsx";
 import ShoppingPage from "./Pages/Shopping_Page/Shopping_Page.jsx";
 import UserDetailForm from "./Pages/UserDetail_Page/User_Detail.jsx";
 import AdminPage from "./Pages/Admin_Page/Admin_Page.jsx";
-
+import "./App.css";
 function App() {
   return (
     <BrowserRouter>
@@ -25,7 +25,7 @@ function App() {
         />
         <Route path="/Register" element={<Register />} />
         <Route path="/Home" element={<HomePage />} />
-        <Route path="/Test" element={<TestPage />} />
+        <Route path="/tests/:id" element={<TestPage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/shop" element={<ShoppingPage />} />
         <Route path="/UserDetails" element={<UserDetailForm />} />

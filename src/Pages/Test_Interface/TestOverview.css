@@ -1,0 +1,80 @@
+/* src/components/TestOverview.css */
+.overview-card {
+  background-color: var(--card-background-color);
+  border-radius: 12px;
+  padding: 24px 32px;
+  box-shadow: var(--box-shadow);
+  border: 1px solid var(--border-color);
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.overview-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+}
+
+.overview-title {
+  font-size: 1.8rem;
+  margin: 0 0 8px 0;
+  color: black;
+}
+
+.overview-subject {
+  font-size: 1.1rem;
+  color: var(--light-text-color);
+  margin: 0 0 24px 0;
+  font-weight: 500;
+}
+
+.overview-details {
+  display: flex;
+  gap: 40px;
+  border-top: 1px solid var(--border-color);
+  border-bottom: 1px solid var(--border-color);
+  padding: 16px 0;
+  margin-bottom: 24px;
+}
+
+.detail-item {
+  display: flex;
+  flex-direction: column;
+}
+
+.detail-item span {
+  font-size: 0.9rem;
+  color: var(--light-text-color);
+}
+
+.detail-item strong {
+  font-size: 1.2rem;
+  color: var(--primary-color);
+}
+
+.overview-instructions h2 {
+  font-size: 1.2rem;
+  margin-bottom: 8px;
+}
+
+.overview-instructions ul {
+  padding-left: 20px;
+  color: var(--light-text-color);
+  line-height: 1.6;
+}
+
+.start-test-button {
+  width: 100%;
+  padding: 14px;
+  font-size: 1.1rem;
+  font-weight: bold;
+  color: #fff;
+  background-color: var(--primary-color);
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  margin-top: 20px;
+}
+
+.start-test-button:hover {
+  background-color: var(--primary-hover-color);
+}

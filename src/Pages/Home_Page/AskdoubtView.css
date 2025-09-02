@@ -1,0 +1,70 @@
+/* === ASK A DOUBT VIEW === */
+.contact-doubt-card {
+  max-width: 600px;
+  margin: 0 auto; /* Center horizontally */
+  text-align: center;
+  background: #1e293b; /* Dark card surface */
+  border-radius: var(--border-radius-lg);
+  padding: var(--spacing-8) var(--spacing-6);
+  box-shadow: var(--shadow-md);
+  border: 1px solid var(--color-border);
+}
+
+.contact-doubt-card h2 {
+  color: var(--color-primary);
+  font-size: 1.75rem;
+  margin-bottom: var(--spacing-4);
+}
+
+.contact-description {
+  color: var(--text-secondary);
+  margin-bottom: var(--spacing-6);
+  font-size: 1.1rem;
+  line-height: 1.5;
+}
+
+.contact-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-4);
+}
+
+.contact-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-2);
+  padding: var(--spacing-4);
+  border-radius: var(--border-radius-md);
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  box-shadow: var(--shadow-sm);
+}
+
+.contact-button:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+  opacity: 0.95;
+}
+
+.contact-button.email {
+  background: linear-gradient(135deg, #3b82f6, #2563eb);
+  color: var(--text-light);
+}
+
+.contact-button.whatsapp {
+  background: linear-gradient(135deg, #25d366, #128c7e);
+  color: var(--text-light);
+}
+
+@media (min-width: 640px) {
+  .contact-buttons {
+    flex-direction: row; /* Side-by-side buttons */
+    justify-content: center;
+  }
+  .contact-button {
+    min-width: 200px;
+  }
+}

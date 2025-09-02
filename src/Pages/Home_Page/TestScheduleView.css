@@ -1,0 +1,110 @@
+/* === TEST SCHEDULE VIEW === */
+.schedule-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-6);
+}
+
+/* --- Card Wrapper --- */
+.schedule-item {
+  background-color: var(--color-surface);
+  border-radius: var(--border-radius-lg);
+  border: 1px solid var(--color-border);
+  box-shadow: var(--shadow-md);
+  overflow: hidden; /* Keeps inner elements contained */
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.schedule-item:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
+}
+
+/* --- Header --- */
+.schedule-header {
+  padding: var(--spacing-4) var(--spacing-6);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.schedule-header h3 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin: 0 0 var(--spacing-2) 0;
+  color: var(--text-primary);
+}
+
+/* --- Metadata --- */
+.schedule-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-4);
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+}
+
+.schedule-meta span {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-2);
+}
+
+.schedule-meta .icon {
+  width: 18px;
+  height: 18px;
+  color: var(--text-secondary);
+}
+
+/* --- Details Section --- */
+.schedule-details {
+  padding: var(--spacing-4) var(--spacing-6);
+}
+
+.schedule-details h4 {
+  font-size: 0.9rem;
+  font-weight: 500;
+  margin-bottom: var(--spacing-1);
+  color: var(--text-secondary);
+}
+
+/* --- Footer Section --- */
+.schedule-footer {
+  padding: var(--spacing-4) var(--spacing-6);
+  background-color: var(--color-background-alt);
+  text-align: right;
+  border-top: 1px solid var(--color-border);
+}
+
+/* --- Start Button --- */
+/* === JOIN TEST BUTTON === */
+.start-test-btn {
+  background-color: #3b82f6; /* Primary blue */
+  color: #fff;
+  border: none;
+  padding: 10px 18px;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.1s ease;
+  width: fit-content;
+  display: inline-block;
+}
+
+.start-test-btn:hover {
+  background-color: #2563eb; /* Darker blue on hover */
+}
+
+.start-test-btn:active {
+  transform: scale(0.96);
+}
+
+
+
+/* --- No Tests Message --- */
+.no-tests-message {
+  text-align: center;
+  padding: var(--spacing-8);
+  font-size: 1.1rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+}

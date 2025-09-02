@@ -1,0 +1,25 @@
+/* src/components/TestPage.css */
+.test-page-container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.page-title {
+  font-size: 2rem;
+  color: var(--text-color);
+  margin-bottom: 24px;
+  text-align: center;
+}
+
+.error-message {
+  color: #d9534f;
+  text-align: center;
+  font-size: 1.1rem;
+}
+
+.test-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
