@@ -30,7 +30,7 @@
   font-size: 1.25rem;
   font-weight: 600;
   margin: 0 0 var(--spacing-2) 0;
-  color: var(--text-primary);
+  color:#fff;
 }
 
 /* --- Metadata --- */
@@ -39,7 +39,7 @@
   flex-wrap: wrap;
   gap: var(--spacing-4);
   font-size: 0.9rem;
-  color: var(--text-secondary);
+  color: #34da58;
 }
 
 .schedule-meta span {
@@ -51,7 +51,7 @@
 .schedule-meta .icon {
   width: 18px;
   height: 18px;
-  color: var(--text-secondary);
+  color: #34da58;;
 }
 
 /* --- Details Section --- */
@@ -63,7 +63,7 @@
   font-size: 0.9rem;
   font-weight: 500;
   margin-bottom: var(--spacing-1);
-  color: var(--text-secondary);
+  color: #34da58;
 }
 
 /* --- Footer Section --- */

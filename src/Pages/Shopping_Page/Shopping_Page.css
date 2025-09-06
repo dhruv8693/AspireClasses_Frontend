@@ -10,13 +10,7 @@
   --shadow-color: rgba(0, 0, 0, 0.2);
 }
 
-body {
-  background-color: var(--bg-color);
-  color: var(--text-color);
-  font-family: 'Inter', sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
+
 
 .shopping-page-container {
   padding: 40px 5%;

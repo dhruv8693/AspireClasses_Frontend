@@ -72,7 +72,7 @@ const TestInterface = ({ id, onBack }) => {
 
       await axios.post(
         `http://localhost:5000/api/tests/${id}/submit`,
-        { answers: formattedAnswers },
+        { answers: formattedAnswers, testId: id },
         { headers: { Authorization: `Bearer ${token}` } }
       );
       alert("Test submitted successfully! 🎉");
@@ -203,6 +203,15 @@ const TestInterface = ({ id, onBack }) => {
           </h4>
         </div>
         <p className="question-text">{currentQuestion.question_text}</p>
+        {currentQuestion.image_url && (
+          <div className="question-image-container">
+            <img
+              src={currentQuestion.image_url}
+              alt="Question illustration"
+              className="question-image"
+            />
+          </div>
+        )}
         <div className="options-list">
           {Object.entries(currentQuestion.options).map(([key, value]) => (
             <label key={key} className="option-label">

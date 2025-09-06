@@ -1,10 +1,10 @@
 // src/components/AdminPage.js
 import React, { useState, useEffect } from "react";
 
-import "./Admin_Page.css"; // For styling
+import "./AssignTest.css"; // For styling
 import axios from "axios";
 
-const AdminPage = () => {
+const AssignTest = () => {
   // Data lists
   const [users, setUsers] = useState([]);
   const [tests, setTests] = useState([]);
@@ -165,4 +165,4 @@ const AdminPage = () => {
   );
 };
 
-export default AdminPage;
+export default AssignTest;

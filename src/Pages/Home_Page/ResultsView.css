@@ -32,12 +32,12 @@
 
 /* Hover highlight */
 .results-table tbody tr:hover {
-  background-color: rgba(0, 0, 0, 0.03);
+  background-color: rgba(80, 69, 69, 0.03);
 }
 
 /* Zebra striping */
 .results-table tbody tr:nth-child(even) {
-  background-color: var(--color-background-alt);
+  background-color: rgba(80, 69, 69, 0.03);
 }
 
 /* Scroll shadow (indicates horizontal scroll) */
@@ -48,7 +48,7 @@
   right: 0;
   width: 30px;
   height: 100%;
-  background: linear-gradient(to left, var(--color-background), transparent);
+  background: linear-gradient(to left, rgba(80, 69, 69, 0.03), transparent);
   pointer-events: none;
 }
 

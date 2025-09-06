@@ -111,7 +111,7 @@ const Register = () => {
           {/* Email / Phone */}
           <div className="form-group">
             <label htmlFor="email" className="form-label">
-              Email ID or Phone
+              Email or Phone
             </label>
             <input
               type="text"
@@ -131,7 +131,7 @@ const Register = () => {
           {/* School */}
           <div className="form-group">
             <label htmlFor="school" className="form-label">
-              School Name
+              School
             </label>
             <input
               type="text"

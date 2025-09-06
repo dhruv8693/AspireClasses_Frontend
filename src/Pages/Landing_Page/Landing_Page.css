@@ -6,7 +6,7 @@
   --primary-color: #3B82F6;     /* A vibrant, accessible blue */
   --secondary-color: #10B981;    /* Emerald green for accents */
   /* Note: --bg-color is no longer used on the body, but kept for consistency */
-  --bg-color: #0d1425;
+  --bg-color: #ffffff;
   --surface-color: rgba(30, 41, 59, 0.5); /* Semi-transparent dark slate */
   --text-color: #E2E8F0;        /* Light slate gray for text */
   --muted-text-color: #adb8c7;  /* Lighter gray for subtitles */
@@ -26,7 +26,7 @@ html {
 body {
     font-family: 'Inter', 'Segoe UI', 'Roboto', 'Helvetica Neue', 'Arial', sans-serif;
     /* [CHANGED] The new linear gradient background */
-    background: linear-gradient(to bottom, #7100f3, #8c44eb);
+    background: #ffffff;
     background-attachment: fixed; /* Ensures gradient doesn't scroll with content */
     color: var(--text-color);
     line-height: 1.6;   
