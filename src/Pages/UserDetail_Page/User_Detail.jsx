@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import axios from "axios"; // Assuming you have a configured axios instance
 import "./User_Detail.css";
-const baseUrl = process.env.BASE_URL;
+const baseUrl = import.meta.env.BASE_URL;
 const UserDetailForm = () => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({

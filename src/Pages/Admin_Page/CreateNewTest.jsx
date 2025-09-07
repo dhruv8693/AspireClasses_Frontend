@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import "./CreateNewTest.css";
-const baseUrl = process.env.BASE_URL;
+const baseUrl = import.meta.env.BASE_URL;
 
 const CreateNewTest = () => {
   const [formData, setFormData] = useState({

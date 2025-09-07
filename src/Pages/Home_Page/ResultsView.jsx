@@ -13,7 +13,7 @@ import {
 } from "chart.js";
 import { Bar } from "react-chartjs-2";
 
-const baseUrl = process.env.BASE_URL;
+const baseUrl = import.meta.env.BASE_URL;
 
 ChartJS.register(
   CategoryScale,

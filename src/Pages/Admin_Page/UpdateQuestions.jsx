@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "./UpdateQuestions.css";
-const baseUrl = process.env.BASE_URL;
+const baseUrl = import.meta.env.BASE_URL;
 
 const QuestionImageUploader = ({ currentImageUrl, onUploadComplete }) => {
   const [isUploading, setIsUploading] = useState(false);

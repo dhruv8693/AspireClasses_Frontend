@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import axios from "axios";
 import { ClockIcon, CalendarIcon } from "./Icons";
 import "./TestScheduleView.css";
-const baseUrl = process.env.BASE_URL;
+const baseUrl = import.meta.env.BASE_URL;
 
 const TestScheduleView = () => {
   const [upcomingTests, setUpcomingTests] = useState([]);

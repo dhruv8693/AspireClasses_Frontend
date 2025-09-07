@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./Login_Page.css";
 import axios from "axios";
+const baseUrl = import.meta.env.BASE_URL;
 
 const LoginPage = () => {
   const [email, setEmailOrPhone] = useState("");
@@ -21,7 +22,7 @@ const LoginPage = () => {
     }
 
     try {
-      const response = await axios.post("http://localhost:5000/api/login", {
+      const response = await axios.post(`${baseUrl}/api/login`, {
         email,
       });
 
