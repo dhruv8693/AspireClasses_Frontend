@@ -14,7 +14,7 @@
 
  /* === MODIFIED: New Professional Theme Colors === */
 
- --color-surface: #392e5f; /* Dark Slate Blue for sidebar, navbar, cards */
+ --color-surface: #a5c5a5; /* Dark Slate Blue for sidebar, navbar, cards */
  --color-border: #34495e; /* Subtle border for dark components */
 
  --text-primary: #111827; /* Dark text for white background */
@@ -129,7 +129,7 @@ body {
 .dashboard-header {
  padding: var(--spacing-6) var(--spacing-8);
  border-bottom: 1px solid var(--color-border);
- background: var(--color-surface);
+ background: #0d1414;
 }
 
 .welcome-message {
@@ -144,7 +144,7 @@ body {
 
 /* === Cards === */
 .card {
- background: #2a383f;
+
  border-radius: var(--border-radius-lg);
  box-shadow: 10px 10px 7px #2f3950;;
  padding: var(--spacing-6);

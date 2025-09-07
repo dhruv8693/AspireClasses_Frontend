@@ -16,7 +16,7 @@
   justify-content: center;
   align-items: center;
   min-height: 100vh;
-  background-color: var(--bg-color);
+  background-color: #d4edda;
   background-image: radial-gradient(circle at 10% 20%, rgba(59, 130, 246, 0.1), transparent 30%),
                     radial-gradient(circle at 90% 80%, rgba(16, 185, 129, 0.1), transparent 30%);
   font-family: 'Inter', sans-serif;
@@ -27,7 +27,7 @@
   width: 100%;
   max-width: 400px;
   padding: 2.5rem;
-  background: var(--surface-color);
+  background:#8cb18c;
   border-radius: 16px;
   border: 1px solid var(--border-color);
   backdrop-filter: blur(10px);
@@ -40,11 +40,11 @@
 .login-form {
   display: flex;
   flex-direction: column;
+  background-color: transparent;
   gap: 1.5rem;
 }
 
 .form-title {
-  color: var(--text-color);
   font-size: 2rem;
   font-weight: 600;
   text-align: center;
@@ -52,7 +52,6 @@
 }
 
 .form-subtitle {
-  color: var(--muted-text-color);
   font-size: 1rem;
   text-align: center;
   margin-bottom: 1rem;
@@ -65,10 +64,10 @@
 .form-input {
   width: 100%;
   padding: 1rem;
-  background-color: transparent;
+  background-color: #ece6e6;
+  backdrop-filter: blur(12px);
   border: 1px solid var(--border-color);
   border-radius: 8px;
-  color: var(--text-color);
   font-size: 1rem;
   transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
@@ -83,7 +82,6 @@
   position: absolute;
   top: 1rem;
   left: 1rem;
-  color: var(--muted-text-color);
   pointer-events: none;
   transition: top 0.2s ease, left 0.2s ease, font-size 0.2s ease, color 0.2s ease;
 }
@@ -94,7 +92,6 @@
   top: -0.75rem;
   left: 0.75rem;
   font-size: 0.875rem;
-  color: var(--primary-color);
   background-color: #1e293b; /* Match the surface color to create the "cutout" effect */
   padding: 0 0.25rem;
 }

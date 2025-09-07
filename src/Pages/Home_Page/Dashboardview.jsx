@@ -123,11 +123,11 @@ const DashboardView = () => {
 
         <motion.section className="dashboard-section" variants={itemVariants}>
           <h2>Free Demo Tests</h2>
-          <div className="test-grid">
+          <div className="test-grids">
             {demoTests.map((test) => (
               <motion.div
                 key={test.id}
-                className="test-card card"
+                className="test-card cards"
                 whileHover={{ y: -5, boxShadow: "0 10px 20px rgba(0,0,0,0.1)" }}
               >
                 <h3>{test.title}</h3>

@@ -50,7 +50,9 @@ const LoginPage = () => {
         <form onSubmit={handleLogin} className="login-form" noValidate>
           <h2 className="form-title">Welcome Back!</h2>
           <p className="form-subtitle">Sign in to continue to the platform.</p>
-
+          <label htmlFor="emailOrPhone" className="form-label">
+            Email or Phone
+          </label>
           <div className="input-group">
             <input
               type="text"
@@ -63,9 +65,6 @@ const LoginPage = () => {
               required
               autoComplete="username"
             />
-            <label htmlFor="emailOrPhone" className="form-label">
-              Email or Phone
-            </label>
           </div>
 
           <button type="submit" className="login-button" disabled={loading}>

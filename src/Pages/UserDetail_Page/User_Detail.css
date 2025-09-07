@@ -1,16 +1,4 @@
-/* Ensure these variables are defined in your global CSS file (e.g., index.css) */
-/*
-:root {
-  --primary-color: #3B82F6;
-  --secondary-color: #10B981;
-  --bg-color: #0d1425;
-  --surface-color: rgba(30, 41, 59, 0.5);
-  --text-color: #E2E8F0;
-  --muted-text-color: #94a3b8;
-  --border-color: rgba(255, 255, 255, 0.1);
-  --error-color: #f87171;
-}
-*/
+
 
 .form-page-container {
   display: flex;
@@ -69,7 +57,7 @@
 .form-group label {
   margin-bottom: 0.5rem;
   font-size: 0.9rem;
-  color: var(--muted-text-color);
+  color: rgba(47, 110, 79);
   font-weight: 500;
 }
 
@@ -77,10 +65,10 @@
 .form-group select {
   width: 100%;
   padding: 0.75rem 1rem;
-  background-color: rgba(0, 0, 0, 0.2);
+  background-color:#ece6e6;
   border: 1px solid var(--border-color);
   border-radius: 8px;
-  color: var(--text-color);
+  color: #000;
   font-size: 1rem;
   transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
