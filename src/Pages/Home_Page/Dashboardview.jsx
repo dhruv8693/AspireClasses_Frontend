@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import axios from "axios";
 import "./DashboardView.css";
-const baseUrl = import.meta.env.BASE_URL;
+const baseUrl = import.meta.env.VITE_BASE_URL;
 
 // Sample Data
 const demoTests = [

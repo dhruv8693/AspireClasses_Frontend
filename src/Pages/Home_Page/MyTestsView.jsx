@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import axios from "axios";
 import { BookIcon, ArrowRightIcon } from "./Icons";
 import "./MyTestView.css";
-const baseUrl = import.meta.env.BASE_URL;
+const baseUrl = import.meta.env.VITE_BASE_URL;
 
 const MyTestsView = () => {
   const [boughtTests, setBoughtTests] = useState([]);

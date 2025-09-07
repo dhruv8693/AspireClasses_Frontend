@@ -3,7 +3,7 @@ import React, { useEffect, useState, useCallback } from "react";
 import axios from "axios";
 import { motion } from "framer-motion";
 import "./TestInterface.css";
-const baseUrl = import.meta.env.BASE_URL;
+const baseUrl = import.meta.env.VITE_BASE_URL;
 
 const TestInterface = ({ id, onBack }) => {
   const [testData, setTestData] = useState(null);

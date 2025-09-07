@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 
 import "./AssignTest.css"; // For styling
 import axios from "axios";
-const baseUrl = import.meta.env.BASE_URL;
+const baseUrl = import.meta.env.VITE_BASE_URL;
 
 const AssignTest = () => {
   // Data lists

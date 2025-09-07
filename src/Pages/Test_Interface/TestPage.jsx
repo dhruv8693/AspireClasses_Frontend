@@ -6,7 +6,7 @@ import TestOverview from "./TestOverview";
 import TestInterface from "./TestInterface";
 import { AnimatePresence } from "framer-motion";
 import "./TestPage.css";
-const baseUrl = import.meta.env.BASE_URL;
+const baseUrl = import.meta.env.VITE_BASE_URL;
 
 const TestPage = () => {
   // State for the list of all tests
