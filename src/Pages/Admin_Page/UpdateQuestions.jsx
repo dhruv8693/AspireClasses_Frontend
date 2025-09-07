@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "./UpdateQuestions.css";
+const baseUrl = process.env.BASE_URL;
 
 const QuestionImageUploader = ({ currentImageUrl, onUploadComplete }) => {
   const [isUploading, setIsUploading] = useState(false);
@@ -27,7 +28,7 @@ const QuestionImageUploader = ({ currentImageUrl, onUploadComplete }) => {
 
     try {
       const response = await axios.post(
-        "http://localhost:5000/api/upload-image",
+        `${baseUrl}/api/upload-image`,
         formData,
         {
           headers: {
@@ -120,7 +121,7 @@ const AddQuestionForm = ({ testId, onQuestionAdded, onCancel }) => {
       };
 
       const response = await axios.post(
-        `http://localhost:5000/api/tests/${testId}/questions`,
+        `${baseUrl}/api/tests/${testId}/questions`,
         payload,
         {
           headers: { Authorization: `Bearer ${token}` },
@@ -211,7 +212,7 @@ export const UpdateQuestions = () => {
   useEffect(() => {
     const fetchTests = async () => {
       try {
-        const response = await axios.get("http://localhost:5000/api/tests");
+        const response = await axios.get(`${baseUrl}/api/tests`);
         setTests(response.data);
         if (response.data.length > 0) {
           setSelectedTest(response.data[0].id);
@@ -232,7 +233,7 @@ export const UpdateQuestions = () => {
     try {
       const token = localStorage.getItem("admin_token");
       const response = await axios.get(
-        `http://localhost:5000/api/tests/${selectedTest}/questions`,
+        `${baseUrl}/api/tests/${selectedTest}/questions`,
         {
           headers: { Authorization: `Bearer ${token}` },
         }
@@ -257,7 +258,7 @@ export const UpdateQuestions = () => {
       return;
     try {
       const token = localStorage.getItem("admin_token");
-      await axios.delete(`http://localhost:5000/api/questions/${questionId}`, {
+      await axios.delete(`${baseUrl}/api/questions/${questionId}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setQuestions(questions.filter((q) => q.id !== questionId));
@@ -284,7 +285,7 @@ export const UpdateQuestions = () => {
     try {
       const token = localStorage.getItem("admin_token");
       await axios.put(
-        `http://localhost:5000/api/questions/${questionId}`,
+        `${baseUrl}/api/questions/${questionId}`,
         editedQuestion,
         {
           headers: { Authorization: `Bearer ${token}` },
@@ -313,13 +314,10 @@ export const UpdateQuestions = () => {
 
     try {
       const token = localStorage.getItem("admin_token");
-      await axios.delete(
-        `http://localhost:5000/api/questions/${questionId}/image`,
-        {
-          headers: { Authorization: `Bearer ${token}` },
-          payload: { hi: "Hello" },
-        }
-      );
+      await axios.delete(`${baseUrl}/api/questions/${questionId}/image`, {
+        headers: { Authorization: `Bearer ${token}` },
+        payload: { hi: "Hello" },
+      });
 
       // Update the local "editedQuestion" state so the UI refreshes
       setEditedQuestion((prev) => ({

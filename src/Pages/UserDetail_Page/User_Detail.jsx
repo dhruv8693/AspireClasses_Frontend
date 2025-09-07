@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import axios from "axios"; // Assuming you have a configured axios instance
 import "./User_Detail.css";
-
+const baseUrl = process.env.BASE_URL;
 const UserDetailForm = () => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
@@ -30,7 +30,7 @@ const UserDetailForm = () => {
       try {
         const token = localStorage.getItem("token");
         const [userResponse, testSeriesResponse] = await Promise.all([
-          axios.get("http://localhost:5000/api/user", {
+          axios.get(`${baseUrl}/api/user`, {
             headers: {
               Authorization: `Bearer ${token}`,
             },

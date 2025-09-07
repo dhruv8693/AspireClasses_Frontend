@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import axios from "axios";
 import { BookIcon, ArrowRightIcon } from "./Icons";
 import "./MyTestView.css";
+const baseUrl = process.env.BASE_URL;
 
 const MyTestsView = () => {
   const [boughtTests, setBoughtTests] = useState([]);
@@ -14,7 +15,7 @@ const MyTestsView = () => {
     const fetchBoughtTests = async () => {
       try {
         setLoading(true);
-        const res = await axios.get(`http://localhost:5000/api/user/mytests`, {
+        const res = await axios.get(`${baseUrl}/api/user/mytests`, {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },

@@ -3,6 +3,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import "./AdminLogin.css";
 
+const baseUrl = process.env.BASE_URL;
 const AdminLogin = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -14,13 +15,10 @@ const AdminLogin = () => {
     setError("");
 
     try {
-      const response = await axios.post(
-        "http://localhost:5000/api/admin/login",
-        {
-          username,
-          password,
-        }
-      );
+      const response = await axios.post(`${baseUrl}/api/admin/login`, {
+        username,
+        password,
+      });
 
       // Assuming the server responds with a token
       const { token } = response.data;

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import axios from "axios";
 import "./DashboardView.css";
+const baseUrl = process.env.BASE_URL;
 
 // Sample Data
 const demoTests = [
@@ -56,7 +57,7 @@ const DashboardView = () => {
   useEffect(() => {
     const fetchResults = async () => {
       try {
-        const response = await axios.get(`http://localhost:5000/api/results`, {
+        const response = await axios.get(`${baseUrl}/api/results`, {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },

@@ -13,6 +13,8 @@ import {
 } from "chart.js";
 import { Bar } from "react-chartjs-2";
 
+const baseUrl = process.env.BASE_URL;
+
 ChartJS.register(
   CategoryScale,
   LinearScale,
@@ -56,7 +58,7 @@ const ResultsView = () => {
   useEffect(() => {
     const fetchResults = async () => {
       try {
-        const response = await axios.get(`http://localhost:5000/api/results`, {
+        const response = await axios.get(`${baseUrl}/api/results`, {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },

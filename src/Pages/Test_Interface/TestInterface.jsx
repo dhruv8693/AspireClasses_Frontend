@@ -3,6 +3,7 @@ import React, { useEffect, useState, useCallback } from "react";
 import axios from "axios";
 import { motion } from "framer-motion";
 import "./TestInterface.css";
+const baseUrl = process.env.BASE_URL;
 
 const TestInterface = ({ id, onBack }) => {
   const [testData, setTestData] = useState(null);
@@ -21,10 +22,10 @@ const TestInterface = ({ id, onBack }) => {
 
         // Use Promise.all to fetch questions and test details concurrently
         const [questionsRes, testDetailsRes] = await Promise.all([
-          axios.get(`http://localhost:5000/api/tests/${id}/questions`, {
+          axios.get(`${baseUrl}/api/tests/${id}/questions`, {
             headers: { Authorization: `Bearer ${token}` },
           }),
-          axios.get(`http://localhost:5000/api/tests/${id}`, {
+          axios.get(`${baseUrl}/api/tests/${id}`, {
             headers: { Authorization: `Bearer ${token}` },
           }),
         ]);
@@ -71,7 +72,7 @@ const TestInterface = ({ id, onBack }) => {
       );
 
       await axios.post(
-        `http://localhost:5000/api/tests/${id}/submit`,
+        `${baseUrl}/api/tests/${id}/submit`,
         { answers: formattedAnswers, testId: id },
         { headers: { Authorization: `Bearer ${token}` } }
       );

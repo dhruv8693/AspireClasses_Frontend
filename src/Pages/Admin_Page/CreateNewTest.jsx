@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import "./CreateNewTest.css";
+const baseUrl = process.env.BASE_URL;
 
 const CreateNewTest = () => {
   const [formData, setFormData] = useState({
@@ -38,13 +39,9 @@ const CreateNewTest = () => {
 
     try {
       const token = localStorage.getItem("admin_token");
-      const response = await axios.post(
-        "http://localhost:5000/api/tests",
-        formData,
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      );
+      const response = await axios.post(`${baseUrl}/api/tests`, formData, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
 
       setSuccessMessage(response.data.message);
       // Reset form after successful submission

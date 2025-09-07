@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import "./Register_Page.css";
+const baseUrl = process.env.BASE_URL;
 
 const Register = () => {
   const navigate = useNavigate();
@@ -57,7 +58,7 @@ const Register = () => {
     const newUser = { fullName, email, school };
 
     try {
-      const API_URL = "http://localhost:5000/api/register";
+      const API_URL = `${baseUrl}/api/register`;
       const response = await axios.post(API_URL, newUser);
       console.log("Registration successful:", response.data);
 

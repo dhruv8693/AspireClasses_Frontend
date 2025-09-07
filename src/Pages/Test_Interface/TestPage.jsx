@@ -6,6 +6,7 @@ import TestOverview from "./TestOverview";
 import TestInterface from "./TestInterface";
 import { AnimatePresence } from "framer-motion";
 import "./TestPage.css";
+const baseUrl = process.env.BASE_URL;
 
 const TestPage = () => {
   // State for the list of all tests
@@ -26,7 +27,7 @@ const TestPage = () => {
       try {
         setLoading(true);
         setError(null);
-        const res = await axios.get("http://localhost:5000/api/tests");
+        const res = await axios.get(`${baseUrl}/api/tests`);
         setTests(res.data || []);
       } catch (err) {
         setError("Failed to load tests. Please try again later.");
@@ -41,7 +42,7 @@ const TestPage = () => {
         setError(null);
         // Always show the overview first when a new test ID is loaded
         setIsTestStarted(false);
-        const res = await axios.get(`http://localhost:5000/api/tests/${id}`);
+        const res = await axios.get(`${baseUrl}/api/tests/${id}`);
         setSelectedTest(res.data);
       } catch (err) {
         setError("Could not find the requested test.");

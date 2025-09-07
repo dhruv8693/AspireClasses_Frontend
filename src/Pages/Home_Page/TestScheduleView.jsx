@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import axios from "axios";
 import { ClockIcon, CalendarIcon } from "./Icons";
 import "./TestScheduleView.css";
+const baseUrl = process.env.BASE_URL;
 
 const TestScheduleView = () => {
   const [upcomingTests, setUpcomingTests] = useState([]);
@@ -14,14 +15,11 @@ const TestScheduleView = () => {
   useEffect(() => {
     const fetchUpcomingTests = async () => {
       try {
-        const response = await axios.get(
-          `http://localhost:5000/api/upcoming-tests`,
-          {
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("token")}`,
-            },
-          }
-        );
+        const response = await axios.get(`${baseUrl}/api/upcoming-tests`, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        });
         setUpcomingTests(response.data);
       } catch (err) {
         setError("Failed to fetch the test schedule. Please try again later.");

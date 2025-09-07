@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 
 import "./AssignTest.css"; // For styling
 import axios from "axios";
+const baseUrl = process.env.BASE_URL;
 
 const AssignTest = () => {
   // Data lists
@@ -27,10 +28,10 @@ const AssignTest = () => {
         const token = localStorage.getItem("token");
         // Fetch users and tests in parallel
         const [usersResponse, testsResponse] = await Promise.all([
-          axios.get(`http://localhost:5000/api/user/all`, {
+          axios.get(`${baseUrl}/api/user/all`, {
             headers: { Authorization: `Bearer ${token}` },
           }),
-          axios.get("http://localhost:5000/api/tests"),
+          axios.get(`${baseUrl}/api/tests`),
         ]);
 
         setUsers(usersResponse.data);
@@ -67,7 +68,7 @@ const AssignTest = () => {
 
       const token = localStorage.getItem("token"); // <-- add this inside submit
       const response = await axios.post(
-        `http://localhost:5000/api/user/assigntest`,
+        `${baseUrl}/api/user/assigntest`,
         {
           userId: selectedUser,
           testId: selectedTest,
