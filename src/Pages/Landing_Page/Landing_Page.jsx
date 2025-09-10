@@ -128,7 +128,9 @@ const Hero = () => (
         animate={{ y: 0, opacity: 1 }}
         transition={{ delay: 0.2, duration: 0.8 }}
       >
-        Unlock Your Potential. Conquer Your Entrance Exam.
+        Unlock Your Potential
+        <br />
+        Conquer Your Entrance Exam
       </motion.h1>
       <motion.p
         initial={{ y: 20, opacity: 0 }}

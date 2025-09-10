@@ -25,7 +25,7 @@ const AssignTest = () => {
       try {
         setLoading(true);
         setError("");
-        const token = localStorage.getItem("token");
+        const token = localStorage.getItem("admin_token");
         // Fetch users and tests in parallel
         const [usersResponse, testsResponse] = await Promise.all([
           axios.get(`${baseUrl}/api/user/all`, {
@@ -66,7 +66,7 @@ const AssignTest = () => {
       setError("");
       setSuccessMessage("");
 
-      const token = localStorage.getItem("token"); // <-- add this inside submit
+      const token = localStorage.getItem("admin_token"); // <-- add this inside submit
       const response = await axios.post(
         `${baseUrl}/api/user/assigntest`,
         {

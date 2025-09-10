@@ -46,8 +46,8 @@
 
 body {
  font-family: var(--font-primary);
- background:#d4edda; 
- color: #2f3e46;
+ background:#ddebee; 
+ color: #0e0c01;
  line-height: 1.6;
  min-height: 100vh;
 }

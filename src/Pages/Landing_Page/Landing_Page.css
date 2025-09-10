@@ -8,7 +8,7 @@
   /* Note: --bg-color is no longer used on the body, but kept for consistency */
   --bg-color: #ffffff;
   --surface-color: rgba(30, 41, 59, 0.5); /* Semi-transparent dark slate */
-  --text-color: #E2E8F0;        /* Light slate gray for text */  /* Lighter gray for subtitles */
+  --text-color: #000000;        /* Light slate gray for text */  /* Lighter gray for subtitles */
   --border-color: rgba(255, 255, 255, 0.1); /* Subtle white border for glass effect */
 }
 
@@ -64,7 +64,7 @@ section {
 /* --- 3. Navbar --- */
 .navbar {
     /* [CHANGED] Dark, semi-transparent background to float over gradient */
-    background-color: rgba(77, 156, 84, 0.7);
+    background-color: rgba(3, 4, 94, 0.7);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
     border-bottom: 1px solid var(--border-color);
@@ -105,7 +105,7 @@ section {
 }
 
 .nav-links a {
-    color: #0d1425;
+    color: #ffffff;
     text-decoration: none;
     text-transform: capitalize;
     transition: color 0.3s ease;
@@ -147,7 +147,7 @@ section {
 .hero h1 {
     font-size: clamp(2rem, 5vw, 3.5rem);
     font-weight: 800;
-    color: #0d1425; /* [CHANGED] */
+    color: #0d1425;
     line-height: 1.2;
     margin-bottom: 1rem;
 }
@@ -178,11 +178,11 @@ section {
 }
 
 .cta-button.primary {
-    background-color: #08b37a;
+    background-color: #023e8a;
     color: white;
 }
 .cta-button.primary:hover {
-    background-color: rgba(107, 182, 113);
+    background-color: #2d70c7;
     transform: translateY(-2px);
 }
 
@@ -204,7 +204,7 @@ section {
 
 /* [CHANGED] All cards now have a glassmorphism effect */
 .card, .glass-card, .credibility-section, .pricing-card {
-    background: #a5c5a5;
+    background:     rgba(197, 231, 231, 0.7);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
     padding: 2rem;
@@ -413,7 +413,7 @@ section {
 /* Style for the new Register button on desktop */
 .register-btn {
   display: none; /* Hidden on mobile by default */
-  background-color: #08b37a;
+  background-color: #1fe0a0;
   color: white;
   padding: 0.5rem 1.25rem;
   border-radius: 6px;
