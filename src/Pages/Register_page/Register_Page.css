@@ -4,21 +4,19 @@
 
 /* 1. Root Variables for Theming */
 :root {
-  --primary-color: #3B82F6;   /* A vibrant, accessible blue */
-  --primary-hover: #2563EB;   /* A slightly darker blue for hover */
-  --secondary-color: #10B981;  /* Emerald green for success/accents */
+  --primary-color: #3B82F6;
+  --primary-hover: #2563EB;
+  --secondary-color: #10B981;
   --bg-color: #dadce2;
-  --surface-color: rgba(30, 41, 59, 0.5); /* Semi-transparent dark slate for glass effect */
-  --text-color: #E2E8F0;        /* Light slate gray for text */
-  --muted-text-color: #94a3b8;  /* Lighter gray for subtitles/labels */
-  --border-color: rgba(255, 255, 255, 0.1); /* Subtle white border for glass effect */
+  --surface-color: rgba(30, 41, 59, 0.5);
+  --text-color: #E2E8F0;
+  --muted-text-color: #94a3b8;
+  --border-color: rgba(255, 255, 255, 0.1);
   --shadow-color: rgba(0, 0, 0, 0.2);
-  --error-color: #F47174; /* A softer red for errors */
+  --error-color: #F47174;
 }
 
 /* 2. Global and Page Styles */
-
-
 .register-page {
   display: flex;
   justify-content: center;
@@ -26,38 +24,40 @@
   min-height: 100vh;
   padding: 2rem;
   box-sizing: border-box;
+  background: var(--bg-color);
 }
 
 /* 3. Glassmorphism Container */
 .register-container {
-  background: #8cb18c;  
+  background: #8cb18c;
   backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px); /* For Safari */
+  -webkit-backdrop-filter: blur(12px);
   border: 1px solid var(--border-color);
-  border-radius: 1.5rem; /* More pronounced rounded corners */
+  border-radius: 1.5rem;
   padding: 2.5rem;
   box-shadow: 0 8px 32px 0 var(--shadow-color);
   width: 100%;
   max-width: 450px;
+  transition: all 0.3s ease;
 }
 
 /* 4. Form Specific Styles */
 .register-form {
   display: flex;
   flex-direction: column;
-  gap: 1.25rem; /* Consistent spacing */
+  gap: 1.25rem;
 }
 
 .form-title {
-  font-size: 2rem;
+  font-size: clamp(1.75rem, 1.2vw + 1rem, 2.25rem);
   font-weight: 700;
-  color:#0d1425;
+  color: #0d1425;
   text-align: center;
   margin: 0;
 }
 
 .form-subtitle {
-  font-size: 1rem;
+  font-size: clamp(0.9rem, 0.5vw + 0.7rem, 1rem);
   color: rgba(47, 110, 79);
   text-align: center;
   margin: -0.75rem 0 0.5rem 0;
@@ -66,44 +66,19 @@
 .form-group {
   display: flex;
   flex-direction: column;
-  align-items: flex-start; /* ensures label sticks left, not center */
+  align-items: flex-start;
 }
 
 .form-label {
-  position: static !important;   /* overrides any absolute positioning */
+  position: static !important;
   display: block;
   font-size: 0.875rem;
-  color:#0d1425;
+  color: #0d1425;
   font-weight: 500;
   margin-bottom: 0.25rem;
   padding-left: 0.25rem;
 }
 
-
-.form-footer {
-  margin-top: 20px;
-  font-size: 14px;
-  text-align: center;
-  color: #555; /* Subtle gray for text */
-}
-
-.form-footer a {
-  color: #4f46e5; /* Indigo link color */
-  text-decoration: none;
-  font-weight: 500;
-  transition: color 0.2s ease, text-decoration 0.2s ease;
-}
-
-.form-footer a:hover {
-  color: #3730a3; /* Darker indigo on hover */
-  text-decoration: underline;
-}
-
-.form-error {
-  color: var(--error-color);
-  font-size: 0.75rem;
-  margin: 0.25rem 0 0 0.25rem;
-}
 .form-input {
   background-color: #ece6e6;
   border: 1px solid var(--border-color);
@@ -112,10 +87,12 @@
   font-size: 1rem;
   color: #0d1425;
   transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  width: 100%;
+  min-height: 48px; /* touch friendly */
 }
 
 .form-input::placeholder {
-  color:#0d1425;
+  color: #0d1425;
   opacity: 0.7;
 }
 
@@ -126,13 +103,37 @@
 }
 
 .form-input.is-invalid {
-    border-color: var(--error-color);
+  border-color: var(--error-color);
 }
 
 .form-input.is-invalid:focus {
-    box-shadow: 0 0 0 3px rgba(244, 113, 116, 0.3);
+  box-shadow: 0 0 0 3px rgba(244, 113, 116, 0.3);
 }
 
+.form-error {
+  color: var(--error-color);
+  font-size: 0.75rem;
+  margin: 0.25rem 0 0 0.25rem;
+}
+
+.form-footer {
+  margin-top: 20px;
+  font-size: 14px;
+  text-align: center;
+  color: #555;
+}
+
+.form-footer a {
+  color: #4f46e5;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.2s ease, text-decoration 0.2s ease;
+}
+
+.form-footer a:hover {
+  color: #3730a3;
+  text-decoration: underline;
+}
 
 /* 5. Button Styles */
 .register-btn {
@@ -146,6 +147,7 @@
   cursor: pointer;
   transition: background-color 0.3s ease, transform 0.2s ease;
   margin-top: 0.5rem;
+  width: 100%;
 }
 
 .register-btn:hover:not(:disabled) {
@@ -170,7 +172,7 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.5); /* Darker overlay */
+  background-color: rgba(0, 0, 0, 0.5);
   backdrop-filter: blur(5px);
   -webkit-backdrop-filter: blur(5px);
   display: flex;
@@ -180,24 +182,25 @@
 }
 
 .success-popup-card {
-  background: var(--surface-color); /* Themed background */
+  background: var(--surface-color);
   border: 1px solid var(--border-color);
   padding: 2.5rem;
   border-radius: 1.5rem;
   text-align: center;
   max-width: 400px;
+  width: 90%;
   box-shadow: 0 8px 32px 0 var(--shadow-color);
   animation: fadeInUp 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
 .success-popup-card h2 {
-  color: var(--secondary-color); /* Themed success color */
+  color: var(--secondary-color);
   margin-top: 0;
   margin-bottom: 0.5rem;
 }
 
 .success-popup-card p {
-  color: var(--muted-text-color); /* Themed text color */
+  color: var(--muted-text-color);
   font-size: 1rem;
   margin: 0;
 }
@@ -219,14 +222,43 @@
   .register-page {
     padding: 1rem;
   }
-  
+
   .register-container, .success-popup-card {
     padding: 2rem 1.5rem;
     border-radius: 1rem;
   }
 
   .form-title {
-    font-size: 1.75rem;
+    font-size: 1.5rem;
   }
 }
 
+@media (max-width: 360px) {
+  .register-container {
+    padding: 1.5rem 1rem;
+  }
+  .form-title {
+    font-size: 1.25rem;
+  }
+  .form-input {
+    font-size: 0.9rem;
+    padding: 0.6rem 0.8rem;
+  }
+  .register-btn {
+    font-size: 0.9rem;
+    padding: 0.75rem;
+  }
+}
+
+@media (min-width: 768px) {
+  .register-container {
+    max-width: 550px;
+    padding: 3rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .register-container {
+    max-width: 650px;
+  }
+}

@@ -1,9 +1,9 @@
 /* === ASK A DOUBT VIEW === */
 .contact-doubt-card {
   max-width: 600px;
-  margin: 0 auto; /* Center horizontally */
+  margin: 1rem auto; /* Added vertical margin for breathing space */
   text-align: center;
-  background: #ffffff; /* Dark card surface */
+  background: #ffffff;
   border-radius: var(--border-radius-lg);
   padding: var(--spacing-8) var(--spacing-6);
   box-shadow: var(--shadow-md);
@@ -12,21 +12,24 @@
 
 .contact-doubt-card h2 {
   color: var(--color-primary);
-  font-size: 1.75rem;
+  font-size: clamp(1.5rem, 2vw + 1rem, 2rem); /* Responsive font size */
   margin-bottom: var(--spacing-4);
+  line-height: 1.3;
 }
 
 .contact-description {
   color: var(--text-secondary);
   margin-bottom: var(--spacing-6);
-  font-size: 1.1rem;
-  line-height: 1.5;
+  font-size: clamp(1rem, 0.8vw + 0.9rem, 1.2rem);
+  line-height: 1.6;
+  padding: 0 0.5rem;
 }
 
 .contact-buttons {
   display: flex;
   flex-direction: column;
   gap: var(--spacing-4);
+  margin-top: var(--spacing-4);
 }
 
 .contact-button {
@@ -34,13 +37,15 @@
   align-items: center;
   justify-content: center;
   gap: var(--spacing-2);
-  padding: var(--spacing-4);
+  padding: var(--spacing-4) var(--spacing-5);
   border-radius: var(--border-radius-md);
   text-decoration: none;
   font-weight: 600;
   font-size: 1rem;
   transition: all 0.3s ease;
   box-shadow: var(--shadow-sm);
+  text-align: center;
+  min-height: 48px; /* Touch-friendly */
 }
 
 .contact-button:hover {
@@ -59,12 +64,57 @@
   color: var(--text-light);
 }
 
+/* === RESPONSIVENESS === */
+
+/* Small devices (phones under 400px) */
+@media (max-width: 400px) {
+  .contact-doubt-card {
+    padding: var(--spacing-6) var(--spacing-4);
+  }
+  .contact-buttons {
+    gap: var(--spacing-3);
+  }
+  .contact-button {
+    font-size: 0.9rem;
+    padding: var(--spacing-3) var(--spacing-4);
+  }
+}
+
+/* Medium devices (≥640px) */
 @media (min-width: 640px) {
   .contact-buttons {
-    flex-direction: row; /* Side-by-side buttons */
+    flex-direction: row;
     justify-content: center;
+    flex-wrap: wrap;
   }
   .contact-button {
     min-width: 200px;
+  }
+}
+
+/* Large tablets and small laptops (≥768px) */
+@media (min-width: 768px) {
+  .contact-doubt-card {
+    padding: var(--spacing-10) var(--spacing-8);
+  }
+  .contact-description {
+    font-size: 1.15rem;
+  }
+}
+
+/* Larger desktops (≥1024px) */
+@media (min-width: 1024px) {
+  .contact-doubt-card {
+    max-width: 700px;
+  }
+  .contact-doubt-card h2 {
+    font-size: 2rem;
+  }
+}
+
+/* Very large desktops (≥1440px) */
+@media (min-width: 1440px) {
+  .contact-doubt-card {
+    max-width: 800px;
   }
 }

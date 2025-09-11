@@ -17,6 +17,7 @@
   font-size: 1.8rem;
   margin: 0 0 8px 0;
   color: black;
+  text-align: center;
 }
 
 .overview-subject {
@@ -24,20 +25,25 @@
   color: var(--light-text-color);
   margin: 0 0 24px 0;
   font-weight: 500;
+  text-align: center;
 }
 
 .overview-details {
   display: flex;
+  flex-wrap: wrap;
   gap: 40px;
   border-top: 1px solid var(--border-color);
   border-bottom: 1px solid var(--border-color);
   padding: 16px 0;
   margin-bottom: 24px;
+  justify-content: center;
 }
 
 .detail-item {
   display: flex;
   flex-direction: column;
+  align-items: center;
+  min-width: 100px;
 }
 
 .detail-item span {
@@ -53,6 +59,7 @@
 .overview-instructions h2 {
   font-size: 1.2rem;
   margin-bottom: 8px;
+  color: black;
 }
 
 .overview-instructions ul {
@@ -71,10 +78,70 @@
   border: none;
   border-radius: 8px;
   cursor: pointer;
-  transition: background-color 0.2s;
+  transition: background-color 0.2s, transform 0.2s;
   margin-top: 20px;
 }
 
 .start-test-button:hover {
   background-color: var(--primary-hover-color);
+  transform: translateY(-2px);
+}
+
+/* ------------------- RESPONSIVENESS ------------------- */
+
+/* Medium screens (tablets) */
+@media (max-width: 1024px) {
+  .overview-card {
+    padding: 20px;
+  }
+  .overview-title {
+    font-size: 1.6rem;
+  }
+  .overview-details {
+    gap: 20px;
+  }
+  .detail-item strong {
+    font-size: 1.1rem;
+  }
+}
+
+/* Small screens (mobiles) */
+@media (max-width: 768px) {
+  .overview-card {
+    padding: 16px;
+  }
+  .overview-title {
+    font-size: 1.4rem;
+  }
+  .overview-subject {
+    font-size: 1rem;
+  }
+  .overview-details {
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+  }
+  .detail-item strong {
+    font-size: 1rem;
+  }
+  .start-test-button {
+    font-size: 1rem;
+    padding: 12px;
+  }
+}
+
+/* Extra small devices */
+@media (max-width: 480px) {
+  .overview-title {
+    font-size: 1.2rem;
+  }
+  .overview-subject {
+    font-size: 0.9rem;
+  }
+  .overview-instructions h2 {
+    font-size: 1rem;
+  }
+  .overview-instructions ul {
+    font-size: 0.9rem;
+  }
 }

@@ -7,16 +7,20 @@
   align-items: center;
   height: 80vh;
   font-size: 1.5rem;
+  color: var(--primary-color);
+  text-align: center;
+  padding: 1rem;
 }
 
 /* Main Layout */
 .test-interface-container {
   display: grid;
   grid-template-columns: 250px 1fr 200px;
-  gap: 10px;
+  gap: 12px;
   max-width: 1400px;
   height: calc(100vh - 40px);
   margin: 0 auto;
+  padding: 0 10px;
 }
 
 /* Panel Base Style */
@@ -27,14 +31,15 @@
   box-shadow: var(--box-shadow);
   display: flex;
   flex-direction: column;
-  min-height: 0; /* Prevents overflow stretching */
+  min-height: 0;
+  overflow: hidden;
 }
 
 /* Left Panel: Question Palette */
 .panel.left-panel {
   display: flex;
   flex-direction: column;
-  min-height: 0; /* Required for scrollable children */
+  min-height: 0;
 }
 
 .question-grid {
@@ -46,8 +51,8 @@
   flex-grow: 1;
   overflow-y: auto;
   min-height: 0;
-  max-height: calc(100vh - 220px); /* keeps it inside viewport */
-  padding-right: 5px; /* avoid scrollbar overlap */
+  max-height: calc(100vh - 220px);
+  padding-right: 5px;
 }
 
 .grid-item {
@@ -59,7 +64,8 @@
   border-radius: 50%;
   cursor: pointer;
   font-weight: bold;
-  transition: all 0.2s;
+  transition: all 0.2s ease;
+  font-size: 0.9rem;
 }
 
 .grid-item.active {
@@ -123,9 +129,9 @@
   padding-bottom: 10px;
   margin-bottom: 20px;
 }
-.question-header h4 { margin: 0; }
+.question-header h4 { margin: 0; font-size: 1.2rem; }
 .question-text {
-  font-size: 1.2rem;
+  font-size: 1.1rem;
   line-height: 1.6;
   flex-grow: 1;
   color: black;
@@ -142,8 +148,9 @@
   border: 1px solid var(--border-color);
   border-radius: 8px;
   cursor: pointer;
-  transition: all 0.2s;
+  transition: all 0.2s ease;
   color: black;
+  background-color: #fafafa;
 }
 .option-label:hover {
   background-color: #f0f8ff;
@@ -161,12 +168,16 @@
   border-top: 1px solid var(--border-color);
   display: flex;
   justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px;
 }
 
 /* Right Panel: Timer & Submit */
 .right-panel {
   align-items: center;
   min-height: 0;
+  display: flex;
+  flex-direction: column;
 }
 .timer-box {
   width: 100%;
@@ -192,7 +203,7 @@
   font-size: 1rem;
   font-weight: 500;
   cursor: pointer;
-  transition: all 0.2s;
+  transition: all 0.2s ease;
 }
 .review-btn {
   background-color: var(--review-color);
@@ -206,7 +217,7 @@
   width: 100%;
   background-color: #d9534f;
   color: white;
-  margin-top: auto; /* Pushes to bottom */
+  margin-top: auto;
 }
 .control-btn:hover {
   opacity: 0.9;
@@ -215,6 +226,13 @@
 
 /* ------------------- RESPONSIVENESS ------------------- */
 
+/* Large tablets / small desktops */
+@media (max-width: 1200px) {
+  .test-interface-container {
+    grid-template-columns: 200px 1fr 180px;
+  }
+}
+
 /* Tablets */
 @media (max-width: 1024px) {
   .test-interface-container {
@@ -222,13 +240,16 @@
     grid-template-areas:
       "left center"
       "left right";
-    grid-template-rows: auto 200px;
+    grid-template-rows: auto 220px;
   }
   .right-panel {
     grid-column: span 2;
     flex-direction: row;
     justify-content: space-around;
     margin-top: 10px;
+  }
+  .timer-display {
+    font-size: 2rem;
   }
 }
 
@@ -237,24 +258,38 @@
   .test-interface-container {
     grid-template-columns: 1fr;
     grid-template-rows: auto auto auto;
+    gap: 15px;
   }
   .panel {
     padding: 15px;
   }
   .question-grid {
     grid-template-columns: repeat(auto-fill, minmax(30px, 1fr));
+    gap: 8px;
+  }
+  .grid-item {
+    width: 32px;
+    height: 32px;
+    font-size: 0.75rem;
   }
   .timer-display {
-    font-size: 2rem;
+    font-size: 1.8rem;
   }
   .control-btn {
     width: 100%;
-    margin-bottom: 10px;
   }
   .navigation-controls {
     flex-direction: column;
     gap: 10px;
   }
+}
+
+/* Very small devices */
+@media (max-width: 480px) {
+  .form-title { font-size: 1.5rem; }
+  .question-text { font-size: 1rem; }
+  .option-label { font-size: 0.9rem; padding: 12px; }
+  .timer-display { font-size: 1.5rem; }
 }
 
 .question-image-container {
@@ -266,9 +301,9 @@
 }
 
 .question-image {
-  max-width: 100%;  /* Ensures the image is responsive and fits the panel */
-  max-height: 350px; /* Prevents oversized images from dominating the screen */
-  height: auto;      /* Maintains aspect ratio */
+  max-width: 100%;
+  max-height: 350px;
+  height: auto;
   border-radius: 8px;
   object-fit: contain;
 }

@@ -59,7 +59,7 @@ const HomePage = () => {
   };
 
   return (
-    <div className="home-page">
+    <div className="home-page home-body">
       <aside className="sidebar">
         <div className="sidebar-header">
           <h1>Dashboard</h1>

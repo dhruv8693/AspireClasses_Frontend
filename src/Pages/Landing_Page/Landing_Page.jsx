@@ -146,7 +146,7 @@ const Hero = () => (
         animate={{ y: 0, opacity: 1 }}
         transition={{ delay: 0.6, duration: 0.8 }}
       >
-        <a href="#pricing" className="cta-button primary">
+        <a href="/register" className="cta-button primary">
           Start Your Test Series
         </a>
         <a href="#exams" className="cta-button secondary">
