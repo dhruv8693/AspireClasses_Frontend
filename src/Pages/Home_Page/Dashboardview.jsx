@@ -79,65 +79,37 @@ const DashboardView = () => {
   const recentResults = results.slice(0, 5);
 
   return (
-    <motion.div
-      key="dashboard"
-      variants={containerVariants}
-      initial="hidden"
-      animate="visible"
-      exit="exit"
-      className="dashboard-container"
-    >
-      <h1 className="view-title">Dashboard</h1>
-      <div className="dashboard-grid">
-        <motion.section
-          className="dashboard-section card"
-          variants={itemVariants}
-        >
-          <div className="section-header">
-            <h2>Recent Results</h2>
-          </div>
-          <div className="summary-table-container">
-            {loading && <p>Loading results...</p>}
-            {error && <p className="error-message">Error: {error}</p>}
-            {!loading && !error && recentResults.length > 0 ? (
-              <table className="summary-table">
-                <thead>
-                  <tr>
-                    <th>Test Name</th>
-                    <th>Score</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {recentResults.map((result) => (
-                    <tr key={result.id}>
-                      <td>{result.test_name}</td>
-                      <td>{parseInt((result.score / 85) * 100)}%</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            ) : (
-              !loading && <p>No recent results found.</p>
-            )}
-          </div>
-        </motion.section>
-
-        <motion.section className="dashboard-section" variants={itemVariants}>
-          <h2>Free Demo Tests</h2>
-          <div className="test-grids">
-            {demoTests.map((test) => (
-              <motion.div
-                key={test.id}
-                className="test-card cards"
-                whileHover={{ y: -5, boxShadow: "0 10px 20px rgba(0,0,0,0.1)" }}
-              >
-                <h3>{test.title}</h3>
-              </motion.div>
-            ))}
-          </div>
-        </motion.section>
+    <motion.section className="dashboard-section card" variants={itemVariants}>
+      <div className="section-header">
+        <h2>Recent Results</h2>
       </div>
-    </motion.div>
+      <div className="summary-table-container">
+        {loading && <p>Loading results...</p>}
+        {error && <p className="error-message">Error: {error}</p>}
+        {!loading && !error && recentResults.length > 0 ? (
+          <div className="table-wrapper">
+            <table className="summary-table">
+              <thead>
+                <tr>
+                  <th>Test Name</th>
+                  <th>Score</th>
+                </tr>
+              </thead>
+              <tbody>
+                {recentResults.map((result) => (
+                  <tr key={result.id}>
+                    <td>{result.test_name}</td>
+                    <td>{parseInt((result.score / 85) * 100)}%</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        ) : (
+          !loading && <p>No recent results found.</p>
+        )}
+      </div>
+    </motion.section>
   );
 };
 

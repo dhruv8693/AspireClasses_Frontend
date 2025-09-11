@@ -24,6 +24,7 @@ import "./Home_Page.css";
 const HomePage = () => {
   const [username, setUserName] = useState("");
   const [activeItem, setActiveItem] = useState("Dashboard"); // Default to Dashboard
+  const [isSidebarOpen, setSidebarOpen] = useState(false); // For mobile
 
   useEffect(() => {
     const userDataString = localStorage.getItem("user");
@@ -58,9 +59,22 @@ const HomePage = () => {
     }
   };
 
+  const handleMenuClick = (name) => {
+    setActiveItem(name);
+    setSidebarOpen(false); // close on mobile after navigation
+  };
+
   return (
     <div className="home-page home-body">
-      <aside className="sidebar">
+      {/* Sidebar */}
+      <aside className={`sidebar ${isSidebarOpen ? "open" : ""}`}>
+        <button
+          className="sidebar-close"
+          onClick={() => setSidebarOpen(false)}
+          aria-label="Close Sidebar"
+        >
+          ✕
+        </button>
         <div className="sidebar-header">
           <h1>Dashboard</h1>
         </div>
@@ -72,7 +86,7 @@ const HomePage = () => {
               className={`sidebar-btn ${
                 activeItem === item.name ? "active" : ""
               }`}
-              onClick={() => setActiveItem(item.name)}
+              onClick={() => handleMenuClick(item.name)}
               whileHover={{ backgroundColor: "rgba(59, 130, 246, 0.2)" }}
               transition={{ duration: 0.2 }}
             >
@@ -93,8 +107,16 @@ const HomePage = () => {
         </div>
       </aside>
 
-      <main className="dashboard-main">
+      {/* Main Content */}
+      <main className={`dashboard-main ${isSidebarOpen ? "overlay" : ""}`}>
         <header className="dashboard-header">
+          <button
+            className="sidebar-toggle"
+            onClick={() => setSidebarOpen(!isSidebarOpen)}
+            aria-label="Toggle Sidebar"
+          >
+            ☰
+          </button>
           <h1 className="welcome-message">Welcome back, {username}!</h1>
         </header>
         <div className="dashboard-content">

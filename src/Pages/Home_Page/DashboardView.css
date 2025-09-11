@@ -1,90 +1,104 @@
-/* === DASHBOARD VIEW === */
-.dashboard-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
-  gap: var(--spacing-6);
+.dashboard-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
 }
 
-/* Section Headers */
-.section-header {
+.view-title {
+  font-size: 2rem;
+  font-weight: 600;
+  color: var(--text-color, #1f2937);
+  text-align: center;
+  margin-bottom: 16px;
+}
+
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 24px;
+}
+
+/* Responsive: stack sections on smaller screens */
+@media (max-width: 900px) {
+  .dashboard-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* === Card Section Styles === */
+.dashboard-section {
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.05);
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: var(--spacing-4);
-  padding-bottom: var(--spacing-2);
-  border-bottom: 1px solid var(--color-border);
+  flex-direction: column;
 }
 
 .section-header h2 {
-  font-size: 1.25rem;
+  font-size: 1.3rem;
   font-weight: 600;
-  margin: 0;
-  color: var(--color-primary);
+  color: #111827;
+  margin-bottom: 16px;
 }
 
-/* === Summary Table Styles === */
-.summary-table-container {
-  max-height: 350px;
-  overflow-y: auto;
-  border-radius: var(--border-radius-md);
-  border: 1px solid var(--color-border);
-  box-shadow: var(--shadow-sm);
-  background: #183121; /* Dark surface for table */
+/* === Table Styling === */
+.table-wrapper {
+  overflow-x: auto;
 }
 
 .summary-table {
   width: 100%;
   border-collapse: collapse;
+  font-size: 0.95rem;
 }
 
 .summary-table th,
 .summary-table td {
-  padding: var(--spacing-2) var(--spacing-4);
+  padding: 12px 16px;
+  border-bottom: 1px solid #e5e7eb;
   text-align: left;
-  border-bottom: 1px solid var(--color-border);
-  font-size: 0.9rem;
 }
 
 .summary-table th {
+  background-color: #f9fafb;
   font-weight: 600;
-  color: #000000;
-  font-size: 0.75rem;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  background: rgba(255, 255, 255, 0.05);
+  color: #374151;
 }
 
-.summary-table tbody tr {
-  transition: background 0.2s ease;
+.summary-table tr:hover {
+  background-color: #f3f4f6;
 }
 
-.summary-table tbody tr:hover {
-  background: rgba(59, 130, 246, 0.08); /* Subtle blue hover */
+/* === Free Demo Test Cards === */
+.test-grids {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 16px;
 }
 
-.summary-table tbody tr:last-child td {
-  border-bottom: none;
-}
-
-/* === Demo Test Grid === */
-.test-grids .test-cards {
-  padding: var(--spacing-4);
-  background: #183121;
-  border: 1px solid var(--color-border);
-  border-radius: var(--border-radius-md);
-  box-shadow: var(--shadow-sm);
-  color: #fff;
+.test-card {
+  background: linear-gradient(135deg, #f0f9ff, #e0f2fe);
+  border-radius: 12px;
+  padding: 16px;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.test-grid .test-card:hover {
-  transform: translateY(-3px);
-  box-shadow: var(--shadow-md);
+.test-card h3 {
+  font-size: 1.1rem;
+  font-weight: 500;
+  color: #1e3a8a;
+  text-align: center;
 }
 
-/* === Mobile === */
-@media (max-width: 480px) {
-  .dashboard-grid {
-    grid-template-columns: 1fr; /* Stack on small screens */
-  }
+.test-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 16px rgba(0,0,0,0.1);
 }

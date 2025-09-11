@@ -118,3 +118,85 @@
     max-width: 800px;
   }
 }
+
+
+.ask-doubt-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: var(--spacing-6);
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.view-title {
+  font-size: clamp(1.5rem, 2vw + 1rem, 2.25rem);
+  text-align: center;
+  margin-bottom: var(--spacing-4);
+  color: var(--color-primary-dark);
+}
+
+.contact-doubt-card {
+  background: var(--color-surface);
+  padding: var(--spacing-5);
+  border-radius: var(--border-radius-lg);
+  box-shadow: var(--shadow-md);
+  text-align: center;
+  width: 100%;
+}
+
+.contact-description {
+  font-size: clamp(0.95rem, 1vw + 0.5rem, 1.1rem);
+  margin-bottom: var(--spacing-4);
+  line-height: 1.6;
+  color: var(--text-muted);
+}
+
+.contact-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--spacing-3);
+}
+
+.contact-button {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-2);
+  padding: 0.75rem 1.25rem;
+  border-radius: var(--border-radius-md);
+  font-weight: 600;
+  transition: all 0.2s ease;
+  text-decoration: none;
+  color: var(--text-light);
+  min-width: 200px;
+  justify-content: center;
+}
+
+/* Email button */
+.contact-button.email {
+  background: var(--color-primary);
+}
+.contact-button.email:hover {
+  background: var(--color-primary-dark);
+}
+
+/* WhatsApp button */
+.contact-button.whatsapp {
+  background: #25d366;
+}
+.contact-button.whatsapp:hover {
+  background: #1ebc5a;
+}
+
+/* Responsive stacking */
+@media (max-width: 600px) {
+  .contact-buttons {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .contact-button {
+    width: 100%;
+  }
+}
