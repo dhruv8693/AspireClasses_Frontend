@@ -4,7 +4,7 @@ import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Container, Card, Button } from "react-bootstrap";
 import { EmailIcon, WhatsAppIcon } from "./Icons"; // Assuming these are valid local components
-import "./AskDoubtView.css"; // We will use a much smaller CSS file
+import "./AskdoubtView.css"; // We will use a much smaller CSS file
 
 // Framer Motion variants remain the same
 const containerVariants = {
