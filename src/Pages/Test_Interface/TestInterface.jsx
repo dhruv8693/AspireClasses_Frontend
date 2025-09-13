@@ -123,10 +123,12 @@ const TestInterface = ({ id, onBack }) => {
     };
   }, []);
 
-  // 3. Show Native Browser Warning on Page Close/Reload
+  // 3. Show Native Browser Warning on Page Close, Reload, or Using Browser Back Button
   useEffect(() => {
     const handleBeforeUnload = (e) => {
+      // This event handles closing the tab, reloading, and browser back/forward navigation.
       e.preventDefault();
+      // Note: Modern browsers show a generic message, not this custom text.
       e.returnValue =
         "Are you sure you want to leave? Your test will be submitted.";
     };
