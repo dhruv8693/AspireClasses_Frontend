@@ -4,8 +4,8 @@ import React, { useEffect, useState, useCallback } from "react";
 import axios from "axios";
 import { motion } from "framer-motion";
 import { FaArrowRight } from "react-icons/fa";
-// --- NEW: Import the blocker hook from React Router ---
-import { unstable_useBlocker as useBlocker } from "react-router-dom";
+// --- CORRECTED: Import the stable 'useBlocker' hook ---
+import { useBlocker } from "react-router-dom";
 import {
   Container,
   Row,
@@ -34,12 +34,9 @@ const TestInterface = ({ id, onBack }) => {
   const [markedForReview, setMarkedForReview] = useState(new Set());
   const [isPaletteOpen, setIsPaletteOpen] = useState(false);
   const [showLeaveWarning, setShowLeaveWarning] = useState(false);
-
-  // --- NEW STATE for the navigation blocker modal ---
   const [showNavBlocker, setShowNavBlocker] = useState(false);
 
   // --- DATA FETCHING & SUBMISSION ---
-  // ... (This section remains unchanged)
   useEffect(() => {
     const fetchTest = async () => {
       try {
@@ -96,7 +93,6 @@ const TestInterface = ({ id, onBack }) => {
   );
 
   // --- TIMER LOGIC ---
-  // ... (This section remains unchanged)
   useEffect(() => {
     if (timeLeft === null) return;
     if (timeLeft === 0) {
@@ -109,13 +105,9 @@ const TestInterface = ({ id, onBack }) => {
 
   // --- SECURITY FEATURES ---
 
-  // --- NEW: React Router Navigation Blocker ---
-  const blocker = useBlocker(
-    // Block navigation only when the test has loaded
-    !!testData && !loading
-  );
+  // React Router Navigation Blocker
+  const blocker = useBlocker(!!testData && !loading);
 
-  // Show the modal when the blocker is triggered
   useEffect(() => {
     if (blocker && blocker.state === "blocked") {
       setShowNavBlocker(true);
@@ -123,20 +115,20 @@ const TestInterface = ({ id, onBack }) => {
   }, [blocker]);
 
   const handleProceedNavigation = async () => {
-    await handleSubmit(true); // Auto-submit the test
+    await handleSubmit(true);
     if (blocker) {
-      blocker.proceed(); // Allow navigation
+      blocker.proceed();
     }
   };
 
   const handleCancelNavigation = () => {
     setShowNavBlocker(false);
     if (blocker) {
-      blocker.reset(); // Cancel the navigation block
+      blocker.reset();
     }
   };
 
-  // 1. Prevent Right-Click (Unchanged)
+  // 1. Prevent Right-Click
   useEffect(() => {
     const handleContextMenu = (e) => e.preventDefault();
     document.addEventListener("contextmenu", handleContextMenu);
@@ -145,7 +137,7 @@ const TestInterface = ({ id, onBack }) => {
     };
   }, []);
 
-  // 2. Warn on Tab Switch (Unchanged)
+  // 2. Warn on Tab Switch
   useEffect(() => {
     const handleVisibilityChange = () => {
       if (document.visibilityState === "hidden") {
@@ -158,7 +150,7 @@ const TestInterface = ({ id, onBack }) => {
     };
   }, []);
 
-  // 3. Warn on Page Close/Reload (Unchanged, still necessary)
+  // 3. Warn on Page Close/Reload
   useEffect(() => {
     const handleBeforeUnload = (e) => {
       e.preventDefault();
@@ -171,33 +163,68 @@ const TestInterface = ({ id, onBack }) => {
     };
   }, []);
 
-  // ... (All other handler functions and render logic remain the same)
+  // --- All other handler functions and render logic ---
   const handleAnswerChange = (questionId, optionKey) =>
     setAnswers((prev) => ({ ...prev, [questionId]: optionKey }));
   const handleMarkReview = () => {
-    /* ... */
+    const questionId = testData.questions[currentQuestionIndex].id;
+    const newMarked = new Set(markedForReview);
+    newMarked.has(questionId)
+      ? newMarked.delete(questionId)
+      : newMarked.add(questionId);
+    setMarkedForReview(newMarked);
   };
   const handleSaveAndNext = () => {
-    /* ... */
+    if (currentQuestionIndex < testData.questions.length - 1) {
+      setCurrentQuestionIndex(currentQuestionIndex + 1);
+    }
   };
   const goToQuestion = (index) => {
-    /* ... */
+    setCurrentQuestionIndex(index);
+    if (window.innerWidth < 992) {
+      setIsPaletteOpen(false);
+    }
   };
+
   if (loading) {
-    /* ... */
+    return (
+      <Container className="d-flex flex-column justify-content-center align-items-center vh-100">
+        {" "}
+        <Spinner animation="border" variant="primary" />{" "}
+        <p className="mt-3">Loading Test...</p>{" "}
+      </Container>
+    );
   }
   if (error) {
-    /* ... */
+    return (
+      <Container className="d-flex flex-column justify-content-center align-items-center vh-100">
+        {" "}
+        <Alert variant="danger">{error}</Alert>{" "}
+        <Button onClick={onBack} variant="secondary">
+          {" "}
+          Go Back{" "}
+        </Button>{" "}
+      </Container>
+    );
   }
   if (!testData || !testData.questions || testData.questions.length === 0) {
-    /* ... */
+    return (
+      <Alert variant="warning">No questions available for this test.</Alert>
+    );
   }
+
   const { questions } = testData;
   const currentQuestion = questions[currentQuestionIndex];
   const minutes = Math.floor(timeLeft / 60);
   const seconds = timeLeft % 60;
   const getStatusVariant = (q, index) => {
-    /* ... */
+    const isAnswered = answers.hasOwnProperty(q.id);
+    const isMarked = markedForReview.has(q.id);
+    if (isAnswered && isMarked) return "answered-review";
+    if (isMarked) return "warning";
+    if (isAnswered) return "success";
+    if (currentQuestionIndex === index) return "primary";
+    return "outline-secondary";
   };
 
   return (
@@ -211,8 +238,6 @@ const TestInterface = ({ id, onBack }) => {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
       >
-        {/* --- ALL YOUR EXISTING JSX FOR THE TEST INTERFACE GOES HERE --- */}
-        {/* This part is unchanged */}
         {isPaletteOpen && (
           <div
             className="palette-overlay d-lg-none"
@@ -229,11 +254,11 @@ const TestInterface = ({ id, onBack }) => {
           <FaArrowRight />
         </Button>
         <Row className="g-3" style={{ height: "calc(100vh - 2rem)" }}>
-          {/* All 3 Columns (Palette, Question, Timer) */}
+          {/* All 3 Columns (Palette, Question, Timer) would be here */}
         </Row>
       </Container>
 
-      {/* Warning Modal for Tab Switching (Unchanged) */}
+      {/* Warning Modal for Tab Switching */}
       <Modal
         show={showLeaveWarning}
         onHide={() => setShowLeaveWarning(false)}
@@ -261,7 +286,7 @@ const TestInterface = ({ id, onBack }) => {
         </Modal.Footer>
       </Modal>
 
-      {/* --- NEW: Modal for Browser Back Button Warning --- */}
+      {/* Modal for Browser Back Button Warning */}
       <Modal
         show={showNavBlocker}
         onHide={handleCancelNavigation}
