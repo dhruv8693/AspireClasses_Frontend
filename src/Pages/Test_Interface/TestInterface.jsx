@@ -128,14 +128,14 @@ const TestInterface = ({ id, onBack }) => {
     }
   };
 
-  // 1. Prevent Right-Click
-  useEffect(() => {
-    const handleContextMenu = (e) => e.preventDefault();
-    document.addEventListener("contextmenu", handleContextMenu);
-    return () => {
-      document.removeEventListener("contextmenu", handleContextMenu);
-    };
-  }, []);
+  // // 1. Prevent Right-Click
+  // useEffect(() => {
+  //   const handleContextMenu = (e) => e.preventDefault();
+  //   document.addEventListener("contextmenu", handleContextMenu);
+  //   return () => {
+  //     document.removeEventListener("contextmenu", handleContextMenu);
+  //   };
+  // }, []);
 
   // 2. Warn on Tab Switch
   useEffect(() => {
