@@ -3,6 +3,7 @@
 import React, { useEffect, useState, useCallback } from "react";
 import axios from "axios";
 import { motion } from "framer-motion";
+import { FaArrowRight } from "react-icons/fa"; // Assuming you have react-icons installed
 import {
   Container,
   Row,
@@ -15,11 +16,12 @@ import {
   Stack,
   Image,
 } from "react-bootstrap";
-import "./TestInterface.css"; // Make sure this CSS file is linked
+import "./TestInterface.css";
 
 const baseUrl = import.meta.env.VITE_BASE_URL;
 
 const TestInterface = ({ id, onBack }) => {
+  // ... all your state and functions remain exactly the same ...
   const [testData, setTestData] = useState(null);
   const [answers, setAnswers] = useState({});
   const [loading, setLoading] = useState(true);
@@ -27,11 +29,8 @@ const TestInterface = ({ id, onBack }) => {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [timeLeft, setTimeLeft] = useState(null);
   const [markedForReview, setMarkedForReview] = useState(new Set());
-
-  // --- NEW STATE for the collapsible sidebar ---
   const [isPaletteOpen, setIsPaletteOpen] = useState(false);
 
-  // --- All hooks and handler functions (useEffect, handleSubmit, etc.) remain exactly the same ---
   useEffect(() => {
     const fetchTest = async () => {
       try {
@@ -107,13 +106,11 @@ const TestInterface = ({ id, onBack }) => {
   };
   const goToQuestion = (index) => {
     setCurrentQuestionIndex(index);
-    // --- NEW: Close palette on question selection on mobile ---
     if (window.innerWidth < 992) {
       setIsPaletteOpen(false);
     }
   };
 
-  // --- Render Logic (unchanged until the return statement) ---
   if (loading)
     return (
       <Container className="d-flex flex-column justify-content-center align-items-center vh-100">
@@ -154,11 +151,14 @@ const TestInterface = ({ id, onBack }) => {
     <Container
       as={motion.div}
       fluid
-      className="p-3 test-interface-container" // Added a container class
+      // --- MODIFIED LINE ---
+      className={`p-3 test-interface-container ${
+        isPaletteOpen ? "sidebar-open" : ""
+      }`}
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
     >
-      {/* --- NEW: OVERLAY & TOGGLE BUTTON --- */}
+      {/* ... The rest of your JSX remains exactly the same ... */}
       {isPaletteOpen && (
         <div
           className="palette-overlay d-lg-none"
@@ -172,11 +172,10 @@ const TestInterface = ({ id, onBack }) => {
         aria-controls="question-palette"
         aria-expanded={isPaletteOpen}
       >
-        ☰
+        <FaArrowRight />
       </Button>
 
       <Row className="g-3" style={{ height: "calc(100vh - 2rem)" }}>
-        {/* --- MODIFIED: Left Panel: Question Palette --- */}
         <Col
           lg={3}
           md={4}
@@ -189,7 +188,6 @@ const TestInterface = ({ id, onBack }) => {
               className="d-flex justify-content-between align-items-center"
             >
               <span>Question Palette</span>
-              {/* --- NEW: Close button inside palette --- */}
               <Button
                 variant="close"
                 className="d-lg-none"
@@ -238,7 +236,6 @@ const TestInterface = ({ id, onBack }) => {
           </Card>
         </Col>
 
-        {/* Center Panel: Question (No changes) */}
         <Col lg={6} md={8}>
           <Card className="h-100 d-flex flex-column">
             <Card.Header>
@@ -293,8 +290,6 @@ const TestInterface = ({ id, onBack }) => {
             </Card.Footer>
           </Card>
         </Col>
-
-        {/* Right Panel: Timer & Submit (No changes) */}
         <Col lg={3} className="d-none d-lg-block">
           <Card className="h-100 d-flex flex-column text-center">
             <Card.Header as="h5">Time Left</Card.Header>
