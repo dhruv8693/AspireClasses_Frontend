@@ -49,7 +49,9 @@ const TestPage = () => {
         });
         setSelectedTest(res.data);
       } catch (err) {
-        setError("Could not find the requested test or you may not have access.");
+        setError(
+          "Could not find the requested test or you may not have access."
+        );
       } finally {
         setLoading(false);
       }
@@ -65,9 +67,8 @@ const TestPage = () => {
   // --- A SUGGESTION for better user experience after test submission ---
   const handleTestFinish = () => {
     // Navigate user back to the home page after they finish a test
-    navigate("/Home"); 
+    navigate("/Home");
   };
-
 
   // --- All rendering logic below remains the same ---
 
@@ -100,7 +101,7 @@ const TestPage = () => {
             key={`interface-${id}`}
             id={id}
             // MODIFIED: Use the new handler to navigate away after submission
-            onBack={handleTestFinish} 
+            onBack={handleTestFinish}
           />
         ) : (
           <Container className="py-3 py-md-5" style={{ maxWidth: "900px" }}>
@@ -139,4 +140,4 @@ const TestPage = () => {
   );
 };
 
-export export default TestPage;
+export default TestPage;
