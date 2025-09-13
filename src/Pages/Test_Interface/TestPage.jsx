@@ -5,8 +5,8 @@ import axios from "axios";
 import { useParams, useNavigate } from "react-router-dom";
 import { AnimatePresence } from "framer-motion";
 import { Container, Spinner, Alert, Stack } from "react-bootstrap";
-import TestOverview from "./TestOverview"; // Assumes this is the refactored version
-import TestInterface from "./TestInterface"; // Assumes this is the refactored version
+import TestOverview from "./TestOverview";
+import TestInterface from "./TestInterface";
 
 const baseUrl = import.meta.env.VITE_BASE_URL;
 
@@ -19,13 +19,16 @@ const TestPage = () => {
   const { id } = useParams();
   const navigate = useNavigate();
 
-  // --- Data fetching logic remains the same ---
   useEffect(() => {
+    // --- MODIFIED: Add token to fetchAllTests ---
     const fetchAllTests = async () => {
       try {
         setLoading(true);
         setError(null);
-        const res = await axios.get(`${baseUrl}/api/tests`);
+        const token = localStorage.getItem("token"); // Get token
+        const res = await axios.get(`${baseUrl}/api/tests`, {
+          headers: { Authorization: `Bearer ${token}` }, // Add token to header
+        });
         setTests(res.data || []);
       } catch (err) {
         setError("Failed to load tests. Please try again later.");
@@ -34,15 +37,19 @@ const TestPage = () => {
       }
     };
 
+    // --- MODIFIED: Add token to fetchSingleTest ---
     const fetchSingleTest = async () => {
       try {
         setLoading(true);
         setError(null);
-        setIsTestStarted(false); // Always show overview first
-        const res = await axios.get(`${baseUrl}/api/tests/${id}`);
+        setIsTestStarted(false);
+        const token = localStorage.getItem("token"); // Get token
+        const res = await axios.get(`${baseUrl}/api/tests/${id}`, {
+          headers: { Authorization: `Bearer ${token}` }, // Add token to header
+        });
         setSelectedTest(res.data);
       } catch (err) {
-        setError("Could not find the requested test.");
+        setError("Could not find the requested test or you may not have access.");
       } finally {
         setLoading(false);
       }
@@ -55,7 +62,15 @@ const TestPage = () => {
     }
   }, [id]);
 
-  // 1. Loading and Error states with Bootstrap components
+  // --- A SUGGESTION for better user experience after test submission ---
+  const handleTestFinish = () => {
+    // Navigate user back to the home page after they finish a test
+    navigate("/Home"); 
+  };
+
+
+  // --- All rendering logic below remains the same ---
+
   if (loading) {
     return (
       <Container
@@ -77,7 +92,6 @@ const TestPage = () => {
     );
   }
 
-  // 2. Logic for a single test (ID in URL)
   if (id && selectedTest) {
     return (
       <AnimatePresence mode="wait">
@@ -85,7 +99,8 @@ const TestPage = () => {
           <TestInterface
             key={`interface-${id}`}
             id={id}
-            onBack={() => setIsTestStarted(false)}
+            // MODIFIED: Use the new handler to navigate away after submission
+            onBack={handleTestFinish} 
           />
         ) : (
           <Container className="py-3 py-md-5" style={{ maxWidth: "900px" }}>
@@ -100,7 +115,6 @@ const TestPage = () => {
     );
   }
 
-  // 3. Fallback: Render the list of all tests
   return (
     <Container className="py-3 py-md-5" style={{ maxWidth: "900px" }}>
       <h1 className="display-5 text-center mb-4">Available Tests</h1>
@@ -125,4 +139,4 @@ const TestPage = () => {
   );
 };
 
-export default TestPage;
+export export default TestPage;
