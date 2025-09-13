@@ -70,6 +70,17 @@ const TestPage = () => {
     navigate("/Home");
   };
 
+  console.log("--- DEBUGGING TestPage STATE ---");
+  console.log({
+    id: id,
+    loading: loading,
+    error: error,
+    isTestStarted: isTestStarted,
+    selectedTest: selectedTest,
+    testsArrayLength: tests.length,
+  });
+  console.log("---------------------------------");
+
   // --- All rendering logic below remains the same ---
 
   if (loading) {
