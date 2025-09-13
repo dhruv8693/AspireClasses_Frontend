@@ -1,10 +1,8 @@
-import {
-  BrowserRouter,
-  Routes,
-  Route,
-  Form,
-  useNavigate,
-} from "react-router-dom";
+// App.jsx
+
+// 1. UPDATE YOUR IMPORTS
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+
 import "bootstrap/dist/css/bootstrap.min.css";
 import LandingPage from "./Pages/Landing_Page/Landing_Page.jsx";
 import Register from "./Pages/Register_page/Register_Page.jsx";
@@ -20,40 +18,70 @@ import AssignTest from "./Pages/Admin_Page/AssignTest";
 import { UpdateQuestions } from "./Pages/Admin_Page/UpdateQuestions.jsx";
 import CreateNewTest from "./Pages/Admin_Page/CreateNewTest.jsx";
 
-function App() {
-  return (
-    <BrowserRouter>
-      <Routes>
-        {/* Home/Landing Page */}
-        <Route
-          path="/"
-          element={
-            <>
-              <main>
-                <LandingPage />
-              </main>
-            </>
-          }
-        />
-        <Route path="/admin/login" element={<AdminLogin />} />
+// 2. DEFINE YOUR ROUTES AS AN ARRAY OF OBJECTS
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <LandingPage />,
+  },
+  {
+    path: "/admin/login",
+    element: <AdminLogin />,
+  },
+  {
+    // This is your PrivateRoute layout. It protects all its children.
+    element: <PrivateRoute />,
+    children: [
+      {
+        path: "/admin",
+        element: <AdminDashboard />,
+        // These routes will render inside the AdminDashboard's <Outlet>
+        children: [
+          {
+            path: "assign-test",
+            element: <AssignTest />,
+          },
+          {
+            path: "update-questions",
+            element: <UpdateQuestions />,
+          },
+          {
+            path: "create-test",
+            element: <CreateNewTest />,
+          },
+        ],
+      },
+    ],
+  },
+  {
+    path: "/Register",
+    element: <Register />,
+  },
+  {
+    path: "/Home",
+    element: <HomePage />,
+  },
+  {
+    path: "/tests/:id",
+    element: <TestPage />,
+  },
+  {
+    path: "/login",
+    element: <LoginPage />,
+  },
+  {
+    path: "/shop",
+    element: <ShoppingPage />,
+  },
+  {
+    path: "/UserDetails",
+    element: <UserDetailForm />,
+  },
+]);
 
-        <Route element={<PrivateRoute />}>
-          <Route path="/admin" element={<AdminDashboard />}>
-            {/* Nested routes will render inside AdminDashboard's <Outlet> */}
-            <Route path="assign-test" element={<AssignTest />} />
-            <Route path="update-questions" element={<UpdateQuestions />} />
-            <Route path="create-test" element={<CreateNewTest />} />
-          </Route>
-        </Route>
-        <Route path="/Register" element={<Register />} />
-        <Route path="/Home" element={<HomePage />} />
-        <Route path="/tests/:id" element={<TestPage />} />
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/shop" element={<ShoppingPage />} />
-        <Route path="/UserDetails" element={<UserDetailForm />} />
-      </Routes>
-    </BrowserRouter>
-  );
+// 3. UPDATE THE APP COMPONENT TO USE THE ROUTER PROVIDER
+function App() {
+  return <RouterProvider router={router} />;
 }
 
 export default App;
