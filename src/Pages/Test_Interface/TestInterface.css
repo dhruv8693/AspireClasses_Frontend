@@ -21,3 +21,81 @@
   border-radius: 3px;
   vertical-align: middle;
 }
+
+/* --- Keep your existing styles --- */
+.legend-box {
+  display: inline-block;
+  width: 15px;
+  height: 15px;
+  margin-right: 8px;
+  vertical-align: middle;
+}
+
+.answered-review {
+  background-color: #6f42c1; /* A distinct purple color */
+  color: white;
+  border-color: #6f42c1;
+}
+
+.answered-review-legend {
+    background-color: #6f42c1;
+}
+
+/* --- ADD THE NEW STYLES BELOW --- */
+
+/* Toggle button for opening palette on mobile */
+.palette-toggle-btn {
+  position: fixed;
+  top: 1rem;
+  left: 1rem;
+  z-index: 1040; /* High z-index to stay on top */
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+}
+
+/* Overlay to dim the background when the sidebar is open */
+.palette-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1045; /* Below the sidebar but above the content */
+}
+
+/* * Styles for the sidebar. 
+ * These are applied only on screens smaller than 992px (the 'lg' breakpoint in Bootstrap).
+*/
+@media (max-width: 991.98px) {
+  .palette-sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 300px; /* Set a fixed width */
+    max-width: 80%; /* Ensure it's not too wide on small devices */
+    height: 100vh;
+    z-index: 1050; /* Highest z-index */
+    background-color: #ffffff;
+    padding: 0; /* Override column padding */
+    border-right: 1px solid #dee2e6;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+    
+    /* Start off-screen */
+    transform: translateX(-100%);
+    transition: transform 0.3s ease-in-out;
+  }
+
+  /* When the 'open' class is added, slide it into view */
+  .palette-sidebar.open {
+    transform: translateX(0);
+  }
+
+  /* Make the card inside the sidebar fit perfectly */
+  .palette-sidebar .card {
+    border-radius: 0;
+    border: none;
+  }
+}

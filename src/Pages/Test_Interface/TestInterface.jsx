@@ -15,7 +15,7 @@ import {
   Stack,
   Image,
 } from "react-bootstrap";
-import "./TestInterface.css"; // We will link to our new, smaller CSS file
+import "./TestInterface.css"; // Make sure this CSS file is linked
 
 const baseUrl = import.meta.env.VITE_BASE_URL;
 
@@ -28,9 +28,10 @@ const TestInterface = ({ id, onBack }) => {
   const [timeLeft, setTimeLeft] = useState(null);
   const [markedForReview, setMarkedForReview] = useState(new Set());
 
+  // --- NEW STATE for the collapsible sidebar ---
+  const [isPaletteOpen, setIsPaletteOpen] = useState(false);
+
   // --- All hooks and handler functions (useEffect, handleSubmit, etc.) remain exactly the same ---
-  // The logic is sound; we are only changing the presentation (JSX).
-  // ... (Paste all your existing useEffect, handleSubmit, and handler functions here)
   useEffect(() => {
     const fetchTest = async () => {
       try {
@@ -59,7 +60,6 @@ const TestInterface = ({ id, onBack }) => {
   }, [id]);
 
   const handleSubmit = useCallback(async () => {
-    // ... your existing handleSubmit logic
     try {
       const token = localStorage.getItem("token");
       const formattedAnswers = Object.entries(answers).map(
@@ -105,19 +105,23 @@ const TestInterface = ({ id, onBack }) => {
       setCurrentQuestionIndex(currentQuestionIndex + 1);
     }
   };
-  const goToQuestion = (index) => setCurrentQuestionIndex(index);
+  const goToQuestion = (index) => {
+    setCurrentQuestionIndex(index);
+    // --- NEW: Close palette on question selection on mobile ---
+    if (window.innerWidth < 992) {
+      setIsPaletteOpen(false);
+    }
+  };
 
-  // --- Render Logic ---
-  if (loading) {
+  // --- Render Logic (unchanged until the return statement) ---
+  if (loading)
     return (
       <Container className="d-flex flex-column justify-content-center align-items-center vh-100">
         <Spinner animation="border" variant="primary" />
         <p className="mt-3">Loading Test...</p>
       </Container>
     );
-  }
-
-  if (error) {
+  if (error)
     return (
       <Container className="d-flex flex-column justify-content-center align-items-center vh-100">
         <Alert variant="danger">{error}</Alert>
@@ -126,13 +130,10 @@ const TestInterface = ({ id, onBack }) => {
         </Button>
       </Container>
     );
-  }
-
-  if (!testData || !testData.questions || testData.questions.length === 0) {
+  if (!testData || !testData.questions || testData.questions.length === 0)
     return (
       <Alert variant="warning">No questions available for this test.</Alert>
     );
-  }
 
   const { questions } = testData;
   const currentQuestion = questions[currentQuestionIndex];
@@ -142,26 +143,59 @@ const TestInterface = ({ id, onBack }) => {
   const getStatusVariant = (q, index) => {
     const isAnswered = answers.hasOwnProperty(q.id);
     const isMarked = markedForReview.has(q.id);
-    if (isAnswered && isMarked) return "answered-review"; // Custom class
-    if (isMarked) return "warning"; // Marked for Review
-    if (isAnswered) return "success"; // Answered
-    if (currentQuestionIndex === index) return "primary"; // Current
-    return "outline-secondary"; // Not Visited
+    if (isAnswered && isMarked) return "answered-review";
+    if (isMarked) return "warning";
+    if (isAnswered) return "success";
+    if (currentQuestionIndex === index) return "primary";
+    return "outline-secondary";
   };
 
   return (
     <Container
       as={motion.div}
       fluid
-      className="p-3"
+      className="p-3 test-interface-container" // Added a container class
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
     >
+      {/* --- NEW: OVERLAY & TOGGLE BUTTON --- */}
+      {isPaletteOpen && (
+        <div
+          className="palette-overlay d-lg-none"
+          onClick={() => setIsPaletteOpen(false)}
+        />
+      )}
+      <Button
+        variant="primary"
+        className="d-lg-none palette-toggle-btn"
+        onClick={() => setIsPaletteOpen(!isPaletteOpen)}
+        aria-controls="question-palette"
+        aria-expanded={isPaletteOpen}
+      >
+        ☰
+      </Button>
+
       <Row className="g-3" style={{ height: "calc(100vh - 2rem)" }}>
-        {/* Left Panel: Question Palette */}
-        <Col lg={3} md={4}>
+        {/* --- MODIFIED: Left Panel: Question Palette --- */}
+        <Col
+          lg={3}
+          md={4}
+          id="question-palette"
+          className={`palette-sidebar ${isPaletteOpen ? "open" : ""}`}
+        >
           <Card className="h-100 d-flex flex-column">
-            <Card.Header as="h5">Question Palette</Card.Header>
+            <Card.Header
+              as="h5"
+              className="d-flex justify-content-between align-items-center"
+            >
+              <span>Question Palette</span>
+              {/* --- NEW: Close button inside palette --- */}
+              <Button
+                variant="close"
+                className="d-lg-none"
+                onClick={() => setIsPaletteOpen(false)}
+              />
+            </Card.Header>
             <Card.Body className="flex-grow-1" style={{ overflowY: "auto" }}>
               <Row xs={4} sm={5} md={4} lg={5} className="g-2 text-center">
                 {questions.map((q, index) => (
@@ -192,6 +226,10 @@ const TestInterface = ({ id, onBack }) => {
                   Review
                 </div>
                 <div>
+                  <span className="legend-box answered-review-legend"></span>{" "}
+                  Answered & Marked
+                </div>
+                <div>
                   <span className="legend-box border border-secondary"></span>{" "}
                   Not Visited
                 </div>
@@ -200,7 +238,7 @@ const TestInterface = ({ id, onBack }) => {
           </Card>
         </Col>
 
-        {/* Center Panel: Question */}
+        {/* Center Panel: Question (No changes) */}
         <Col lg={6} md={8}>
           <Card className="h-100 d-flex flex-column">
             <Card.Header>
@@ -256,7 +294,7 @@ const TestInterface = ({ id, onBack }) => {
           </Card>
         </Col>
 
-        {/* Right Panel: Timer & Submit */}
+        {/* Right Panel: Timer & Submit (No changes) */}
         <Col lg={3} className="d-none d-lg-block">
           <Card className="h-100 d-flex flex-column text-center">
             <Card.Header as="h5">Time Left</Card.Header>
