@@ -137,6 +137,18 @@ const TestInterface = ({ id, onBack }) => {
   //   };
   // }, []);
 
+  console.log(
+    "%c--- DEBUGGING TestInterface STATE ---",
+    "color: blue; font-weight: bold;"
+  );
+  console.log({
+    internal_loading: loading,
+    internal_error: error,
+    internal_testData: testData,
+  });
+  console.log("---------------------------------------");
+  // -----------------------------------------
+
   // 2. Warn on Tab Switch
   useEffect(() => {
     const handleVisibilityChange = () => {
