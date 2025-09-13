@@ -1,6 +1,18 @@
+// src/components/CreateNewTest.jsx
+
 import React, { useState } from "react";
 import axios from "axios";
-import "./CreateNewTest.css";
+import {
+  Container,
+  Card,
+  Form,
+  Button,
+  Row,
+  Col,
+  Alert,
+  Spinner,
+} from "react-bootstrap";
+
 const baseUrl = import.meta.env.VITE_BASE_URL;
 
 const CreateNewTest = () => {
@@ -10,12 +22,12 @@ const CreateNewTest = () => {
     duration_minutes: "",
     subject_topic: "",
     instructions: "",
-    test_category: "standard", // Default value
+    test_category: "standard",
     date_scheduled: "",
   });
-
   const [error, setError] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
+  const [submitting, setSubmitting] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -27,7 +39,6 @@ const CreateNewTest = () => {
     setError("");
     setSuccessMessage("");
 
-    // Basic validation on the frontend
     if (
       !formData.test_name ||
       !formData.num_questions ||
@@ -37,14 +48,14 @@ const CreateNewTest = () => {
       return;
     }
 
+    setSubmitting(true);
     try {
       const token = localStorage.getItem("admin_token");
       const response = await axios.post(`${baseUrl}/api/tests`, formData, {
         headers: { Authorization: `Bearer ${token}` },
       });
 
-      setSuccessMessage(response.data.message);
-      // Reset form after successful submission
+      setSuccessMessage(response.data.message || "Test created successfully!");
       setFormData({
         test_name: "",
         num_questions: "",
@@ -54,115 +65,150 @@ const CreateNewTest = () => {
         test_category: "standard",
         date_scheduled: "",
       });
-      setTimeout(() => setSuccessMessage(""), 4000); // Clear message after 4 seconds
+      setTimeout(() => setSuccessMessage(""), 4000);
     } catch (err) {
       const message =
         err.response?.data?.message ||
         "Failed to create the test. Please try again.";
       setError(message);
+    } finally {
+      setSubmitting(false);
     }
   };
 
   return (
-    <div className="create-test-container">
-      <h2>Create a New Test</h2>
+    <Container className="py-4">
+      <Row className="justify-content-center">
+        <Col lg={10} xl={8}>
+          <Card className="shadow-sm">
+            <Card.Body className="p-4 p-md-5">
+              <h2 className="text-center mb-4">Create a New Test</h2>
 
-      {successMessage && (
-        <p className="message success-message">{successMessage}</p>
-      )}
-      {error && <p className="message error-message">{error}</p>}
+              {successMessage && (
+                <Alert variant="success">{successMessage}</Alert>
+              )}
+              {error && <Alert variant="danger">{error}</Alert>}
 
-      <form onSubmit={handleSubmit} className="create-test-form">
-        <div className="form-row">
-          <div className="form-group">
-            <label htmlFor="test_name">Test Name*</label>
-            <input
-              type="text"
-              id="test_name"
-              name="test_name"
-              value={formData.test_name}
-              onChange={handleChange}
-              required
-            />
-          </div>
-          <div className="form-group">
-            <label htmlFor="test_category">Test Category</label>
-            <select
-              id="test_category"
-              name="test_category"
-              value={formData.test_category}
-              onChange={handleChange}
-            >
-              <option value="standard">Standard</option>
-              <option value="upcoming">Upcoming</option>
-              <option value="practice">Practice</option>
-            </select>
-          </div>
-        </div>
+              <Form onSubmit={handleSubmit}>
+                <Row className="g-3">
+                  <Col md={6}>
+                    <Form.Group controlId="test_name">
+                      <Form.Label>Test Name*</Form.Label>
+                      <Form.Control
+                        type="text"
+                        name="test_name"
+                        value={formData.test_name}
+                        onChange={handleChange}
+                        required
+                      />
+                    </Form.Group>
+                  </Col>
+                  <Col md={6}>
+                    <Form.Group controlId="test_category">
+                      <Form.Label>Test Category</Form.Label>
+                      <Form.Select
+                        name="test_category"
+                        value={formData.test_category}
+                        onChange={handleChange}
+                      >
+                        <option value="standard">Standard</option>
+                        <option value="upcoming">Upcoming</option>
+                        <option value="practice">Practice</option>
+                      </Form.Select>
+                    </Form.Group>
+                  </Col>
+                  <Col md={6}>
+                    <Form.Group controlId="num_questions">
+                      <Form.Label>Number of Questions*</Form.Label>
+                      <Form.Control
+                        type="number"
+                        name="num_questions"
+                        value={formData.num_questions}
+                        onChange={handleChange}
+                        required
+                      />
+                    </Form.Group>
+                  </Col>
+                  <Col md={6}>
+                    <Form.Group controlId="duration_minutes">
+                      <Form.Label>Duration (in minutes)*</Form.Label>
+                      <Form.Control
+                        type="number"
+                        name="duration_minutes"
+                        value={formData.duration_minutes}
+                        onChange={handleChange}
+                        required
+                      />
+                    </Form.Group>
+                  </Col>
+                  <Col xs={12}>
+                    <Form.Group controlId="subject_topic">
+                      <Form.Label>Subject / Topics</Form.Label>
+                      <Form.Control
+                        as="textarea"
+                        rows={3}
+                        name="subject_topic"
+                        value={formData.subject_topic}
+                        onChange={handleChange}
+                        placeholder="e.g., Ch-1 Rational Numbers, Ch-2 Linear Equations..."
+                      />
+                    </Form.Group>
+                  </Col>
+                  <Col xs={12}>
+                    <Form.Group controlId="instructions">
+                      <Form.Label>Instructions</Form.Label>
+                      <Form.Control
+                        as="textarea"
+                        rows={3}
+                        name="instructions"
+                        value={formData.instructions}
+                        onChange={handleChange}
+                        placeholder="e.g., All questions are compulsory."
+                      />
+                    </Form.Group>
+                  </Col>
+                  <Col xs={12}>
+                    <Form.Group controlId="date_scheduled">
+                      <Form.Label>Scheduled Date (Optional)</Form.Label>
+                      <Form.Control
+                        type="date"
+                        name="date_scheduled"
+                        value={formData.date_scheduled}
+                        onChange={handleChange}
+                      />
+                    </Form.Group>
+                  </Col>
+                </Row>
 
-        <div className="form-row">
-          <div className="form-group">
-            <label htmlFor="num_questions">Number of Questions*</label>
-            <input
-              type="number"
-              id="num_questions"
-              name="num_questions"
-              value={formData.num_questions}
-              onChange={handleChange}
-              required
-            />
-          </div>
-          <div className="form-group">
-            <label htmlFor="duration_minutes">Duration (in minutes)*</label>
-            <input
-              type="number"
-              id="duration_minutes"
-              name="duration_minutes"
-              value={formData.duration_minutes}
-              onChange={handleChange}
-              required
-            />
-          </div>
-        </div>
-
-        <div className="form-group">
-          <label htmlFor="subject_topic">Subject / Topics</label>
-          <textarea
-            id="subject_topic"
-            name="subject_topic"
-            value={formData.subject_topic}
-            onChange={handleChange}
-            placeholder="e.g., Ch-1 Rational Numbers, Ch-2 Linear Equations..."
-          />
-        </div>
-
-        <div className="form-group">
-          <label htmlFor="instructions">Instructions</label>
-          <textarea
-            id="instructions"
-            name="instructions"
-            value={formData.instructions}
-            onChange={handleChange}
-            placeholder="e.g., All questions are compulsory."
-          />
-        </div>
-
-        <div className="form-group">
-          <label htmlFor="date_scheduled">Scheduled Date (Optional)</label>
-          <input
-            type="date"
-            id="date_scheduled"
-            name="date_scheduled"
-            value={formData.date_scheduled}
-            onChange={handleChange}
-          />
-        </div>
-
-        <button type="submit" className="submit-btn">
-          Create Test
-        </button>
-      </form>
-    </div>
+                <div className="d-grid mt-4">
+                  <Button
+                    variant="success"
+                    type="submit"
+                    size="lg"
+                    disabled={submitting}
+                  >
+                    {submitting ? (
+                      <>
+                        <Spinner
+                          as="span"
+                          animation="border"
+                          size="sm"
+                          role="status"
+                          aria-hidden="true"
+                        />
+                        <span className="ms-2">Creating Test...</span>
+                      </>
+                    ) : (
+                      "Create Test"
+                    )}
+                  </Button>
+                </div>
+              </Form>
+            </Card.Body>
+          </Card>
+        </Col>
+      </Row>
+    </Container>
   );
 };
 

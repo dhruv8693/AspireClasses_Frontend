@@ -1,7 +1,8 @@
 // src/components/TestOverview.jsx
+
 import React from "react";
 import { motion } from "framer-motion";
-import "./TestOverview.css";
+import { Card, Button, Stack, ListGroup } from "react-bootstrap";
 
 const TestOverview = ({ testData, onStartTest }) => {
   const { test_name, subject_topic, num_questions, duration_minutes } =
@@ -14,41 +15,65 @@ const TestOverview = ({ testData, onStartTest }) => {
   };
 
   return (
-    <motion.div
-      className="overview-card"
+    <Card
+      as={motion.div}
+      className="shadow-lg border-0"
       variants={cardVariants}
       initial="hidden"
       animate="visible"
       exit="exit"
       layout
     >
-      <h1 className="overview-title">{test_name}</h1>
-      <p className="overview-subject">{subject_topic}</p>
+      <Card.Body className="p-4 p-md-5 text-center">
+        <Card.Title as="h1" className="display-5 mb-2">
+          {test_name}
+        </Card.Title>
+        <Card.Subtitle className="mb-4 text-muted">
+          {subject_topic}
+        </Card.Subtitle>
 
-      <div className="overview-details">
-        <div className="detail-item">
-          <span>Questions</span>
-          <strong>{num_questions}</strong>
+        {/* Details Section */}
+        <Stack
+          direction="horizontal"
+          gap={5}
+          className="justify-content-center border-top border-bottom py-3 my-4"
+        >
+          <div className="text-center">
+            <small className="text-muted">Questions</small>
+            <strong className="d-block h4 text-primary">{num_questions}</strong>
+          </div>
+          <div className="text-center">
+            <small className="text-muted">Duration</small>
+            <strong className="d-block h4 text-primary">
+              {duration_minutes} mins
+            </strong>
+          </div>
+        </Stack>
+
+        {/* Instructions Section */}
+        <div className="text-start my-4">
+          <h4 className="mb-3">Instructions</h4>
+          <ListGroup variant="flush">
+            <ListGroup.Item>
+              Ensure you have a stable internet connection.
+            </ListGroup.Item>
+            <ListGroup.Item>
+              Do not refresh the page during the test.
+            </ListGroup.Item>
+            <ListGroup.Item>
+              The timer will start as soon as you click the button below.
+            </ListGroup.Item>
+          </ListGroup>
         </div>
-        <div className="detail-item">
-          <span>Duration</span>
-          <strong>{duration_minutes} mins</strong>
+
+        {/* Start Button */}
+        <div className="d-grid">
+          <Button onClick={onStartTest} size="lg" variant="primary">
+            Start Test
+          </Button>
         </div>
-      </div>
-
-      <div className="overview-instructions">
-        <h2>Instructions</h2>
-        <ul>
-          <li>Ensure you have a stable internet connection.</li>
-          <li>Do not refresh the page during the test.</li>
-          <li>The timer will start as soon as you click the button below.</li>
-        </ul>
-      </div>
-
-      <button onClick={onStartTest} className="start-test-button">
-        Start Test
-      </button>
-    </motion.div>
+      </Card.Body>
+    </Card>
   );
 };
 

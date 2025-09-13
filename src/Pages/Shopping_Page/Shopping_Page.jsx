@@ -1,12 +1,23 @@
+// src/pages/Shopping_Page.jsx
+
 import React, { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-// Assume axiosInstance is pre-configured, e.g., in /src/api/axiosInstance.js
-// import axiosInstance from '../api/axiosInstance';
-import "./Shopping_Page.css";
+import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
+import {
+  Container,
+  Row,
+  Col,
+  Card,
+  Button,
+  Modal,
+  Spinner,
+  Alert,
+  Badge,
+  Stack,
+} from "react-bootstrap";
+import "./Shopping_Page.css"; // We'll link to our new, smaller CSS file
 
 // --- Mock Data (for demonstration) ---
-// In a real app, this data would come from the API call.
 const mockTestSeries = [
   {
     id: 1,
@@ -14,9 +25,9 @@ const mockTestSeries = [
     price: 499,
     subject: "Physics, Chemistry, Mathematics",
     short_description:
-      "Comprehensive tests for JEE Advanced preparation designed by top educators to simulate the real exam environment and pinpoint your weaknesses.",
+      "Comprehensive tests for JEE Advanced preparation designed by top educators to simulate the real exam environment.",
     full_description:
-      "This series includes 20 full-length mock tests meticulously crafted to cover the entire JEE Advanced syllabus. Each test comes with detailed performance analysis, percentile scores, and video solutions for every question. Get the competitive edge you need to succeed.",
+      "This series includes 20 full-length mock tests meticulously crafted to cover the entire JEE Advanced syllabus. Each test comes with detailed performance analysis, percentile scores, and video solutions for every question.",
     num_tests: 20,
     test_duration: "3 hours",
   },
@@ -26,9 +37,9 @@ const mockTestSeries = [
     price: 449,
     subject: "Biology, Physics, Chemistry",
     short_description:
-      "Master the NEET syllabus with our extensive test series. Includes chapter-wise tests, unit tests, and full-length mock exams.",
+      "Master the NEET syllabus with our extensive test series, including chapter-wise and full-length mock exams.",
     full_description:
-      "Prepare for NEET UG with 50+ tests designed to mirror the latest exam pattern. This pack offers a structured approach, starting with foundational chapter tests and progressing to full-scale simulations. Detailed reports will help you track your progress and improve your time management skills.",
+      "Prepare for NEET UG with 50+ tests designed to mirror the latest exam pattern. This pack offers a structured approach, starting with foundational chapter tests and progressing to full-scale simulations.",
     num_tests: 50,
     test_duration: "3 hours 20 minutes",
   },
@@ -38,166 +49,142 @@ const mockTestSeries = [
     price: 999,
     subject: "General Studies & CSAT",
     short_description:
-      "A complete test series for the UPSC Civil Services Preliminary exam, covering both General Studies Paper 1 and CSAT Paper 2.",
+      "A complete test series for the UPSC Civil Services Preliminary exam, covering both GS Paper 1 and CSAT Paper 2.",
     full_description:
-      "Our flagship UPSC Prelims series features 35 high-quality tests, including sectional and full-length mocks. Questions are framed based on current trends and the official syllabus. Each test is followed by a comprehensive review session and detailed answer explanations from our expert faculty.",
+      "Our flagship UPSC Prelims series features 35 high-quality tests. Questions are framed based on current trends and the official syllabus. Includes detailed answer explanations from our expert faculty.",
     num_tests: 35,
     test_duration: "2 hours",
   },
-  {
-    id: 4,
-    name: "CAT 2025 Sprint Series",
-    price: 799,
-    subject: "VARC, DILR, Quant",
-    short_description:
-      "An intensive test series for CAT aspirants aiming for a 99+ percentile. Focuses on advanced problem-solving techniques.",
-    full_description:
-      "This intensive sprint series contains 15 full-length CAT mocks and 30 sectional tests focusing on all three sections: Verbal Ability & Reading Comprehension (VARC), Data Interpretation & Logical Reasoning (DILR), and Quantitative Aptitude. It is designed to challenge you and perfect your exam strategy.",
-    num_tests: 45,
-    test_duration: "2 hours",
-  },
 ];
-
-// Helper to truncate text
-const truncate = (text, maxLength) => {
-  if (text.length <= maxLength) return text;
-  return text.substring(0, maxLength) + "...";
-};
 
 const ShoppingPage = () => {
   const navigate = useNavigate();
   const [testSeries, setTestSeries] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [selectedId, setSelectedId] = useState(null);
+  const [selectedTest, setSelectedTest] = useState(null); // Use object for modal
 
   useEffect(() => {
     const fetchTestSeries = async () => {
       try {
-        // --- Real API Call (commented out for demo) ---
-        // const response = await axiosInstance.get('/api/test-series');
-        // setTestSeries(response.data);
-
-        // --- Using Mock Data ---
-        setTestSeries(mockTestSeries);
+        // Using Mock Data
+        setTimeout(() => {
+          // Simulate network delay
+          setTestSeries(mockTestSeries);
+          setLoading(false);
+        }, 500);
       } catch (err) {
         setError("Failed to fetch test series. Please try again later.");
-        console.error(err);
-      } finally {
         setLoading(false);
       }
     };
-
     fetchTestSeries();
   }, []);
 
-  if (loading) return <div className="loading-state">Loading courses...</div>;
-  if (error) return <div className="error-state">{error}</div>;
+  const handleCardClick = (test) => setSelectedTest(test);
+  const handleCloseModal = () => setSelectedTest(null);
+
+  if (loading) {
+    return (
+      <div className="state-container">
+        <Spinner animation="border" variant="light" />
+        <p className="mt-3 text-light">Loading courses...</p>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="state-container">
+        <Alert variant="danger">{error}</Alert>
+      </div>
+    );
+  }
 
   return (
-    <div className="shopping-page-container">
-      <h1>Available Test Series</h1>
-      <div className="test-series-grid">
-        {testSeries.map((item) => (
-          <motion.div
-            key={item.id}
-            layoutId={`card-container-${item.id}`}
-            onClick={() =>
-              setSelectedId(selectedId === item.id ? null : item.id)
-            }
-            className="test-series-card"
-            whileHover={{
-              scale: 1.03,
-              boxShadow: "0px 10px 30px rgba(0, 0, 0, 0.3)",
-            }}
-            transition={{ duration: 0.3 }}
-          >
-            <motion.div className="card-content-wrapper">
-              <motion.h2 layoutId={`card-title-${item.id}`}>
-                {item.name}
-              </motion.h2>
-              <motion.p className="subject-tag">{item.subject}</motion.p>
-              <motion.p
-                className="short-desc"
-                layoutId={`card-desc-${item.id}`}
-              >
-                {truncate(item.short_description, 100)}
-              </motion.p>
-              <motion.div className="price" layoutId={`card-price-${item.id}`}>
-                {item.price ? `₹${item.price}` : "Free"}
-              </motion.div>
-            </motion.div>
-          </motion.div>
-        ))}
+    <>
+      <div className="shopping-page-background">
+        <Container className="py-5">
+          <h1 className="display-4 text-center text-white mb-5">
+            Available Test Series
+          </h1>
+          <Row xs={1} md={2} lg={3} className="g-4">
+            {testSeries.map((item) => (
+              <Col key={item.id}>
+                <motion.div whileHover={{ y: -5, scale: 1.02 }}>
+                  <Card
+                    className="h-100 card-glassmorphism"
+                    onClick={() => handleCardClick(item)}
+                  >
+                    <Card.Body className="d-flex flex-column">
+                      <Card.Title as="h4" className="mb-2">
+                        {item.name}
+                      </Card.Title>
+                      <Badge
+                        pill
+                        bg="primary"
+                        className="align-self-start mb-3"
+                      >
+                        {item.subject}
+                      </Badge>
+                      <Card.Text className="text-muted flex-grow-1">
+                        {item.short_description}
+                      </Card.Text>
+                      <h3 className="text-success text-end fw-bold mt-3">
+                        {item.price ? `₹${item.price}` : "Free"}
+                      </h3>
+                    </Card.Body>
+                  </Card>
+                </motion.div>
+              </Col>
+            ))}
+          </Row>
+        </Container>
       </div>
 
-      <AnimatePresence>
-        {selectedId && (
-          <motion.div
-            className="expanded-view-backdrop"
-            onClick={() => setSelectedId(null)}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-          >
-            <motion.div
-              className="test-series-card expanded"
-              layoutId={`card-container-${selectedId}`}
-              onClick={(e) => e.stopPropagation()} // Prevent closing when clicking inside
-            >
-              {(() => {
-                const item = testSeries.find((ts) => ts.id === selectedId);
-                if (!item) return null;
-
-                return (
-                  <motion.div className="card-content-wrapper">
-                    <motion.h2 layoutId={`card-title-${item.id}`}>
-                      {item.name}
-                    </motion.h2>
-                    <motion.div
-                      className="expanded-content"
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{
-                        opacity: 1,
-                        y: 0,
-                        transition: { delay: 0.2, duration: 0.4 },
-                      }}
-                      exit={{ opacity: 0 }}
-                    >
-                      <p className="full-desc">{item.full_description}</p>
-                      <div className="test-details">
-                        <span>
-                          <strong>Tests Included:</strong> {item.num_tests}
-                        </span>
-                        <span>
-                          <strong>Duration:</strong> {item.test_duration} per
-                          test
-                        </span>
-                      </div>
-                      <p className="subject-tag expanded-tag">{item.subject}</p>
-                      <div className="buy-section">
-                        <motion.div
-                          className="price"
-                          layoutId={`card-price-${item.id}`}
-                        >
-                          {item.price ? `₹${item.price}` : "Free"}
-                        </motion.div>
-                        <button
-                          className="buy-now-btn"
-                          onClick={navigate("/UserDetails")}
-                        >
-                          Buy Now
-                        </button>
-                      </div>
-                    </motion.div>
-                  </motion.div>
-                );
-              })()}
-            </motion.div>
-          </motion.div>
+      {/* Details Modal */}
+      <Modal show={!!selectedTest} onHide={handleCloseModal} centered size="lg">
+        {selectedTest && (
+          <>
+            <Modal.Header closeButton className="modal-glassmorphism">
+              <Modal.Title>{selectedTest.name}</Modal.Title>
+            </Modal.Header>
+            <Modal.Body className="modal-glassmorphism">
+              <p className="lead text-muted mb-4">
+                {selectedTest.full_description}
+              </p>
+              <Stack
+                direction="horizontal"
+                gap={3}
+                className="p-3 bg-dark rounded mb-3 text-light"
+              >
+                <div>
+                  <strong>Tests Included:</strong> {selectedTest.num_tests}
+                </div>
+                <div className="ms-auto">
+                  <strong>Duration:</strong> {selectedTest.test_duration}
+                </div>
+              </Stack>
+              <Badge pill bg="primary">
+                {selectedTest.subject}
+              </Badge>
+            </Modal.Body>
+            <Modal.Footer className="modal-glassmorphism">
+              <h3 className="text-success fw-bold me-auto">
+                {selectedTest.price ? `₹${selectedTest.price}` : "Free"}
+              </h3>
+              <Button
+                variant="primary"
+                size="lg"
+                onClick={() => navigate("/UserDetails")}
+              >
+                Buy Now
+              </Button>
+            </Modal.Footer>
+          </>
         )}
-      </AnimatePresence>
-    </div>
+      </Modal>
+    </>
   );
 };
 

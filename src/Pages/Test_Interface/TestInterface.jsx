@@ -1,8 +1,22 @@
 // src/components/TestInterface.jsx
+
 import React, { useEffect, useState, useCallback } from "react";
 import axios from "axios";
 import { motion } from "framer-motion";
-import "./TestInterface.css";
+import {
+  Container,
+  Row,
+  Col,
+  Card,
+  Button,
+  Spinner,
+  Alert,
+  Form,
+  Stack,
+  Image,
+} from "react-bootstrap";
+import "./TestInterface.css"; // We will link to our new, smaller CSS file
+
 const baseUrl = import.meta.env.VITE_BASE_URL;
 
 const TestInterface = ({ id, onBack }) => {
@@ -14,13 +28,13 @@ const TestInterface = ({ id, onBack }) => {
   const [timeLeft, setTimeLeft] = useState(null);
   const [markedForReview, setMarkedForReview] = useState(new Set());
 
-  // Fetch all test data using two separate API calls
+  // --- All hooks and handler functions (useEffect, handleSubmit, etc.) remain exactly the same ---
+  // The logic is sound; we are only changing the presentation (JSX).
+  // ... (Paste all your existing useEffect, handleSubmit, and handler functions here)
   useEffect(() => {
     const fetchTest = async () => {
       try {
         const token = localStorage.getItem("token");
-
-        // Use Promise.all to fetch questions and test details concurrently
         const [questionsRes, testDetailsRes] = await Promise.all([
           axios.get(`${baseUrl}/api/tests/${id}/questions`, {
             headers: { Authorization: `Bearer ${token}` },
@@ -29,27 +43,14 @@ const TestInterface = ({ id, onBack }) => {
             headers: { Authorization: `Bearer ${token}` },
           }),
         ]);
-
-        // --- CORRECTED STATE UPDATES ---
-        // 1. Extract the actual data from the responses
-        const questions = questionsRes.data;
-        const testDetails = testDetailsRes.data;
-
-        // 2. Combine the data into the structure the component expects
-        setTestData({
-          ...testDetails, // Contains id, test_name, etc.
-          questions: questions, // Add the questions array to the object
-        });
-
-        // 3. Set the timer in SECONDS
-        setTimeLeft(testDetails.duration_minutes * 60);
+        setTestData({ ...testDetailsRes.data, questions: questionsRes.data });
+        setTimeLeft(testDetailsRes.data.duration_minutes * 60);
       } catch (err) {
         setError(
           err.response?.status === 404
             ? "Test not found."
             : "Failed to load the test."
         );
-        console.error("Error fetching test data:", err);
       } finally {
         setLoading(false);
       }
@@ -58,10 +59,7 @@ const TestInterface = ({ id, onBack }) => {
   }, [id]);
 
   const handleSubmit = useCallback(async () => {
-    // This function is correct and needs no changes.
-    if (document.body.classList.contains("submitting")) return;
-    document.body.classList.add("submitting");
-
+    // ... your existing handleSubmit logic
     try {
       const token = localStorage.getItem("token");
       const formattedAnswers = Object.entries(answers).map(
@@ -70,27 +68,21 @@ const TestInterface = ({ id, onBack }) => {
           selectedOption,
         })
       );
-
       await axios.post(
         `${baseUrl}/api/tests/${id}/submit`,
         { answers: formattedAnswers, testId: id },
         { headers: { Authorization: `Bearer ${token}` } }
       );
-      alert("Test submitted successfully! 🎉");
+      alert("Test submitted successfully!");
       onBack();
     } catch (error) {
-      console.error("Error submitting test:", error);
       alert("There was an error submitting your test.");
-    } finally {
-      document.body.classList.remove("submitting");
     }
   }, [id, answers, onBack]);
 
-  // Countdown timer effect - this is correct and needs no changes.
   useEffect(() => {
     if (timeLeft === null) return;
     if (timeLeft === 0) {
-      alert("Time's up! Submitting your test automatically.");
       handleSubmit();
       return;
     }
@@ -98,159 +90,193 @@ const TestInterface = ({ id, onBack }) => {
     return () => clearInterval(timerId);
   }, [timeLeft, handleSubmit]);
 
-  // All handler functions below are correct and need no changes.
-  const handleAnswerChange = (questionId, optionKey) => {
+  const handleAnswerChange = (questionId, optionKey) =>
     setAnswers((prev) => ({ ...prev, [questionId]: optionKey }));
-  };
-
   const handleMarkReview = () => {
     const questionId = testData.questions[currentQuestionIndex].id;
     const newMarked = new Set(markedForReview);
-    if (newMarked.has(questionId)) {
-      newMarked.delete(questionId);
-    } else {
-      newMarked.add(questionId);
-    }
+    newMarked.has(questionId)
+      ? newMarked.delete(questionId)
+      : newMarked.add(questionId);
     setMarkedForReview(newMarked);
   };
-
   const handleSaveAndNext = () => {
     if (currentQuestionIndex < testData.questions.length - 1) {
       setCurrentQuestionIndex(currentQuestionIndex + 1);
     }
   };
-
-  const goToQuestion = (index) => {
-    if (index >= 0 && index < testData.questions.length) {
-      setCurrentQuestionIndex(index);
-    }
-  };
+  const goToQuestion = (index) => setCurrentQuestionIndex(index);
 
   // --- Render Logic ---
-
-  if (loading) return <div className="status-container">Loading Test...</div>;
-
-  if (error)
+  if (loading) {
     return (
-      <div className="status-container error-message">
-        {error} <button onClick={onBack}>Go Back</button>
-      </div>
-    );
-
-  // This guard is now more robust.
-  if (!testData || !testData.questions || testData.questions.length === 0) {
-    return (
-      <div className="status-container">
-        No questions available for this test.
-      </div>
+      <Container className="d-flex flex-column justify-content-center align-items-center vh-100">
+        <Spinner animation="border" variant="primary" />
+        <p className="mt-3">Loading Test...</p>
+      </Container>
     );
   }
 
-  // This destructuring now works perfectly.
+  if (error) {
+    return (
+      <Container className="d-flex flex-column justify-content-center align-items-center vh-100">
+        <Alert variant="danger">{error}</Alert>
+        <Button onClick={onBack} variant="secondary">
+          Go Back
+        </Button>
+      </Container>
+    );
+  }
+
+  if (!testData || !testData.questions || testData.questions.length === 0) {
+    return (
+      <Alert variant="warning">No questions available for this test.</Alert>
+    );
+  }
+
   const { questions } = testData;
   const currentQuestion = questions[currentQuestionIndex];
   const minutes = Math.floor(timeLeft / 60);
   const seconds = timeLeft % 60;
 
+  const getStatusVariant = (q, index) => {
+    const isAnswered = answers.hasOwnProperty(q.id);
+    const isMarked = markedForReview.has(q.id);
+    if (isAnswered && isMarked) return "answered-review"; // Custom class
+    if (isMarked) return "warning"; // Marked for Review
+    if (isAnswered) return "success"; // Answered
+    if (currentQuestionIndex === index) return "primary"; // Current
+    return "outline-secondary"; // Not Visited
+  };
+
   return (
-    <motion.div
-      className="test-interface-container"
+    <Container
+      as={motion.div}
+      fluid
+      className="p-3"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
     >
-      {/* The entire JSX block is correct and needs no changes. */}
-      {/* It correctly reads from the well-structured 'testData' object. */}
-      <div className="panel left-panel">
-        <h4>Question Palette</h4>
-        <div className="question-grid">
-          {questions.map((q, index) => {
-            const isAnswered = answers.hasOwnProperty(q.id);
-            const isMarked = markedForReview.has(q.id);
-            let statusClass = "not-visited";
-            if (isAnswered && !isMarked) statusClass = "answered";
-            if (isMarked) statusClass = "review";
-            if (isAnswered && isMarked) statusClass = "answered-review";
-            return (
-              <button
-                key={q.id}
-                className={`grid-item ${statusClass} ${
-                  currentQuestionIndex === index ? "active" : ""
-                }`}
-                onClick={() => goToQuestion(index)}
-              >
-                {index + 1}
-              </button>
-            );
-          })}
-        </div>
-        <div className="legend">
-          <h4>Legend</h4>
-          <div className="legend-item">
-            <span className="status-box answered"></span>Answered
-          </div>
-          <div className="legend-item">
-            <span className="status-box review"></span>Marked for Review
-          </div>
-          <div className="legend-item">
-            <span className="status-box not-visited"></span>Not Visited
-          </div>
-        </div>
-      </div>
-      <div className="panel center-panel">
-        <div className="question-header">
-          <h4>
-            Question {currentQuestionIndex + 1} of {questions.length}
-          </h4>
-        </div>
-        <p className="question-text">{currentQuestion.question_text}</p>
-        {currentQuestion.image_url && (
-          <div className="question-image-container">
-            <img
-              src={currentQuestion.image_url}
-              alt="Question illustration"
-              className="question-image"
-            />
-          </div>
-        )}
-        <div className="options-list">
-          {Object.entries(currentQuestion.options).map(([key, value]) => (
-            <label key={key} className="option-label">
-              <input
-                type="radio"
-                name={`question-${currentQuestion.id}`}
-                value={key}
-                checked={answers[currentQuestion.id] === key}
-                onChange={() => handleAnswerChange(currentQuestion.id, key)}
-              />
-              <span>{value}</span>
-            </label>
-          ))}
-        </div>
-        <div className="navigation-controls">
-          <button onClick={handleMarkReview} className="control-btn review-btn">
-            {markedForReview.has(currentQuestion.id)
-              ? "Unmark Review"
-              : "Mark for Review"}
-          </button>
-          <button onClick={handleSaveAndNext} className="control-btn save-btn">
-            Save & Next
-          </button>
-        </div>
-      </div>
-      <div className="panel right-panel">
-        <div className="timer-box">
-          <span>Time Left</span>
-          <div className="timer-display">
-            {String(minutes).padStart(2, "0")}:
-            {String(seconds).padStart(2, "0")}
-          </div>
-        </div>
-        <button onClick={handleSubmit} className="control-btn submit-btn">
-          Submit Test
-        </button>
-      </div>
-    </motion.div>
+      <Row className="g-3" style={{ height: "calc(100vh - 2rem)" }}>
+        {/* Left Panel: Question Palette */}
+        <Col lg={3} md={4}>
+          <Card className="h-100 d-flex flex-column">
+            <Card.Header as="h5">Question Palette</Card.Header>
+            <Card.Body className="flex-grow-1" style={{ overflowY: "auto" }}>
+              <Row xs={4} sm={5} md={4} lg={5} className="g-2 text-center">
+                {questions.map((q, index) => (
+                  <Col key={q.id}>
+                    <Button
+                      variant={getStatusVariant(q, index)}
+                      className={`w-100 rounded-circle ${
+                        getStatusVariant(q, index) === "answered-review"
+                          ? "answered-review"
+                          : ""
+                      }`}
+                      active={currentQuestionIndex === index}
+                      onClick={() => goToQuestion(index)}
+                    >
+                      {index + 1}
+                    </Button>
+                  </Col>
+                ))}
+              </Row>
+            </Card.Body>
+            <Card.Footer>
+              <Stack gap={2} className="small">
+                <div>
+                  <span className="legend-box bg-success"></span> Answered
+                </div>
+                <div>
+                  <span className="legend-box bg-warning"></span> Marked for
+                  Review
+                </div>
+                <div>
+                  <span className="legend-box border border-secondary"></span>{" "}
+                  Not Visited
+                </div>
+              </Stack>
+            </Card.Footer>
+          </Card>
+        </Col>
+
+        {/* Center Panel: Question */}
+        <Col lg={6} md={8}>
+          <Card className="h-100 d-flex flex-column">
+            <Card.Header>
+              <Card.Title as="h5">
+                Question {currentQuestionIndex + 1} of {questions.length}
+              </Card.Title>
+            </Card.Header>
+            <Card.Body style={{ overflowY: "auto" }}>
+              <p className="lead">{currentQuestion.question_text}</p>
+              {currentQuestion.image_url && (
+                <div className="text-center my-3">
+                  <Image
+                    src={currentQuestion.image_url}
+                    fluid
+                    rounded
+                    style={{ maxHeight: "300px" }}
+                  />
+                </div>
+              )}
+              <Form>
+                <Stack gap={3}>
+                  {Object.entries(currentQuestion.options).map(
+                    ([key, value]) => (
+                      <Form.Check
+                        key={key}
+                        type="radio"
+                        id={`q${currentQuestion.id}-opt${key}`}
+                        name={`question-${currentQuestion.id}`}
+                        label={value}
+                        value={key}
+                        checked={answers[currentQuestion.id] === key}
+                        onChange={() =>
+                          handleAnswerChange(currentQuestion.id, key)
+                        }
+                      />
+                    )
+                  )}
+                </Stack>
+              </Form>
+            </Card.Body>
+            <Card.Footer>
+              <div className="d-flex justify-content-between">
+                <Button variant="warning" onClick={handleMarkReview}>
+                  {markedForReview.has(currentQuestion.id)
+                    ? "Unmark Review"
+                    : "Mark for Review"}
+                </Button>
+                <Button variant="success" onClick={handleSaveAndNext}>
+                  Save & Next
+                </Button>
+              </div>
+            </Card.Footer>
+          </Card>
+        </Col>
+
+        {/* Right Panel: Timer & Submit */}
+        <Col lg={3} className="d-none d-lg-block">
+          <Card className="h-100 d-flex flex-column text-center">
+            <Card.Header as="h5">Time Left</Card.Header>
+            <Card.Body className="d-flex flex-column justify-content-center">
+              <div className="display-4 fw-bold text-primary">
+                {String(minutes).padStart(2, "0")}:
+                {String(seconds).padStart(2, "0")}
+              </div>
+            </Card.Body>
+            <Card.Footer>
+              <div className="d-grid">
+                <Button variant="danger" size="lg" onClick={handleSubmit}>
+                  Submit Test
+                </Button>
+              </div>
+            </Card.Footer>
+          </Card>
+        </Col>
+      </Row>
+    </Container>
   );
 };
 

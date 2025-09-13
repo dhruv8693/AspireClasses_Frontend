@@ -1,27 +1,25 @@
 // src/components/TestPage.jsx
+
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useParams, useNavigate } from "react-router-dom";
-import TestOverview from "./TestOverview";
-import TestInterface from "./TestInterface";
 import { AnimatePresence } from "framer-motion";
-import "./TestPage.css";
+import { Container, Spinner, Alert, Stack } from "react-bootstrap";
+import TestOverview from "./TestOverview"; // Assumes this is the refactored version
+import TestInterface from "./TestInterface"; // Assumes this is the refactored version
+
 const baseUrl = import.meta.env.VITE_BASE_URL;
 
 const TestPage = () => {
-  // State for the list of all tests
   const [tests, setTests] = useState([]);
-  // State for the single, specific test being viewed
   const [selectedTest, setSelectedTest] = useState(null);
-  // NEW state to track if the user has clicked "Start Test"
   const [isTestStarted, setIsTestStarted] = useState(false);
-
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const { id } = useParams();
   const navigate = useNavigate();
 
-  // Effect to fetch data based on whether an ID is in the URL
+  // --- Data fetching logic remains the same ---
   useEffect(() => {
     const fetchAllTests = async () => {
       try {
@@ -40,8 +38,7 @@ const TestPage = () => {
       try {
         setLoading(true);
         setError(null);
-        // Always show the overview first when a new test ID is loaded
-        setIsTestStarted(false);
+        setIsTestStarted(false); // Always show overview first
         const res = await axios.get(`${baseUrl}/api/tests/${id}`);
         setSelectedTest(res.data);
       } catch (err) {
@@ -56,62 +53,75 @@ const TestPage = () => {
     } else {
       fetchAllTests();
     }
-  }, [id]); // This effect re-runs whenever the URL's id parameter changes
+  }, [id]);
 
-  // 1. Loading and Error states are handled first
+  // 1. Loading and Error states with Bootstrap components
   if (loading) {
-    return <p>Loading...</p>;
+    return (
+      <Container
+        className="d-flex justify-content-center align-items-center"
+        style={{ minHeight: "80vh" }}
+      >
+        <Spinner animation="border" variant="primary" />
+      </Container>
+    );
   }
 
   if (error) {
-    return <p className="error-message">{error}</p>;
+    return (
+      <Container className="py-5">
+        <Alert variant="danger" className="text-center">
+          {error}
+        </Alert>
+      </Container>
+    );
   }
 
-  // 2. Logic for when an ID is present in the URL
+  // 2. Logic for a single test (ID in URL)
   if (id && selectedTest) {
     return (
       <AnimatePresence mode="wait">
         {isTestStarted ? (
-          // If test is started, show the interface
           <TestInterface
             key={`interface-${id}`}
             id={id}
-            // onBack now just switches the state, not the URL
             onBack={() => setIsTestStarted(false)}
           />
         ) : (
-          // If test is not started, show the overview
-          <TestOverview
-            key={`overview-${id}`}
-            testData={selectedTest}
-            // onStartTest now just switches the state
-            onStartTest={() => setIsTestStarted(true)}
-          />
+          <Container className="py-3 py-md-5" style={{ maxWidth: "900px" }}>
+            <TestOverview
+              key={`overview-${id}`}
+              testData={selectedTest}
+              onStartTest={() => setIsTestStarted(true)}
+            />
+          </Container>
         )}
       </AnimatePresence>
     );
   }
 
-  // 3. Fallback: Render the list of all tests if no ID is in the URL
+  // 3. Fallback: Render the list of all tests
   return (
-    <div className="test-page-container">
-      <h2 className="page-title">Available Tests</h2>
+    <Container className="py-3 py-md-5" style={{ maxWidth: "900px" }}>
+      <h1 className="display-5 text-center mb-4">Available Tests</h1>
       <AnimatePresence>
-        <div className="test-list">
-          {tests.length === 0 ? (
-            <p>No tests available</p>
-          ) : (
-            tests.map((test) => (
+        {tests.length === 0 ? (
+          <Alert variant="info" className="text-center">
+            No tests are available at the moment.
+          </Alert>
+        ) : (
+          <Stack gap={4}>
+            {tests.map((test) => (
               <TestOverview
                 key={test.id}
                 testData={test}
                 onStartTest={() => navigate(`/tests/${test.id}`)}
               />
-            ))
-          )}
-        </div>
+            ))}
+          </Stack>
+        )}
       </AnimatePresence>
-    </div>
+    </Container>
   );
 };
 

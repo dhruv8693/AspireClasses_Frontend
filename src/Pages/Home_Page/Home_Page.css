@@ -1,370 +1,74 @@
-/* === GLOBAL STYLES (New Professional Theme) === */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+/* src/Home_Page.css */
 
-:root {
-  --font-primary: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-
-  /* === Brand Colors === */
-  --color-primary: #1abc9c; /* Bold Teal */
-  --color-primary-dark: #16a085;
-  --color-danger: #e74c3c;
-  --color-danger-dark: #c0392b;
-  --color-success: #34d399;
-  --color-warning: #fbbf24;
-
-  /* === Professional Theme Colors === */
-  --color-surface: #a5c5a5;
-  --color-border: #34495e;
-
-  --text-primary: #111827;
-  --text-secondary: #6b7280;
-  --text-light: #ffffff;
-  --text-light-secondary: #bdc3c7;
-  --text-light-header: #ecf0f1;
-
-  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
-  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
-  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
-
-  --border-radius-md: 0.5rem;
-  --border-radius-lg: 0.75rem;
-
-  --spacing-1: 0.25rem;
-  --spacing-2: 0.5rem;
-  --spacing-4: 1rem;
-  --spacing-6: 1.5rem;
-  --spacing-8: 2rem;
-}
-
-/* === Reset === */
-*, *::before, *::after {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
-
-.home-body {
-  font-family: var(--font-primary);
-  background: #ddebee;
-  color: #0e0c01;
-  line-height: 1.6;
+/* === GLOBAL LAYOUT === */
+.home-page-layout {
+  display: flex;
   min-height: 100vh;
-  -webkit-font-smoothing: antialiased;
-  text-rendering: optimizeLegibility;
+  background-color: #f4f7f6; /* A light background for the content area */
 }
 
-/* === Home Layout === */
-.home-page {
-  display: grid;
-  grid-template-columns: 260px 1fr; /* Sidebar + Main */
-  height: 100vh;
-  overflow: hidden;
+/* === 1. DESKTOP SIDEBAR (d-none d-lg-flex) === */
+.sidebar-desktop {
+  width: 260px;
+  flex-shrink: 0;
+  background-color: #2c3e50; /* Dark blue-gray background */
+  color: #ecf0f1;
 }
 
-/* === Sidebar === */
-.sidebar {
-  background: #0d1414;
-  display: flex;
-  flex-direction: column;
-  padding: var(--spacing-6) var(--spacing-4);
-  border-right: 1px solid var(--color-border);
+/* === 2. MOBILE SIDEBAR (Offcanvas) === */
+.sidebar-mobile {
+  background-color: #2c3e50; /* Consistent background */
+}
+.sidebar-mobile .offcanvas-header {
+  border-bottom: 1px solid #34495e;
+}
+.sidebar-mobile .btn-close {
+  filter: invert(1) grayscale(100%) brightness(200%); /* Makes close button white */
 }
 
-.sidebar-header h1 {
-  font-size: 1.5rem;
+
+/* === 3. SHARED SIDEBAR STYLES (for buttons, header, etc.) === */
+.sidebar-header {
+  border-bottom: 1px solid #34495e;
+}
+.sidebar-header h3 {
+  color: #fff;
   font-weight: 600;
-  color: var(--text-light-header);
-  padding: 0 var(--spacing-2);
-  margin-bottom: var(--spacing-8);
-}
-
-.sidebar-nav {
-  flex-grow: 1;
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-1);
 }
 
 .sidebar-btn {
-  display: flex;
-  align-items: center;
-  gap: var(--spacing-4);
-  padding: 0.8rem var(--spacing-4);
-  border-radius: var(--border-radius-md);
-  text-decoration: none;
-  color: var(--text-light-secondary);
+  padding: 0.8rem 1rem !important;
+  color: #bdc3c7 !important; /* Muted text color for inactive items */
+  border-radius: 0.5rem;
+  border: none !important;
   font-weight: 500;
-  transition: background 0.2s ease, color 0.2s ease;
-}
-
-.sidebar-btn svg {
-  width: 24px;
-  height: 24px;
-  flex-shrink: 0;
+  text-align: left !important;
+  justify-content: flex-start !important;
 }
 
 .sidebar-btn.active {
-  color: var(--text-light);
-  background: var(--color-primary-dark);
+  background-color: #1abc9c !important; /* Teal for active */
+  color: #fff !important;
 }
 
 .sidebar-btn:not(.active):hover {
-  background: var(--color-border);
-  color: var(--text-light);
+  background-color: #34495e !important; /* Slightly lighter on hover */
+  color: #fff !important;
 }
 
-.logout-btn {
-  color: var(--text-light);
-  background: var(--color-danger);
-}
-.logout-btn:hover {
-  background: var(--color-danger-dark);
-  color: var(--text-light);
-}
-
-/* === Main Area === */
-.dashboard-main {
-  background: transparent;
-  overflow-y: auto;
+/* === 4. MAIN CONTENT AREA === */
+.main-content {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto; /* Allows content to scroll */
+  height: 100vh;
 }
 
-.dashboard-header {
-  padding: var(--spacing-6) var(--spacing-8);
-  border-bottom: 1px solid var(--color-border);
-  background: #0d1414;
+.main-header {
+  flex-shrink: 0; /* Prevents header from shrinking */
 }
 
-.welcome-message {
-    margin-right: 40vw;
-  font-size: 1.5rem;
-  font-weight: 600;
-  color: var(--text-light-header);
+.content-wrapper {
+  flex-grow: 1;
 }
-
-.dashboard-content {
-  padding: var(--spacing-8);
-}
-
-/* === Cards === */
-.card {
-  border-radius: var(--border-radius-lg);
-  box-shadow: 10px 10px 7px #2f3950;
-  padding: var(--spacing-6);
-  border: 1px solid var(--color-border);
-  color: var(--text-light-header);
-  background: #0d1414;
-}
-
-.card h2, .view-title {
-  color: var(--color-primary);
-  margin-bottom: var(--spacing-4);
-}
-
-.error-message {
-  color: var(--color-danger);
-  font-weight: 600;
-}
-
-/* === Responsive Design === */
-@media (max-width: 1280px) {
-  .home-page {
-    grid-template-columns: 200px 1fr;
-  }
-  /* Hide sidebar toggle and close by default (desktop/laptop) */
-.sidebar-toggle,
-.sidebar-close {
-  display: none;
-}
-
-}
-
-@media (max-width: 1024px) {
-  .home-page {
-    grid-template-columns: 80px 1fr;
-  }
-  .sidebar-btn span {
-    display: none;
-  }
-  .sidebar-header h1 {
-    font-size: 1.25rem;
-    text-align: center;
-  }
-  .sidebar-btn {
-    justify-content: center;
-  }
-  /* Hide sidebar toggle and close by default (desktop/laptop) */
-.sidebar-toggle,
-.sidebar-close {
-  display: none;
-}
-
-}
-
-@media (max-width: 768px) {
-  .home-page {
-    grid-template-columns: 1fr;
-    grid-template-rows: auto 1fr 70px;
-    height: auto;
-    min-height: 100vh;
-  }
-  .sidebar {
-    grid-row: 3 / 4;
-    flex-direction: row;
-    justify-content: space-around;
-    padding: var(--spacing-2);
-    border-right: none;
-    border-top: 1px solid var(--color-border);
-  }
-  .sidebar-header, .sidebar-footer {
-    display: none;
-  }
-  .sidebar-nav {
-    flex-direction: row;
-    width: 100%;
-    justify-content: space-evenly;
-  }
-  .sidebar-btn {
-    flex-direction: column;
-    gap: var(--spacing-1);
-    font-size: 0.75rem;
-    padding: var(--spacing-2);
-  }
-  .sidebar-btn span {
-    display: inline;
-  }
-  .dashboard-header {
-    grid-row: 1 / 2;
-    padding: var(--spacing-4);
-  }
-  .dashboard-main {
-    grid-row: 2 / 3;
-    overflow-y: visible;
-  }
-  .dashboard-content {
-    padding: var(--spacing-4);
-  }
-  .view-title {
-    font-size: 1.25rem;
-  }
-}
-
-@media (max-width: 480px) {
-  .welcome-message {
-    font-size: 1.2rem;
-  }
-  .card {
-    padding: var(--spacing-4);
-  }
-  .card h2, .view-title {
-    font-size: 1rem;
-  }
-  .sidebar-btn {
-    font-size: 0.7rem;
-  }
-}
-/* Hide sidebar toggle + close by default (desktop & laptop) */
-.sidebar-toggle,
-.sidebar-close {
-  display: none;
-}
-
-
-/* === Collapsible Sidebar Enhancements === */
-
-/* Sidebar hidden by default on mobile */
-/* === Collapsible Sidebar Enhancements === */
-@media (max-width: 768px) {
-  .sidebar {
-    position: fixed;
-    top: 0;
-    left: -260px; /* hidden off screen */
-    height: 100%;
-    width: 240px; /* slightly slimmer */
-    flex-direction: column;
-    justify-content: flex-start;
-    padding: var(--spacing-4) var(--spacing-3);
-    transition: left 0.3s ease-in-out;
-    z-index: 1000;
-    border-top: none;
-    border-right: 1px solid var(--color-border);
-  }
-
-  /* Sidebar open state */
-  .sidebar.open {
-    left: 0;
-  }
-
-  /* Sidebar toggle (hamburger) */
-  .sidebar-toggle {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    background: var(--color-primary-dark);
-    border: none;
-    border-radius: var(--border-radius-md);
-    color: var(--text-light);
-    font-size: 1.25rem;
-    padding: 0.4rem 0.7rem;
-    cursor: pointer;
-    margin-right: var(--spacing-2);
-    transition: background 0.2s ease;
-  }
-  .sidebar-toggle:hover {
-    background: var(--color-primary);
-  }
-
-  /* Sidebar header tighter */
-  .sidebar-header h1 {
-    font-size: 1.25rem;
-    margin-bottom: var(--spacing-4);
-  }
-
-  /* Sidebar nav links closer together */
-  .sidebar-nav {
-    flex-direction: column;
-    gap: var(--spacing-1); /* reduced from spacing-2 */
-    margin-top: var(--spacing-2); /* reduced from spacing-6 */
-  }
-
-  .sidebar-btn {
-    flex-direction: row;
-    justify-content: flex-start;
-    gap: var(--spacing-2); /* reduced */
-    font-size: 0.95rem;
-    padding: 0.6rem 0.9rem;
-  }
-
-  /* Optional: Close button inside sidebar */
-  .sidebar-close {
-    align-self: flex-end;
-    background: transparent;
-    border: none;
-    color: var(--text-light);
-    font-size: 1.25rem;
-    cursor: pointer;
-    margin-bottom: var(--spacing-2);
-  }
-
-  /* Adjust main content when sidebar is open */
-  .dashboard-main {
-    transition: filter 0.3s ease;
-  }
-  .dashboard-main.overlay {
-    filter: blur(2px);
-    pointer-events: none;
-  }
-
-  /* Header spacing adjusted */
-  .dashboard-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: var(--spacing-4);
-  }
-  
-}
-
-
-
-
-

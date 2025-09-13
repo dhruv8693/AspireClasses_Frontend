@@ -5,6 +5,7 @@ import {
   Form,
   useNavigate,
 } from "react-router-dom";
+import "bootstrap/dist/css/bootstrap.min.css";
 import LandingPage from "./Pages/Landing_Page/Landing_Page.jsx";
 import Register from "./Pages/Register_page/Register_Page.jsx";
 import HomePage from "./Pages/Home_Page/Home_Page.jsx";

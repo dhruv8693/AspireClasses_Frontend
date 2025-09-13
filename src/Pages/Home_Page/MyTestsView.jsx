@@ -1,11 +1,53 @@
+// src/MyTestsView.jsx
+
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import axios from "axios";
-import { BookIcon, ArrowRightIcon } from "./Icons";
-import "./MyTestView.css";
+import { Container, Row, Col, Card, Button, Spinner } from "react-bootstrap";
+import { BookIcon, ArrowRightIcon } from "./Icons"; // Assuming these are valid local components
+import "./MyTestView.css"; // We will use a much smaller CSS file
+
 const baseUrl = import.meta.env.VITE_BASE_URL;
 
+// --- Loading Component ---
+const LoadingState = () => (
+  <div
+    className="d-flex justify-content-center align-items-center"
+    style={{ minHeight: "50vh" }}
+  >
+    <Spinner animation="border" variant="primary" role="status">
+      <span className="visually-hidden">Loading...</span>
+    </Spinner>
+  </div>
+);
+
+// --- Empty State Component ---
+const EmptyState = ({ onBrowse }) => (
+  <motion.div
+    className="text-center p-4 p-md-5 bg-light rounded border-dashed"
+    initial={{ opacity: 0, scale: 0.95 }}
+    animate={{ opacity: 1, scale: 1 }}
+  >
+    <h2 className="h1 mb-3">No Tests Here!</h2>
+    <p className="lead text-muted mb-4 mx-auto" style={{ maxWidth: "500px" }}>
+      It looks like you haven't purchased any tests yet. Browse our library to
+      find the perfect test to kickstart your preparation.
+    </p>
+    <Button
+      as={motion.button}
+      variant="success"
+      size="lg"
+      onClick={onBrowse}
+      whileHover={{ scale: 1.05 }}
+      whileTap={{ scale: 0.95 }}
+    >
+      Browse All Tests
+    </Button>
+  </motion.div>
+);
+
+// --- Main MyTestsView Component ---
 const MyTestsView = () => {
   const [boughtTests, setBoughtTests] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -16,17 +58,12 @@ const MyTestsView = () => {
       try {
         setLoading(true);
         const res = await axios.get(`${baseUrl}/api/user/mytests`, {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
+          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
         });
-
-        // --- THIS IS THE CORRECTED LINE ---
-        // It now handles both a single object and an array from the API
         setBoughtTests(Array.isArray(res.data) ? res.data : [res.data]);
       } catch (error) {
         console.error("Error fetching tests:", error);
-        setBoughtTests([]); // Safely set to empty array on error
+        setBoughtTests([]);
       } finally {
         setLoading(false);
       }
@@ -34,57 +71,52 @@ const MyTestsView = () => {
     fetchBoughtTests();
   }, []);
 
-  const goToShop = () => {
-    navigate("/shop");
-  };
-
   if (loading) {
-    return <div className="loading-spinner"></div>;
+    return <LoadingState />;
   }
 
   return (
-    <motion.div className="my-tests-view">
-      <h1 className="view-title">My Tests</h1>
+    <Container as={motion.div} fluid>
+      <h1 className="display-5 mb-4">My Tests</h1>
       {boughtTests.length > 0 ? (
-        <motion.div className="tests-grid">
-          {boughtTests.map((data) => (
-            <motion.div key={data.id} className="test-card card">
-              <div className="test-card-subject">
-                <BookIcon />
-                <span>{data.subject_topic}</span>
-              </div>
-              <h3 className="test-card-title">{data.test_name}</h3>
-              <p className="test-card-info">{data.num_questions} Questions</p>
-              <motion.button
-                className="start-test-button"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                onClick={() => navigate(`/tests/${data.id}`)}
+        <Row className="g-4">
+          {boughtTests.map((test) => (
+            <Col key={test.id} md={6} lg={4}>
+              <Card
+                as={motion.div}
+                className="h-100 shadow-sm bg-dark text-light"
               >
-                <span>Start Test</span>
-                <ArrowRightIcon />
-              </motion.button>
-            </motion.div>
+                <Card.Body className="d-flex flex-column">
+                  <div className="d-flex align-items-center text-muted mb-2">
+                    <BookIcon />
+                    <span className="ms-2 small">{test.subject_topic}</span>
+                  </div>
+                  <Card.Title as="h3" className="h5">
+                    {test.test_name}
+                  </Card.Title>
+                  <Card.Text className="text-muted small">
+                    {test.num_questions} Questions
+                  </Card.Text>
+                  <Button
+                    as={motion.button}
+                    variant="primary"
+                    className="mt-auto d-flex align-items-center justify-content-center"
+                    onClick={() => navigate(`/tests/${test.id}`)}
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                  >
+                    <span className="me-2">Start Test</span>
+                    <ArrowRightIcon />
+                  </Button>
+                </Card.Body>
+              </Card>
+            </Col>
           ))}
-        </motion.div>
+        </Row>
       ) : (
-        <motion.div className="empty-tests-container card">
-          <h2>No Tests Here!</h2>
-          <p>
-            It looks like you haven't purchased any tests yet. Browse our
-            library to find the perfect test to kickstart your preparation.
-          </p>
-          <motion.button
-            className="browse-tests-button"
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            onClick={goToShop}
-          >
-            Browse All Tests
-          </motion.button>
-        </motion.div>
+        <EmptyState onBrowse={() => navigate("/shop")} />
       )}
-    </motion.div>
+    </Container>
   );
 };
 

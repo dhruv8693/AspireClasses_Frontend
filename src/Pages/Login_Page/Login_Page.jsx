@@ -1,7 +1,19 @@
+// src/pages/LoginPage.jsx
+
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import "./Login_Page.css";
+import {
+  Container,
+  Card,
+  Form,
+  Button,
+  Spinner,
+  Alert,
+  FloatingLabel,
+} from "react-bootstrap";
 import axios from "axios";
+import "./Login_Page.css"; // We'll link to our new, smaller CSS file
+
 const baseUrl = import.meta.env.VITE_BASE_URL;
 
 const LoginPage = () => {
@@ -16,69 +28,91 @@ const LoginPage = () => {
     setError("");
 
     if (!email) {
-      setError("Email/Phone and password are required.");
+      setError("Email or Phone Number is required.");
       setLoading(false);
       return;
     }
 
     try {
-      const response = await axios.post(`${baseUrl}/api/login`, {
-        email,
-      });
+      const response = await axios.post(`${baseUrl}/api/login`, { email });
 
       if (response.data && response.data.token) {
         localStorage.setItem("token", response.data.token);
-        // Optionally store user info as well
         localStorage.setItem("user", JSON.stringify(response.data.user));
         navigate("/home");
       } else {
-        setError("Login failed. Please try again.");
+        setError("Login failed. Please check your credentials.");
       }
     } catch (err) {
-      if (err.response && err.response.status === 401) {
-        setError(err.response.data.error || "Invalid email/phone or password");
-      } else {
-        setError("An unexpected error occurred. Please try again later.");
-      }
+      const errorMessage =
+        err.response?.data?.error || "An unexpected error occurred.";
+      setError(errorMessage);
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="login-page">
-      <div className="login-container">
-        <form onSubmit={handleLogin} className="login-form" noValidate>
-          <h2 className="form-title">Welcome Back!</h2>
-          <p className="form-subtitle">Sign in to continue to the platform.</p>
-          <label htmlFor="emailOrPhone" className="form-label">
-            Email or Phone
-          </label>
-          <div className="input-group">
-            <input
-              type="text"
-              id="emailOrPhone"
-              name="emailOrPhone"
-              className="form-input"
-              placeholder=" "
-              value={email}
-              onChange={(e) => setEmailOrPhone(e.target.value)}
-              required
-              autoComplete="username"
-            />
-          </div>
+    <div className="login-page-background">
+      <Container
+        className="d-flex align-items-center justify-content-center"
+        style={{ minHeight: "100vh" }}
+      >
+        <Card className="login-card-custom shadow-lg border-0">
+          <Card.Body className="p-4 p-md-5">
+            <h2 className="text-center fw-bold mb-2">Welcome Back!</h2>
+            <p className="text-center text-muted mb-4">Sign in to continue.</p>
 
-          <button type="submit" className="login-button" disabled={loading}>
-            {loading ? "Logging in..." : "Login"}
-          </button>
+            <Form onSubmit={handleLogin} noValidate>
+              <FloatingLabel
+                controlId="emailOrPhone"
+                label="Email or Phone"
+                className="mb-4"
+              >
+                <Form.Control
+                  type="text"
+                  placeholder="name@example.com or 9876543210"
+                  value={email}
+                  onChange={(e) => setEmailOrPhone(e.target.value)}
+                  required
+                  autoComplete="username"
+                  disabled={loading}
+                />
+              </FloatingLabel>
 
-          {error && (
-            <div className={`error-message ${error ? "show" : ""}`}>
-              {error}
-            </div>
-          )}
-        </form>
-      </div>
+              {error && (
+                <Alert variant="danger" className="text-center small py-2">
+                  {error}
+                </Alert>
+              )}
+
+              <div className="d-grid mt-4">
+                <Button
+                  variant="primary"
+                  type="submit"
+                  size="lg"
+                  disabled={loading}
+                >
+                  {loading ? (
+                    <>
+                      <Spinner
+                        as="span"
+                        animation="border"
+                        size="sm"
+                        role="status"
+                        aria-hidden="true"
+                      />
+                      <span className="ms-2">Logging in...</span>
+                    </>
+                  ) : (
+                    "Login"
+                  )}
+                </Button>
+              </div>
+            </Form>
+          </Card.Body>
+        </Card>
+      </Container>
     </div>
   );
 };

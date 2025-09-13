@@ -1,64 +1,24 @@
-.sidebars {
-    width: 250px;
-    background-color: #2c3e50;
-    color: white;
-    display: flex;
-    flex-direction: column;
-    height: 100vh;
-    padding: 20px;
-    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
-    position: fixed;
-    top: 0;
-    left: 0;
+/* src/components/Sidebar.css */
+
+/*
+  Bootstrap and NavLink handle most of the work. We just need to
+  provide custom colors to match the theme.
+*/
+
+.sidebar-link-custom {
+  color: #bdc3c7; /* Muted color for inactive links */
+  padding: 0.75rem 1rem;
+  font-size: 1.1rem;
 }
 
-.sidebar-title {
-    text-align: center;
-    margin-bottom: 30px;
-    font-size: 1.8em;
-    color: #ecf0f1;
+.sidebar-link-custom:hover {
+  color: #ffffff;
+  background-color: #34495e;
 }
 
-.sidebar-nav {
-    display: flex;
-    flex-direction: column;
-    flex-grow: 1; /* Pushes logout button to the bottom */
-}
-
-.sidebar-link {
-    color: #bdc3c7;
-    text-decoration: none;
-    padding: 15px 20px;
-    border-radius: 5px;
-    margin-bottom: 10px;
-    transition: background-color 0.3s ease, color 0.3s ease;
-    font-size: 1.1em;
-}
-
-.sidebar-link:hover {
-    background-color: #34495e;
-    color: #ffffff;
-}
-
-.sidebar-link.active {
-    background-color: #1abc9c;
-    color: #ffffff;
-    font-weight: bold;
-}
-
-.logout-btn {
-    margin-top: auto; /* Pushes button to the bottom */
-    padding: 12px;
-    background-color: #e74c3c;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 1em;
-    font-weight: bold;
-    transition: background-color 0.3s ease;
-}
-
-.logout-btn:hover {
-    background-color: #c0392b;
+/* NavLink adds the .active class automatically */
+.sidebar-link-custom.active {
+  background-color: #1abc9c !important; /* Teal for active link */
+  color: #ffffff !important;
+  font-weight: bold;
 }

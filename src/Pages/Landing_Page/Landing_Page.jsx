@@ -1,6 +1,6 @@
 // src/landing_page.jsx
 
-import React, { useState, useRef } from "react";
+import React, { useRef } from "react";
 import { Link } from "react-router-dom";
 import { motion, useInView } from "framer-motion";
 import {
@@ -12,14 +12,24 @@ import {
   FaEnvelope,
   FaInstagram,
   FaFacebook,
-  FaTimes,
-  FaBars,
 } from "react-icons/fa";
-import logo from "./logo.png";
-import "./Landing_Page.css";
 import { TfiAgenda } from "react-icons/tfi";
 
-// Reusable animation variants
+// React-Bootstrap Components
+import {
+  Navbar,
+  Nav,
+  Container,
+  Row,
+  Col,
+  Card,
+  Button,
+} from "react-bootstrap";
+
+import logo from "./logo.png";
+import "./Landing_Page.css"; // We'll use a much smaller CSS file
+
+// Reusable animation variants (unchanged)
 const sectionFadeIn = {
   hidden: { opacity: 0, y: 50 },
   visible: {
@@ -37,7 +47,7 @@ const cardHover = {
   transition: { type: "spring", stiffness: 300 },
 };
 
-// Helper component for animated sections
+// Helper component for animated sections (unchanged)
 const AnimatedSection = ({ children, id }) => {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, amount: 0.2 });
@@ -49,81 +59,62 @@ const AnimatedSection = ({ children, id }) => {
       initial="hidden"
       animate={isInView ? "visible" : "hidden"}
       variants={sectionFadeIn}
+      className="py-5" // Bootstrap padding utility
     >
       {children}
     </motion.section>
   );
 };
 
-// --- Component Definitions ---
+// --- Component Definitions (Refactored with React-Bootstrap) ---
 
-const Navbar = () => {
-  const [isOpen, setIsOpen] = useState(false);
-  const navLinks = [
-    "home",
-    "why-us",
-    "features",
-    "exams",
-    "pricing",
-    "contact",
-  ];
-
-  const handleLinkClick = () => {
-    setIsOpen(false);
-  };
-
+const AppNavbar = () => {
   return (
-    <header className="navbar">
-      <div className="container nav-container">
-        <a href="/#home" className="nav-logo">
-          <img src={logo} alt="PrepSphere Logo" />
-        </a>
-
-        {/* This wrapper helps group nav links and the button on desktop */}
-        <div className="nav-menu">
-          <nav className={`nav-links ${isOpen ? "active" : ""}`}>
-            <ul>
-              {navLinks.map((link) => (
-                <li key={link}>
-                  <a href={`/#${link}`} onClick={handleLinkClick}>
-                    {link.replace("-", " ")}
-                  </a>
-                </li>
-              ))}
-              {/* 2. Add a Register link specifically for the mobile menu */}
-              <li className="mobile-register-link">
-                <Link to="/register" onClick={handleLinkClick}>
-                  Register
-                </Link>
-              </li>
-            </ul>
-          </nav>
-
-          {/* 3. Add the Register button for desktop view */}
-          <Link to="/register" className="register-btn">
-            Register Now
-          </Link>
-        </div>
-
-        <div className="menu-toggle" onClick={() => setIsOpen(!isOpen)}>
-          {isOpen ? <FaTimes /> : <FaBars />}
-        </div>
-      </div>
-    </header>
+    <Navbar
+      variant="dark"
+      expand="lg"
+      sticky="top"
+      className="navbar-custom" // Custom class for backdrop filter
+    >
+      <Container>
+        <Navbar.Brand href="/#home">
+          <img src={logo} alt="PrepSphere Logo" className="nav-logo-img" />
+        </Navbar.Brand>
+        <Navbar.Toggle aria-controls="basic-navbar-nav" />
+        <Navbar.Collapse id="basic-navbar-nav">
+          <Nav className="ms-auto align-items-center">
+            <Nav.Link href="/#home">Home</Nav.Link>
+            <Nav.Link href="/#why-us">Why Us</Nav.Link>
+            <Nav.Link href="/#features">Features</Nav.Link>
+            <Nav.Link href="/#exams">Exams</Nav.Link>
+            <Nav.Link href="/#pricing">Pricing</Nav.Link>
+            <Nav.Link href="/#contact">Contact</Nav.Link>
+            <Button
+              as={Link}
+              to="/register"
+              variant="primary"
+              className="ms-lg-2 mt-2 mt-lg-0"
+            >
+              Register Now
+            </Button>
+          </Nav>
+        </Navbar.Collapse>
+      </Container>
+    </Navbar>
   );
 };
 
 const Hero = () => (
-  <motion.section
+  <motion.div
     id="home"
-    className="hero"
+    className="hero-section d-flex align-items-center text-center"
     initial={{ opacity: 0 }}
     animate={{ opacity: 1 }}
     transition={{ duration: 1 }}
   >
-    <div className="hero-background"></div>
-    <div className="container hero-content">
+    <Container>
       <motion.h1
+        className="display-3 fw-bold"
         initial={{ y: 20, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ delay: 0.2, duration: 0.8 }}
@@ -133,6 +124,7 @@ const Hero = () => (
         Conquer Your Entrance Exam
       </motion.h1>
       <motion.p
+        className="lead my-4"
         initial={{ y: 20, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ delay: 0.4, duration: 0.8 }}
@@ -141,233 +133,290 @@ const Hero = () => (
         empower your journey to top schools.
       </motion.p>
       <motion.div
-        className="hero-cta"
+        className="d-grid gap-2 d-sm-flex justify-content-sm-center"
         initial={{ y: 20, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ delay: 0.6, duration: 0.8 }}
       >
-        <a href="/register" className="cta-button primary">
+        <Button
+          as={Link}
+          to="/register"
+          variant="primary"
+          size="lg"
+          className="px-4 gap-3"
+        >
           Start Your Test Series
-        </a>
-        <a href="#exams" className="cta-button secondary">
+        </Button>
+        <Button
+          href="#exams"
+          variant="outline-secondary"
+          size="lg"
+          className="px-4"
+        >
           Explore Exams
-        </a>
+        </Button>
       </motion.div>
-    </div>
-  </motion.section>
+    </Container>
+  </motion.div>
 );
 
 const WhyChooseUs = () => (
   <AnimatedSection id="why-us">
-    <div className="container">
-      <h2 className="section-title">Why Choose AspireClasses?</h2>
-      <p className="section-subtitle">
+    <Container>
+      <h2 className="text-center display-5 mb-3">Why Choose AspireClasses?</h2>
+      <p className="text-center text-muted fs-5 mb-5">
         We focus on what truly matters for your success.
       </p>
-      <div className="grid-3">
-        <motion.div className="card" whileHover={cardHover}>
-          <TfiAgenda className="card-icon" />
-          <h3>Legacy of Excellence: AMU</h3>
-          <p>
-            Master the AMU 9th Entrance with test series designed around its
-            prestigious and unique pattern, giving you a competitive edge.
-          </p>
-        </motion.div>
-        <motion.div className="card" whileHover={cardHover}>
-          <FaBookOpen className="card-icon" />
-          <h3>Diverse Exam Coverage</h3>
-          <p>
-            Beyond AMU, we offer expertly crafted series for JMI, Sainik School,
-            Navodaya, ensuring comprehensive preparation for all your goals.
-          </p>
-        </motion.div>
-        <motion.div className="card" whileHover={cardHover}>
-          <FaUsers className="card-icon" />
-          <h3>Created by Achievers</h3>
-          <p>
-            Our content is developed by students who have successfully cleared
-            these very exams, providing insights you won't find anywhere else.
-          </p>
-        </motion.div>
-      </div>
+      <Row className="g-4">
+        {[
+          {
+            icon: <TfiAgenda className="card-icon" />,
+            title: "Legacy of Excellence: AMU",
+            text: "Master the AMU 9th Entrance with test series designed around its prestigious and unique pattern, giving you a competitive edge.",
+          },
+          {
+            icon: <FaBookOpen className="card-icon" />,
+            title: "Diverse Exam Coverage",
+            text: "Beyond AMU, we offer expertly crafted series for JMI, Sainik School, Navodaya, ensuring comprehensive preparation for all your goals.",
+          },
+          {
+            icon: <FaUsers className="card-icon" />,
+            title: "Created by Achievers",
+            text: "Our content is developed by students who have successfully cleared these very exams, providing insights you can't find anywhere else.",
+          },
+        ].map((item, index) => (
+          <Col md={4} key={index}>
+            <motion.div whileHover={cardHover} className="h-100">
+              <Card className="h-100 text-center glass-card">
+                <Card.Body>
+                  {item.icon}
+                  <Card.Title as="h3" className="mb-2">
+                    {item.title}
+                  </Card.Title>
+                  <Card.Text>{item.text}</Card.Text>
+                </Card.Body>
+              </Card>
+            </motion.div>
+          </Col>
+        ))}
+      </Row>
       <CredibilitySection />
-    </div>
+    </Container>
   </AnimatedSection>
 );
 
 const CredibilitySection = () => (
-  <div className="credibility-section">
-    <h3 className="sub-section-title">From Those Who've Walked the Path</h3>
-    <div className="testimonial-grid">
-      <div className="testimonial-card">
-        <img
-          src="https://i.pravatar.cc/100?img=12"
-          alt="Student avatar 1"
-          className="avatar"
-        />
-        <blockquote>
-          "The mock tests were almost identical to the real exam. It made all
-          the difference."
-        </blockquote>
-        <cite>- Aisha K., AMU Class IX</cite>
-      </div>
-      <div className="testimonial-card">
-        <img
-          src="https://i.pravatar.cc/100?img=5"
-          alt="Student avatar 2"
-          className="avatar"
-        />
-        <blockquote>
-          "The analytics helped me pinpoint my weak areas. Invaluable for my JMI
-          prep!"
-        </blockquote>
-        <cite>- Rohan S., JMI Aspirant</cite>
-      </div>
-    </div>
+  <div className="mt-5">
+    <h3 className="text-center fs-2 mb-4">From Those Who've Walked the Path</h3>
+    <Row className="g-4 justify-content-center">
+      <Col md={5}>
+        <Card className="glass-card">
+          <Card.Body className="text-center">
+            <img
+              src="https://i.pravatar.cc/100?img=12"
+              alt="Student avatar 1"
+              className="avatar mb-3"
+            />
+            <blockquote className="blockquote mb-2">
+              <p>
+                "The mock tests were almost identical to the real exam. It made
+                all the difference."
+              </p>
+            </blockquote>
+            <footer className="blockquote-footer">
+              Aisha K., <cite title="Source Title">AMU Class IX</cite>
+            </footer>
+          </Card.Body>
+        </Card>
+      </Col>
+      <Col md={5}>
+        <Card className="glass-card">
+          <Card.Body className="text-center">
+            <img
+              src="https://i.pravatar.cc/100?img=5"
+              alt="Student avatar 2"
+              className="avatar mb-3"
+            />
+            <blockquote className="blockquote mb-2">
+              <p>
+                "The analytics helped me pinpoint my weak areas. Invaluable for
+                my JMI prep!"
+              </p>
+            </blockquote>
+            <footer className="blockquote-footer">
+              Rohan S., <cite title="Source Title">JMI Aspirant</cite>
+            </footer>
+          </Card.Body>
+        </Card>
+      </Col>
+    </Row>
   </div>
 );
 
 const Features = () => (
   <AnimatedSection id="features">
-    <div className="container">
-      <h2 className="section-title">Features Built for Victory</h2>
-      <div className="grid-4">
-        <motion.div className="glass-card" whileHover={cardHover}>
-          <FaBullseye className="card-icon" />
-          <h3>Realistic Mock Tests</h3>
-          <p>
-            Simulate the actual exam environment to build confidence and time
-            management skills.
-          </p>
-        </motion.div>
-        <motion.div className="glass-card" whileHover={cardHover}>
-          <FaBookOpen className="card-icon" />
-          <h3>Previous Year Papers</h3>
-          <p>
-            Analyze trends and understand the exam pattern with a vast library
-            of past papers.
-          </p>
-        </motion.div>
-        <motion.div className="glass-card" whileHover={cardHover}>
-          <FaChartLine className="card-icon" />
-          <h3>Performance Analytics</h3>
-          <p>
-            Get detailed reports on your strengths and weaknesses to focus your
-            efforts effectively.
-          </p>
-        </motion.div>
-        <motion.div className="glass-card" whileHover={cardHover}>
-          <FaUsers className="card-icon" />
-          <h3>Expert Doubt Support</h3>
-          <p>
-            Clarify your doubts with our team of mentors who have aced these
-            exams.
-          </p>
-        </motion.div>
-      </div>
-    </div>
+    <Container>
+      <h2 className="text-center display-5 mb-5">Features Built for Victory</h2>
+      <Row className="g-4">
+        {[
+          {
+            icon: <FaBullseye />,
+            title: "Realistic Mock Tests",
+            text: "Simulate the actual exam environment to build confidence and time management skills.",
+          },
+          {
+            icon: <FaBookOpen />,
+            title: "Previous Year Papers",
+            text: "Analyze trends and understand the exam pattern with a vast library of past papers.",
+          },
+          {
+            icon: <FaChartLine />,
+            title: "Performance Analytics",
+            text: "Get detailed reports on your strengths and weaknesses to focus your efforts effectively.",
+          },
+          {
+            icon: <FaUsers />,
+            title: "Expert Doubt Support",
+            text: "Clarify your doubts with our team of mentors who have aced these exams.",
+          },
+        ].map((feature, index) => (
+          <Col lg={3} md={6} key={index}>
+            <motion.div whileHover={cardHover} className="h-100">
+              <Card className="h-100 text-center glass-card">
+                <Card.Body>
+                  <div className="card-icon text-primary">{feature.icon}</div>
+                  <Card.Title as="h3">{feature.title}</Card.Title>
+                  <Card.Text>{feature.text}</Card.Text>
+                </Card.Body>
+              </Card>
+            </motion.div>
+          </Col>
+        ))}
+      </Row>
+    </Container>
   </AnimatedSection>
 );
 
 const ExamsOffered = () => (
   <AnimatedSection id="exams">
-    <div className="container">
-      <h2 className="section-title">Exams We Cover</h2>
-      <div className="exams-grid">
-        <div className="exam-card prominent">
-          <h4>AMU 9th Entrance</h4>
-        </div>
-
-        <div className="exam-card">
-          <h4>Navodaya (JNVST)</h4>
-        </div>
-
-        <div className="exam-card">
-          <h4>coming soon</h4>
-        </div>
-      </div>
-    </div>
+    <Container>
+      <h2 className="text-center display-5 mb-5">Exams We Cover</h2>
+      <Row className="justify-content-center text-center g-3">
+        <Col md={3} sm={6}>
+          <div className="p-4 border rounded bg-primary text-white fs-5 fw-bold">
+            AMU 9th Entrance
+          </div>
+        </Col>
+        <Col md={3} sm={6}>
+          <div className="p-4 border rounded fs-5 fw-bold">
+            Navodaya (JNVST)
+          </div>
+        </Col>
+        <Col md={3} sm={6}>
+          <div className="p-4 border rounded bg-light text-muted fs-5 fw-bold">
+            Coming Soon
+          </div>
+        </Col>
+      </Row>
+    </Container>
   </AnimatedSection>
 );
 
 const Pricing = () => (
   <AnimatedSection id="pricing">
-    <div className="container">
-      <h2 className="section-title">Simple & Affordable Access</h2>
-      <div className="pricing-card">
-        <h3>All-Access Pass</h3>
-        <p className="price">
-          ₹699 <span className="price-term">/ Full Access</span>
-        </p>
-        <ul>
-          <li>✓ Access to All Test Series</li>
-          <li>✓ Unlimited Mock Tests</li>
-          <li>✓ Detailed Performance Analytics</li>
-          <li>✓ Previous Year Question Papers</li>
-          <li>✓ 24/7 Doubt Support via Chat</li>
-        </ul>
-        <a href="#contact" className="cta-button primary full-width">
-          Get Started Now
-        </a>
-      </div>
-    </div>
+    <Container>
+      <h2 className="text-center display-5 mb-3">Simple & Affordable Access</h2>
+      <Row className="justify-content-center">
+        <Col lg={5} md={8}>
+          <Card className="text-center border-primary border-2 shadow-lg">
+            <Card.Header as="h3" className="bg-primary text-white">
+              All-Access Pass
+            </Card.Header>
+            <Card.Body>
+              <Card.Title className="display-4 fw-bold my-3">
+                ₹699{" "}
+                <span className="fs-5 text-muted fw-normal">/ Full Access</span>
+              </Card.Title>
+              <ul className="list-unstyled my-4">
+                <li>✓ Access to All Test Series</li>
+                <li>✓ Unlimited Mock Tests</li>
+                <li>✓ Detailed Performance Analytics</li>
+                <li>✓ Previous Year Question Papers</li>
+                <li>✓ 24/7 Doubt Support via Chat</li>
+              </ul>
+              <Button
+                href="#contact"
+                variant="primary"
+                size="lg"
+                className="w-100"
+              >
+                Get Started Now
+              </Button>
+            </Card.Body>
+          </Card>
+        </Col>
+      </Row>
+    </Container>
   </AnimatedSection>
 );
 
 const Contact = () => (
   <AnimatedSection id="contact">
-    <div className="container text-center">
-      <h2 className="section-title">Ready to Begin?</h2>
-      <p className="section-subtitle">
+    <Container className="text-center">
+      <h2 className="display-5">Ready to Begin?</h2>
+      <p className="lead text-muted">
         Reach out to us and take the first step towards your dream school.
       </p>
-      <div className="contact-buttons">
-        <a
-          href="https://wa.me/910000000000"
+      <div className="d-flex flex-column flex-sm-row justify-content-center gap-3 mt-4">
+        <Button
+          href="https://wa.me/910000000000" // Replace with your number
           target="_blank"
           rel="noopener noreferrer"
-          className="cta-button secondary"
+          variant="success"
+          size="lg"
+          className="d-inline-flex align-items-center justify-content-center"
         >
-          <FaWhatsapp /> Chat on WhatsApp
-        </a>
-        <a
+          <FaWhatsapp className="me-2" /> Chat on WhatsApp
+        </Button>
+        <Button
           href="mailto:support@prepsphere.com"
-          className="cta-button secondary"
+          variant="outline-secondary"
+          size="lg"
+          className="d-inline-flex align-items-center justify-content-center"
         >
-          <FaEnvelope /> Send an Email
-        </a>
+          <FaEnvelope className="me-2" /> Send an Email
+        </Button>
       </div>
-    </div>
+    </Container>
   </AnimatedSection>
 );
 
-const Footer = () => (
-  <footer className="footer">
-    <div className="container">
-      <div className="social-links">
-        <a href="#">
+const AppFooter = () => (
+  <footer className="py-4 text-center">
+    <Container>
+      <div className="social-links mb-3">
+        <a href="#" className="fs-4 text-muted mx-2">
           <FaInstagram />
         </a>
-        <a href="#">
+        <a href="#" className="fs-4 text-muted mx-2">
           <FaFacebook />
         </a>
-        <a href="#">
+        <a href="#" className="fs-4 text-muted mx-2">
           <FaEnvelope />
         </a>
       </div>
-      <p>
+      <p className="text-muted">
         &copy; {new Date().getFullYear()} AspireClasses. All Rights Reserved.
       </p>
-    </div>
+    </Container>
   </footer>
 );
 
 // --- Main Landing Page Component ---
-
 const LandingPage = () => {
   return (
     <>
-      <Navbar />
+      <AppNavbar />
       <main>
         <Hero />
         <WhyChooseUs />
@@ -376,7 +425,7 @@ const LandingPage = () => {
         <Pricing />
         <Contact />
       </main>
-      <Footer />
+      <AppFooter />
     </>
   );
 };

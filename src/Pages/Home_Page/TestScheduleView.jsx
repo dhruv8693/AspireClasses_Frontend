@@ -1,24 +1,45 @@
+// src/TestScheduleView.jsx
+
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import axios from "axios";
-import { ClockIcon, CalendarIcon } from "./Icons";
-import "./TestScheduleView.css";
+import {
+  Container,
+  Card,
+  Button,
+  Spinner,
+  Alert,
+  Stack,
+} from "react-bootstrap";
+import { ClockIcon, CalendarIcon } from "./Icons"; // Assuming these are valid local components
+
 const baseUrl = import.meta.env.VITE_BASE_URL;
 
+// Animation Variants
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: { opacity: 1, transition: { staggerChildren: 0.1 } },
+};
+
+const itemVariants = {
+  hidden: { y: 20, opacity: 0 },
+  visible: { y: 0, opacity: 1, transition: { type: "spring" } },
+};
+
+// --- Main TestScheduleView Component ---
 const TestScheduleView = () => {
   const [upcomingTests, setUpcomingTests] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
-  let navigate = useNavigate();
+  const navigate = useNavigate();
 
   useEffect(() => {
+    // ... (API fetching logic remains exactly the same) ...
     const fetchUpcomingTests = async () => {
       try {
         const response = await axios.get(`${baseUrl}/api/upcoming-tests`, {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
+          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
         });
         setUpcomingTests(response.data);
       } catch (err) {
@@ -31,97 +52,96 @@ const TestScheduleView = () => {
     fetchUpcomingTests();
   }, []);
 
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: { opacity: 1, transition: { staggerChildren: 0.15 } },
-  };
-
-  const itemVariants = {
-    hidden: { y: 20, opacity: 0 },
-    visible: {
-      y: 0,
-      opacity: 1,
-      transition: { type: "spring", stiffness: 100 },
-    },
-  };
-
+  // --- Render Logic ---
   if (isLoading) {
     return (
-      <div className="loading-container">
-        <div>
-          <div className="spinner"></div>
-          <p className="loading-text">Loading Schedule...</p>
-        </div>
+      <div
+        className="d-flex flex-column justify-content-center align-items-center"
+        style={{ minHeight: "50vh" }}
+      >
+        <Spinner animation="border" variant="primary" />
+        <p className="mt-3">Loading Schedule...</p>
       </div>
     );
   }
 
   if (error) {
-    return <div className="error-message">{error}</div>;
+    return <Alert variant="danger">{error}</Alert>;
   }
 
   return (
-    <motion.div
+    <Container
+      as={motion.div}
+      fluid
       key="test-schedule"
       variants={containerVariants}
       initial="hidden"
       animate="visible"
-      className="schedule-view-container"
     >
-      <h1 className="view-title">Upcoming Test Schedule</h1>
-      <div className="schedule-list">
-        <AnimatePresence>
-          {upcomingTests.length > 0 ? (
-            upcomingTests.map((test) => (
-              <motion.div
+      <h1 className="display-5 mb-4">Upcoming Test Schedule</h1>
+
+      <AnimatePresence>
+        {upcomingTests.length > 0 ? (
+          <Stack gap={4}>
+            {upcomingTests.map((test) => (
+              <Card
+                as={motion.div}
                 key={test.id}
-                className="schedule-item"
                 variants={itemVariants}
                 layout
+                className="shadow-sm bg-dark text-light"
               >
-                <div className="schedule-header">
-                  <h3>{test.test_name}</h3>
-                  <div className="schedule-meta">
-                    <span>
-                      <CalendarIcon />{" "}
-                      {new Date(test.date_scheduled).toLocaleDateString(
-                        "en-GB",
-                        { day: "numeric", month: "long", year: "numeric" }
-                      )}
+                <Card.Header>
+                  <Card.Title as="h5" className="mb-2">
+                    {test.test_name}
+                  </Card.Title>
+                  <div className="d-flex flex-wrap gap-3 text-success small">
+                    <span className="d-flex align-items-center">
+                      <CalendarIcon />
+                      <span className="ms-2">
+                        {new Date(test.date_scheduled).toLocaleDateString(
+                          "en-GB",
+                          {
+                            day: "numeric",
+                            month: "long",
+                            year: "numeric",
+                          }
+                        )}
+                      </span>
                     </span>
-                    <span>
-                      <ClockIcon /> {test.duration_minutes} mins
+                    <span className="d-flex align-items-center">
+                      <ClockIcon />
+                      <span className="ms-2">{test.duration_minutes} mins</span>
                     </span>
                   </div>
-                </div>
-                <div className="schedule-details">
-                  <h4>Syllabus:</h4>
+                </Card.Header>
+                <Card.Body>
+                  <h6 className="text-success">Syllabus:</h6>
                   <p>{test.subject_topic}</p>
-                </div>
-                <div className="schedule-footer">
-                  <motion.button
-                    className="start-test-btn"
+                </Card.Body>
+                <Card.Footer className="text-end">
+                  <Button
+                    as={motion.button}
+                    variant="primary"
+                    onClick={() => navigate("/userdetails")} // Update this path if needed
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
-                    onClick={() => navigate("/userdetails")}
                   >
                     Join Test
-                  </motion.button>
-                </div>
-              </motion.div>
-            ))
-          ) : (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              className="no-tests-message"
-            >
-              <p>No upcoming tests have been scheduled.</p>
-            </motion.div>
-          )}
-        </AnimatePresence>
-      </div>
-    </motion.div>
+                  </Button>
+                </Card.Footer>
+              </Card>
+            ))}
+          </Stack>
+        ) : (
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+            <Alert variant="info" className="text-center">
+              No upcoming tests have been scheduled. Check back soon!
+            </Alert>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </Container>
   );
 };
 
