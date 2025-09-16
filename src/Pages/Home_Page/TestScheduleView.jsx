@@ -89,7 +89,7 @@ const TestScheduleView = () => {
                 key={test.id}
                 variants={itemVariants}
                 layout
-                className="shadow-sm bg-dark text-"
+                className="shadow-sm bg-dark text-white"
               >
                 <Card.Header>
                   <Card.Title as="h5" className="mb-2">

@@ -84,17 +84,17 @@ const MyTestsView = () => {
             <Col key={test.id} md={6} lg={4}>
               <Card
                 as={motion.div}
-                className="h-100 shadow-sm bg-dark text-light"
+                className="h-100 shadow-sm bg-dark text-white"
               >
                 <Card.Body className="d-flex flex-column">
-                  <div className="d-flex align-items-center text-muted mb-2">
+                  <div className="d-flex align-items-center text-white mb-2">
                     <BookIcon />
                     <span className="ms-2 small">{test.subject_topic}</span>
                   </div>
                   <Card.Title as="h3" className="h5">
                     {test.test_name}
                   </Card.Title>
-                  <Card.Text className="text-muted small">
+                  <Card.Text className="text-white small">
                     {test.num_questions} Questions
                   </Card.Text>
                   <Button
