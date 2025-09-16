@@ -44,10 +44,10 @@ const Register = () => {
     if (!/^[A-Za-z\s]{3,}$/.test(fullName.trim())) {
       errors.fullName = "Full Name must be at least 3 letters.";
     }
+    // Updated validation: Only for email
     const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    const phonePattern = /^\d{10}$/;
-    if (!emailPattern.test(email.trim()) && !phonePattern.test(email.trim())) {
-      errors.email = "Enter a valid email or 10-digit phone number.";
+    if (!emailPattern.test(email.trim())) {
+      errors.email = "Enter a valid email address.";
     }
     if (school.trim().length < 3) {
       errors.school = "School Name must be at least 3 characters.";
@@ -116,14 +116,15 @@ const Register = () => {
                   </Form.Control.Feedback>
                 </Form.Group>
 
+                {/* Email Field Updated */}
                 <Form.Group className="mb-3" controlId="email">
-                  <Form.Label>Email or Phone</Form.Label>
+                  <Form.Label>Email</Form.Label>
                   <Form.Control
-                    type="text"
+                    type="email" // Changed type to "email" for better semantics
                     name="email"
                     value={email}
                     onChange={handleChange}
-                    placeholder="you@example.com or 9876543210"
+                    placeholder="you@example.com"
                     isInvalid={!!fieldErrors.email}
                     required
                   />
