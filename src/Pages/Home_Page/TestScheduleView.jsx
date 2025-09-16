@@ -1,5 +1,3 @@
-// src/TestScheduleView.jsx
-
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
@@ -11,8 +9,9 @@ import {
   Spinner,
   Alert,
   Stack,
+  Modal, // 1. Import Modal
 } from "react-bootstrap";
-import { ClockIcon, CalendarIcon } from "./Icons"; // Assuming these are valid local components
+import { ClockIcon, CalendarIcon } from "./Icons";
 
 const baseUrl = import.meta.env.VITE_BASE_URL;
 
@@ -34,8 +33,10 @@ const TestScheduleView = () => {
   const [error, setError] = useState(null);
   const navigate = useNavigate();
 
+  // 2. Add state to control the modal's visibility
+  const [showProfileModal, setShowProfileModal] = useState(false);
+
   useEffect(() => {
-    // ... (API fetching logic remains exactly the same) ...
     const fetchUpcomingTests = async () => {
       try {
         const response = await axios.get(`${baseUrl}/api/upcoming-tests`, {
@@ -51,6 +52,12 @@ const TestScheduleView = () => {
     };
     fetchUpcomingTests();
   }, []);
+
+  // Handler to navigate to the user profile page
+  const handleGoToProfile = () => {
+    setShowProfileModal(false); // Close the modal first
+    navigate("/userdetails");
+  };
 
   // --- Render Logic ---
   if (isLoading) {
@@ -70,78 +77,112 @@ const TestScheduleView = () => {
   }
 
   return (
-    <Container
-      as={motion.div}
-      fluid
-      key="test-schedule"
-      variants={containerVariants}
-      initial="hidden"
-      animate="visible"
-    >
-      <h1 className="display-5 mb-4">Upcoming Test Schedule</h1>
+    // Use a React Fragment to wrap the Container and the new Modal
+    <>
+      <Container
+        as={motion.div}
+        fluid
+        key="test-schedule"
+        variants={containerVariants}
+        initial="hidden"
+        animate="visible"
+      >
+        <h1 className="display-5 mb-4">Upcoming Test Schedule</h1>
 
-      <AnimatePresence>
-        {upcomingTests.length > 0 ? (
-          <Stack gap={4}>
-            {upcomingTests.map((test) => (
-              <Card
-                as={motion.div}
-                key={test.id}
-                variants={itemVariants}
-                layout
-                className="shadow-sm bg-dark text-white"
-              >
-                <Card.Header>
-                  <Card.Title as="h5" className="mb-2">
-                    {test.test_name}
-                  </Card.Title>
-                  <div className="d-flex flex-wrap gap-3 text-success small">
-                    <span className="d-flex align-items-center">
-                      <CalendarIcon />
-                      <span className="ms-2">
-                        {new Date(test.date_scheduled).toLocaleDateString(
-                          "en-GB",
-                          {
-                            day: "numeric",
-                            month: "long",
-                            year: "numeric",
-                          }
-                        )}
+        <AnimatePresence>
+          {upcomingTests.length > 0 ? (
+            <Stack gap={4}>
+              {upcomingTests.map((test) => (
+                <Card
+                  as={motion.div}
+                  key={test.id}
+                  variants={itemVariants}
+                  layout
+                  className="shadow-sm bg-dark text-white"
+                >
+                  <Card.Header>
+                    <Card.Title as="h5" className="mb-2">
+                      {test.test_name}
+                    </Card.Title>
+                    <div className="d-flex flex-wrap gap-3 text-success small">
+                      <span className="d-flex align-items-center">
+                        <CalendarIcon />
+                        <span className="ms-2">
+                          {new Date(test.date_scheduled).toLocaleDateString(
+                            "en-GB",
+                            {
+                              day: "numeric",
+                              month: "long",
+                              year: "numeric",
+                            }
+                          )}
+                        </span>
                       </span>
-                    </span>
-                    <span className="d-flex align-items-center">
-                      <ClockIcon />
-                      <span className="ms-2">{test.duration_minutes} mins</span>
-                    </span>
-                  </div>
-                </Card.Header>
-                <Card.Body>
-                  <h6 className="text-success">Syllabus:</h6>
-                  <p>{test.subject_topic}</p>
-                </Card.Body>
-                <Card.Footer className="text-end">
-                  <Button
-                    as={motion.button}
-                    variant="primary"
-                    onClick={() => navigate("/userdetails")} // Update this path if needed
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                  >
-                    Join Test
-                  </Button>
-                </Card.Footer>
-              </Card>
-            ))}
-          </Stack>
-        ) : (
-          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-            <Alert variant="info" className="text-center">
-              No upcoming tests have been scheduled. Check back soon!
-            </Alert>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </Container>
+                      <span className="d-flex align-items-center">
+                        <ClockIcon />
+                        <span className="ms-2">
+                          {test.duration_minutes} mins
+                        </span>
+                      </span>
+                    </div>
+                  </Card.Header>
+                  <Card.Body>
+                    <h6 className="text-success">Syllabus:</h6>
+                    <p>{test.subject_topic}</p>
+                  </Card.Body>
+                  <Card.Footer className="text-end">
+                    <Button
+                      as={motion.button}
+                      variant="primary"
+                      // 3. Update onClick to show the modal
+                      onClick={() => setShowProfileModal(true)}
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                    >
+                      Join Test
+                    </Button>
+                  </Card.Footer>
+                </Card>
+              ))}
+            </Stack>
+          ) : (
+            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+              <Alert variant="info" className="text-center">
+                No upcoming tests have been scheduled. Check back soon!
+              </Alert>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </Container>
+
+      {/* 4. Add the Profile Completion Modal */}
+      <Modal
+        show={showProfileModal}
+        onHide={() => setShowProfileModal(false)}
+        centered
+      >
+        <Modal.Header closeButton>
+          <Modal.Title>Complete Your Profile</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <p>
+            To ensure the best experience and proper test assignment, please
+            complete your profile before joining the test.
+          </p>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button
+            variant="secondary"
+            onClick={() => setShowProfileModal(false)}
+          >
+            Cancel
+          </Button>
+          <Button variant="primary" onClick={handleGoToProfile}>
+            Go to Profile
+          </Button>
+        </Modal.Footer>
+      </Modal>
+    </>
   );
 };
 
