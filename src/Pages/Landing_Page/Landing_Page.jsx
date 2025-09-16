@@ -24,6 +24,8 @@ import {
   Col,
   Card,
   Button,
+  Carousel,
+  Accordion, // 1. Import Carousel
 } from "react-bootstrap";
 
 import logo from "./logo.png";
@@ -86,7 +88,8 @@ const AppNavbar = () => {
             <Nav.Link href="/#home">Home</Nav.Link>
             <Nav.Link href="/#why-us">Why Us</Nav.Link>
             <Nav.Link href="/#features">Features</Nav.Link>
-            <Nav.Link href="/#exams">Exams</Nav.Link>
+            {/* Changed href to point to the new carousel section */}
+            <Nav.Link href="/#test-series">Test Series</Nav.Link>
             <Nav.Link href="/#pricing">Pricing</Nav.Link>
             <Nav.Link href="/#contact">Contact</Nav.Link>
             <Button
@@ -148,12 +151,13 @@ const Hero = () => (
           Start Your Test Series
         </Button>
         <Button
-          href="#exams"
+          // Changed href to point to the new carousel section
+          href="#test-series"
           variant="outline-secondary"
           size="lg"
           className="px-4"
         >
-          Explore Exams
+          Explore Series
         </Button>
       </motion.div>
     </Container>
@@ -253,6 +257,55 @@ const CredibilitySection = () => (
   </div>
 );
 
+// Add this new component to your landing_page.jsx file
+
+const faqData = [
+  {
+    question: "Who creates the test series content?",
+    answer:
+      "Our test series are crafted by a dedicated team of students who have successfully cleared the very exams you're preparing for, including top rankers from AMU, JMI, and Navodaya.",
+  },
+  {
+    question: "How realistic are the mock tests?",
+    answer:
+      "We meticulously analyze previous year papers and the latest syllabus to ensure our mock tests simulate the actual exam environment in terms of difficulty, pattern, and time constraints.",
+  },
+  {
+    question: "Can I access the tests on my mobile phone?",
+    answer:
+      "Yes! Our platform is fully responsive, allowing you to take tests, review your performance, and access all features seamlessly on your desktop, tablet, or mobile phone.",
+  },
+  {
+    question: "What happens after I complete the payment?",
+    answer:
+      "Once your payment is successful, you will get instant access to the All-Access Pass, unlocking all the test series, mock tests, and features available on our platform immediately.",
+  },
+];
+
+const FAQ = () => (
+  <AnimatedSection id="faq">
+    <Container>
+      <h2 className="text-center display-5 mb-5">Frequently Asked Questions</h2>
+      <Row className="justify-content-center">
+        <Col md={8}>
+          <Accordion defaultActiveKey="0" flush>
+            {faqData.map((item, index) => (
+              <Accordion.Item
+                eventKey={String(index)}
+                key={index}
+                className="mb-2"
+              >
+                <Accordion.Header>{item.question}</Accordion.Header>
+                <Accordion.Body>{item.answer}</Accordion.Body>
+              </Accordion.Item>
+            ))}
+          </Accordion>
+        </Col>
+      </Row>
+    </Container>
+  </AnimatedSection>
+);
+
 const Features = () => (
   <AnimatedSection id="features">
     <Container>
@@ -297,30 +350,82 @@ const Features = () => (
   </AnimatedSection>
 );
 
-const ExamsOffered = () => (
-  <AnimatedSection id="exams">
+// 2. --- NEW CAROUSEL COMPONENT ---
+const testSeriesData = [
+  {
+    title: "AMU 9th Entrance Test Series",
+    description:
+      "Our flagship series, meticulously designed to match the latest AMU pattern. Gain the ultimate competitive advantage with tests created by AMU alumni.",
+    features: [
+      "15+ Full-length Mock Tests",
+      "Chapter-wise Practice Questions",
+      "Based on Latest Syllabus",
+      "Indo-Islamic Culture Coverage",
+    ],
+  },
+  {
+    title: "Navodaya (JNVST) Class 9 Series",
+    description:
+      "Excel in the JNVST with our comprehensive test series covering all sections: Mental Ability, Arithmetic, and Language Test.",
+    features: [
+      "20+ Practice Sets",
+      "Sectional Timed Tests",
+      "Detailed Video Solutions",
+      "All India Ranking",
+    ],
+  },
+  {
+    title: "Jamia (JMI) Series",
+    description:
+      "Prepare for the rigors of Entrance Examination with our targeted mock tests and performance analysis.",
+    features: [
+      "Syllabus-aligned Mock Papers",
+      "Intelligence & GK Sections",
+      "OMR Sheet Practice",
+      "Coming Soon!",
+    ],
+  },
+];
+
+const TestSeriesCarousel = () => (
+  <AnimatedSection id="test-series">
     <Container>
-      <h2 className="text-center display-5 mb-5">Exams We Cover</h2>
-      <Row className="justify-content-center text-center g-3">
-        <Col md={3} sm={6}>
-          <div className="p-4 border rounded bg-primary text-white fs-5 fw-bold">
-            AMU 9th Entrance
-          </div>
-        </Col>
-        <Col md={3} sm={6}>
-          <div className="p-4 border rounded fs-5 fw-bold">
-            Navodaya (JNVST)
-          </div>
-        </Col>
-        <Col md={3} sm={6}>
-          <div className="p-4 border rounded bg-light text-muted fs-5 fw-bold">
-            Coming Soon
-          </div>
+      <h2 className="text-center display-5 mb-5">Explore Our Test Series</h2>
+      <Row className="justify-content-center">
+        <Col lg={10} md={12}>
+          <Card className="shadow-lg">
+            <Carousel fade interval={5000} indicators={false}>
+              {testSeriesData.map((series, index) => (
+                <Carousel.Item key={index} className="carousel-item-custom">
+                  <div className="carousel-content text-center">
+                    <h3>{series.title}</h3>
+                    <p className="lead px-md-5">{series.description}</p>
+                    <ul className="list-unstyled my-4">
+                      {series.features.map((feature, fIndex) => (
+                        <li key={fIndex}>✓ {feature}</li>
+                      ))}
+                    </ul>
+                    <Button
+                      as={Link}
+                      to="/register"
+                      variant="primary"
+                      size="lg"
+                    >
+                      Enroll Now
+                    </Button>
+                  </div>
+                </Carousel.Item>
+              ))}
+            </Carousel>
+          </Card>
         </Col>
       </Row>
     </Container>
   </AnimatedSection>
 );
+
+// --- This component is now replaced by the Carousel ---
+// const ExamsOffered = () => ( ... );
 
 const Pricing = () => (
   <AnimatedSection id="pricing">
@@ -395,15 +500,27 @@ const AppFooter = () => (
   <footer className="py-4 text-center">
     <Container>
       <div className="social-links mb-3">
-        <a href="#" className="fs-4 text-muted mx-2">
+        <motion.a
+          whileHover={{ scale: 1.2, y: -5 }}
+          href="#"
+          className="fs-4 text-muted mx-2"
+        >
           <FaInstagram />
-        </a>
-        <a href="#" className="fs-4 text-muted mx-2">
+        </motion.a>
+        <motion.a
+          whileHover={{ scale: 1.2, y: -5 }}
+          href="#"
+          className="fs-4 text-muted mx-2"
+        >
           <FaFacebook />
-        </a>
-        <a href="#" className="fs-4 text-muted mx-2">
+        </motion.a>
+        <motion.a
+          whileHover={{ scale: 1.2, y: -5 }}
+          href="#"
+          className="fs-4 text-muted mx-2"
+        >
           <FaEnvelope />
-        </a>
+        </motion.a>
       </div>
       <p className="text-muted">
         &copy; {new Date().getFullYear()} AspireClasses. All Rights Reserved.
@@ -421,8 +538,10 @@ const LandingPage = () => {
         <Hero />
         <WhyChooseUs />
         <Features />
-        <ExamsOffered />
+        {/* 3. Replaced the old section with the new carousel */}
+        <TestSeriesCarousel />
         <Pricing />
+        <FAQ />
         <Contact />
       </main>
       <AppFooter />
