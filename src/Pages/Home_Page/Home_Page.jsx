@@ -102,7 +102,11 @@ const HomePage = () => {
       case "My Tests":
         return <MyTestsView />;
       case "Test Schedule":
-        return <TestScheduleView />;
+        return (
+          <TestScheduleView
+            onNavigateToProfile={() => handleMenuClick("Profile")}
+          />
+        );
       case "Results":
         return <ResultsView />;
       case "Ask a Doubt":

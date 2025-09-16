@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import axios from "axios";
 import {
@@ -9,9 +8,9 @@ import {
   Spinner,
   Alert,
   Stack,
-  Modal, // 1. Import Modal
+  Modal,
 } from "react-bootstrap";
-import { ClockIcon, CalendarIcon } from "./Icons";
+import { ClockIcon, CalendarIcon } from "./Icons"; // Assuming these are valid local components
 
 const baseUrl = import.meta.env.VITE_BASE_URL;
 
@@ -27,13 +26,10 @@ const itemVariants = {
 };
 
 // --- Main TestScheduleView Component ---
-const TestScheduleView = () => {
+const TestScheduleView = ({ onNavigateToProfile }) => {
   const [upcomingTests, setUpcomingTests] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
-  const navigate = useNavigate();
-
-  // 2. Add state to control the modal's visibility
   const [showProfileModal, setShowProfileModal] = useState(false);
 
   useEffect(() => {
@@ -53,10 +49,10 @@ const TestScheduleView = () => {
     fetchUpcomingTests();
   }, []);
 
-  // Handler to navigate to the user profile page
+  // This handler now calls the prop function passed down from HomePage
   const handleGoToProfile = () => {
-    setShowProfileModal(false); // Close the modal first
-    navigate("/userdetails");
+    setShowProfileModal(false); // Close the modal
+    onNavigateToProfile(); // Call the function to switch the view
   };
 
   // --- Render Logic ---
@@ -77,7 +73,6 @@ const TestScheduleView = () => {
   }
 
   return (
-    // Use a React Fragment to wrap the Container and the new Modal
     <>
       <Container
         as={motion.div}
@@ -134,7 +129,6 @@ const TestScheduleView = () => {
                     <Button
                       as={motion.button}
                       variant="primary"
-                      // 3. Update onClick to show the modal
                       onClick={() => setShowProfileModal(true)}
                       whileHover={{ scale: 1.05 }}
                       whileTap={{ scale: 0.95 }}
@@ -155,7 +149,7 @@ const TestScheduleView = () => {
         </AnimatePresence>
       </Container>
 
-      {/* 4. Add the Profile Completion Modal */}
+      {/* Profile Completion Modal */}
       <Modal
         show={showProfileModal}
         onHide={() => setShowProfileModal(false)}
