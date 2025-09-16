@@ -1,20 +1,24 @@
 /* src/DashboardView.css */
 
 .test-card-custom {
-  background: linear-gradient(135deg, #f0f9ff, #e0f2fe);
+  background-color: #f8f9fa; /* A light grey background */
+  border: 1px solid #dee2e6;  /* A subtle border */
   cursor: pointer;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-  min-height: 80px; /* Ensure a consistent height */
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  transition:
+    background-color 0.2s ease-in-out,
+    border-color 0.2s ease-in-out;
+  color: #495057; /* Darker text for readability */
 }
 
 .test-card-custom:hover {
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+  background-color: #e9ecef; /* A slightly darker grey on hover */
+  border-color: #adb5bd;
 }
-
 .test-card-custom h3 {
   font-weight: 500;
   color: #1e3a8a;
+}
+
+body, #root {
+  overflow-y: hidden;
 }

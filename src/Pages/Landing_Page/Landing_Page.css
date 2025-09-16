@@ -102,4 +102,6 @@ html {
 }
 
 
-
+body, #root {
+  overflow-x: hidden;
+}

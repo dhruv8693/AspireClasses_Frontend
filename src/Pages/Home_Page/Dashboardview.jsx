@@ -16,7 +16,7 @@ import "./DashboardView.css"; // We'll link to our new, smaller CSS file
 
 const baseUrl = import.meta.env.VITE_BASE_URL;
 
-// Animation Variants (unchanged)
+// Animation Variants
 const containerVariants = {
   hidden: { opacity: 0 },
   visible: {

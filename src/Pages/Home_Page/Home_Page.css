@@ -66,9 +66,29 @@
 }
 
 .main-header {
-  flex-shrink: 0; /* Prevents header from shrinking */
-}
+  position: sticky;
+  top: 0;
+  z-index: 1020;
 
+  /* Lock the header to a fixed height. 58px is a standard bootstrap navbar height. */
+  height: 58px;
+}
 .content-wrapper {
   flex-grow: 1;
+}
+
+.main-header .container-fluid {
+  /* Ensure the container fills the new fixed height and vertically centers its content */
+  height: 100%;
+  display: flex;
+  align-items: center;
+  flex-wrap: nowrap; /* This is still important to prevent content wrapping */
+}
+
+
+.main-header .navbar-brand,
+.main-header .nav-link.dropdown-toggle {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
