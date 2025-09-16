@@ -17,6 +17,7 @@ import AdminDashboard from "./Pages/Admin_Page/AdminDashboard";
 import AssignTest from "./Pages/Admin_Page/AssignTest";
 import { UpdateQuestions } from "./Pages/Admin_Page/UpdateQuestions.jsx";
 import CreateNewTest from "./Pages/Admin_Page/CreateNewTest.jsx";
+import "./index.css";
 
 // 2. DEFINE YOUR ROUTES AS AN ARRAY OF OBJECTS
 const router = createBrowserRouter([
