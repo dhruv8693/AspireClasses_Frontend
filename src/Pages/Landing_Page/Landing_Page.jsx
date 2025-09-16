@@ -100,6 +100,14 @@ const AppNavbar = () => {
             >
               Register Now
             </Button>
+            <Button
+              as={Link}
+              to="/login"
+              variant="btn btn-outline-dark"
+              className="ms-lg-2 mt-2 mt-lg-0"
+            >
+              Log in
+            </Button>
           </Nav>
         </Navbar.Collapse>
       </Container>

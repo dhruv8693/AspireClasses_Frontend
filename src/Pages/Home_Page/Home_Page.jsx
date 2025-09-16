@@ -2,7 +2,16 @@
 
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Navbar, Nav, Button, Offcanvas, Container } from "react-bootstrap";
+// 1. IMPORT NavDropdown and Image
+import {
+  Navbar,
+  Nav,
+  Button,
+  Offcanvas,
+  Container,
+  NavDropdown,
+  Image,
+} from "react-bootstrap";
 
 // Import Views
 import DashboardView from "./Dashboardview.jsx";
@@ -10,6 +19,7 @@ import MyTestsView from "./MyTestsView";
 import TestScheduleView from "./TestScheduleView";
 import ResultsView from "./ResultsView";
 import AskADoubtView from "./AskdoubtView";
+import ProfileView from "./Profile.jsx"; // 2. IMPORT THE NEW PROFILE VIEW
 
 // Import Icons
 import {
@@ -21,7 +31,6 @@ import {
   LogoutIcon,
 } from "./Icons";
 
-// Import new simplified CSS
 import "./Home_Page.css";
 
 // --- Sidebar Menu Data ---
@@ -31,9 +40,11 @@ const sidebarMenuItems = [
   { name: "Test Schedule", icon: <ScheduleIcon />, view: <TestScheduleView /> },
   { name: "Results", icon: <ResultsIcon />, view: <ResultsView /> },
   { name: "Ask a Doubt", icon: <DoubtIcon />, view: <AskADoubtView /> },
+  // Note: Profile is handled separately in the header but uses the same view logic
 ];
 
 // --- Reusable Sidebar Content ---
+// ... (SidebarContent component remains unchanged)
 const SidebarContent = ({ activeItem, handleMenuClick }) => (
   <>
     <div className="sidebar-header p-3">
@@ -66,7 +77,7 @@ const SidebarContent = ({ activeItem, handleMenuClick }) => (
 
 // --- Main HomePage Component ---
 const HomePage = () => {
-  const [username, setUserName] = useState("");
+  const [username, setUserName] = useState("User"); // Default value
   const [activeItem, setActiveItem] = useState("Dashboard");
   const [isSidebarOpen, setSidebarOpen] = useState(false);
 
@@ -80,23 +91,52 @@ const HomePage = () => {
 
   const handleMenuClick = (name) => {
     setActiveItem(name);
-    setSidebarOpen(false); // Close sidebar on mobile after selection
+    setSidebarOpen(false);
   };
 
-  const activeView = sidebarMenuItems.find((item) => item.name === activeItem)
-    ?.view || <DashboardView />;
+  // 3. UPDATED: More flexible function to render the active view
+  const renderActiveView = () => {
+    switch (activeItem) {
+      case "Dashboard":
+        return <DashboardView />;
+      case "My Tests":
+        return <MyTestsView />;
+      case "Test Schedule":
+        return <TestScheduleView />;
+      case "Results":
+        return <ResultsView />;
+      case "Ask a Doubt":
+        return <AskADoubtView />;
+      case "Profile": // Handle the new "Profile" case
+        return <ProfileView />;
+      default:
+        return <DashboardView />;
+    }
+  };
+
+  // The content for the dropdown menu title
+  const profileMenuTitle = (
+    <>
+      <Image
+        src={`https://api.dicebear.com/8.x/initials/svg?seed=${username}`}
+        roundedCircle
+        width="30"
+        height="30"
+        className="me-2"
+      />
+      {username}
+    </>
+  );
 
   return (
     <div className="home-page-layout">
-      {/* 1. Desktop Sidebar (Visible only on large screens) */}
+      {/* ... (Desktop Sidebar and Mobile Offcanvas remain unchanged) ... */}
       <div className="sidebar-desktop d-none d-lg-flex flex-column">
         <SidebarContent
           activeItem={activeItem}
           handleMenuClick={handleMenuClick}
         />
       </div>
-
-      {/* 2. Mobile Offcanvas Sidebar */}
       <Offcanvas
         show={isSidebarOpen}
         onHide={() => setSidebarOpen(false)}
@@ -113,11 +153,10 @@ const HomePage = () => {
         </Offcanvas.Body>
       </Offcanvas>
 
-      {/* 3. Main Content Area */}
       <main className="main-content">
+        {/* 4. MODIFIED: The main header Navbar */}
         <Navbar bg="dark" variant="dark" expand={false} className="main-header">
           <Container fluid>
-            {/* Hamburger button to toggle mobile sidebar */}
             <Button
               variant="outline-light"
               className="d-lg-none"
@@ -125,16 +164,36 @@ const HomePage = () => {
             >
               ☰
             </Button>
-            <Navbar.Brand className="mx-auto">
-              Welcome back, {username}!
+
+            {/* Title of the current active page */}
+            <Navbar.Brand className="d-none d-md-block">
+              {activeItem}
             </Navbar.Brand>
+
+            {/* Profile Dropdown Menu */}
+            <Nav className="ms-auto">
+              <NavDropdown
+                title={profileMenuTitle}
+                id="basic-nav-dropdown"
+                align="end"
+              >
+                <NavDropdown.Item onClick={() => handleMenuClick("Profile")}>
+                  My Profile
+                </NavDropdown.Item>
+                <NavDropdown.Divider />
+                <NavDropdown.Item href="#logout" className="text-danger">
+                  Logout
+                </NavDropdown.Item>
+              </NavDropdown>
+            </Nav>
           </Container>
         </Navbar>
 
         <div className="content-wrapper p-3 p-md-4">
           <AnimatePresence mode="wait">
-            {/* We add a key to make AnimatePresence work on content change */}
-            <motion.div key={activeItem}>{activeView}</motion.div>
+            <motion.div key={activeItem}>
+              {renderActiveView()} {/* Use the new render function */}
+            </motion.div>
           </AnimatePresence>
         </div>
       </main>
