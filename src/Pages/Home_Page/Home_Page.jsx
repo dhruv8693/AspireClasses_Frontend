@@ -44,11 +44,6 @@ const sidebarMenuItems = [
   // Note: Profile is handled separately in the header but uses the same view logic
 ];
 
-const handleLogout = () => {
-  localStorage.removeItem("user");
-  localStorage.removeItem("token");
-};
-
 // --- Reusable Sidebar Content ---
 // ... (SidebarContent component remains unchanged)
 const SidebarContent = ({ activeItem, handleMenuClick }) => (
@@ -95,7 +90,12 @@ const HomePage = () => {
       setUserName(userData.full_name);
     }
   }, []);
-
+  const navigate = useNavigate();
+  const handleLogout = () => {
+    localStorage.removeItem("user");
+    localStorage.removeItem("token");
+    navigate("/");
+  };
   const handleMenuClick = (name) => {
     setActiveItem(name);
     setSidebarOpen(false);
@@ -160,6 +160,7 @@ const HomePage = () => {
           <SidebarContent
             activeItem={activeItem}
             handleMenuClick={handleMenuClick}
+            handleLogout={handleLogout}
           />
         </Offcanvas.Body>
       </Offcanvas>
