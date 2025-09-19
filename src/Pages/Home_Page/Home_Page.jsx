@@ -43,6 +43,12 @@ const sidebarMenuItems = [
   // Note: Profile is handled separately in the header but uses the same view logic
 ];
 
+const handleLogout = () => {
+  localStorage.removeItem("user");
+  localStorage.removeItem("token");
+  navigate("/");
+};
+
 // --- Reusable Sidebar Content ---
 // ... (SidebarContent component remains unchanged)
 const SidebarContent = ({ activeItem, handleMenuClick }) => (
@@ -67,6 +73,7 @@ const SidebarContent = ({ activeItem, handleMenuClick }) => (
       <Button
         variant="danger"
         className="w-100 d-flex align-items-center justify-content-center sidebar-btn"
+        onClick={handleLogout}
       >
         <LogoutIcon />
         <span className="ms-3">Logout</span>
