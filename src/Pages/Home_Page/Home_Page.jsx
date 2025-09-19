@@ -46,7 +46,7 @@ const sidebarMenuItems = [
 
 // --- Reusable Sidebar Content ---
 // ... (SidebarContent component remains unchanged)
-const SidebarContent = ({ activeItem, handleMenuClick }) => (
+const SidebarContent = ({ activeItem, handleMenuClick, handleLogout }) => (
   <>
     <div className="sidebar-header p-3">
       <h3 className="mb-0">AspireClasses</h3>
