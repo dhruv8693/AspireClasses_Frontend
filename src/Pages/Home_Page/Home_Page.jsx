@@ -32,6 +32,7 @@ import {
 } from "./Icons";
 
 import "./Home_Page.css";
+import { useNavigate } from "react-router-dom";
 
 // --- Sidebar Menu Data ---
 const sidebarMenuItems = [
@@ -43,6 +44,7 @@ const sidebarMenuItems = [
   // Note: Profile is handled separately in the header but uses the same view logic
 ];
 
+const navigate = useNavigate();
 const handleLogout = () => {
   localStorage.removeItem("user");
   localStorage.removeItem("token");
