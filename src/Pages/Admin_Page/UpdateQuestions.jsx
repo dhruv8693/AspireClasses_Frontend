@@ -1,5 +1,3 @@
-// src/components/UpdateQuestions.jsx
-
 import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import {
@@ -15,8 +13,9 @@ import {
   InputGroup,
   ListGroup,
   Image,
+  Badge, // Import Badge component
 } from "react-bootstrap";
-import "./UpdateQuestions.css"; // We'll link to our new, smaller CSS file
+import "./UpdateQuestions.css";
 
 const baseUrl = import.meta.env.VITE_BASE_URL;
 
@@ -131,6 +130,7 @@ const AddQuestionForm = ({ testId, onQuestionAdded, onCancel }) => {
   const [newQuestion, setNewQuestion] = useState({
     question_text: "",
     options: ["", "", "", ""],
+    marks: 1, // MODIFIED: Added marks with a default value of 1
   });
   const [correctAnswer, setCorrectAnswer] = useState("");
   const [imageUrl, setImageUrl] = useState("");
@@ -142,6 +142,7 @@ const AddQuestionForm = ({ testId, onQuestionAdded, onCancel }) => {
 
     try {
       const token = localStorage.getItem("admin_token");
+      // MODIFIED: The 'marks' field from the state is now automatically included in the payload
       const payload = {
         ...newQuestion,
         correct_option: correctAnswer,
@@ -211,23 +212,48 @@ const AddQuestionForm = ({ testId, onQuestionAdded, onCancel }) => {
               </Col>
             ))}
           </Row>
-          <Form.Group className="mb-3">
-            <Form.Label>Correct Answer</Form.Label>
-            <Form.Select
-              value={correctAnswer}
-              onChange={(e) => setCorrectAnswer(e.target.value)}
-              required
-            >
-              <option value="" disabled>
-                Select correct option
-              </option>
-              {["a", "b", "c", "d"].map((l) => (
-                <option key={l} value={l}>
-                  Option {l.toUpperCase()}
-                </option>
-              ))}
-            </Form.Select>
-          </Form.Group>
+
+          {/* MODIFICATION START: Added Marks field alongside Correct Answer */}
+          <Row>
+            <Col md={6}>
+              <Form.Group className="mb-3">
+                <Form.Label>Correct Answer</Form.Label>
+                <Form.Select
+                  value={correctAnswer}
+                  onChange={(e) => setCorrectAnswer(e.target.value)}
+                  required
+                >
+                  <option value="" disabled>
+                    Select correct option
+                  </option>
+                  {["a", "b", "c", "d"].map((l) => (
+                    <option key={l} value={l}>
+                      Option {l.toUpperCase()}
+                    </option>
+                  ))}
+                </Form.Select>
+              </Form.Group>
+            </Col>
+            <Col md={6}>
+              <Form.Group className="mb-3">
+                <Form.Label>Marks</Form.Label>
+                <Form.Control
+                  type="number"
+                  value={newQuestion.marks}
+                  onChange={(e) =>
+                    setNewQuestion((p) => ({
+                      ...p,
+                      marks: Number(e.target.value),
+                    }))
+                  }
+                  min="1"
+                  required
+                />
+              </Form.Group>
+            </Col>
+          </Row>
+          {/* MODIFICATION END */}
+
           <Stack direction="horizontal" gap={2} className="justify-content-end">
             <Button variant="secondary" onClick={onCancel}>
               Cancel
@@ -253,7 +279,6 @@ export const UpdateQuestions = () => {
   const [editingId, setEditingId] = useState(null);
   const [editedData, setEditedData] = useState({});
 
-  // ... all your existing hooks and data fetching logic ...
   useEffect(() => {
     const fetchTests = async () => {
       try {
@@ -278,12 +303,14 @@ export const UpdateQuestions = () => {
         `${baseUrl}/api/tests/${selectedTest}/questions`,
         { headers: { Authorization: `Bearer ${token}` } }
       );
+      // MODIFIED: Set a default 'marks' value of 1 if not provided by the API
       const parsed = res.data.map((q) => ({
         ...q,
         options:
           typeof q.options === "string"
             ? JSON.parse(q.options)
             : q.options || [],
+        marks: q.marks || 1,
       }));
       setQuestions(parsed);
     } catch (err) {
@@ -296,11 +323,12 @@ export const UpdateQuestions = () => {
   const handleSave = async (id) => {
     try {
       const token = localStorage.getItem("admin_token");
+      // MODIFIED: The editedData now contains the 'marks' field, which will be sent in the update
       await axios.put(`${baseUrl}/api/questions/${id}`, editedData, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setQuestions((q) =>
-        q.map((item) => (item.id === id ? editedData : item))
+        q.map((item) => (item.id === id ? { ...editedData, id } : item))
       );
       setEditingId(null);
     } catch (err) {
@@ -308,7 +336,6 @@ export const UpdateQuestions = () => {
     }
   };
 
-  // ... other handlers (handleDelete, etc.)
   const handleDelete = async (id) => {
     if (!window.confirm("Delete?")) return;
     try {
@@ -375,7 +402,7 @@ export const UpdateQuestions = () => {
         <AddQuestionForm
           testId={selectedTest}
           onQuestionAdded={(q) => {
-            setQuestions((p) => [...p, q]);
+            setQuestions((p) => [...p, { ...q, marks: q.marks || 1 }]); // Ensure marks default is set
             setIsAdding(false);
           }}
           onCancel={() => setIsAdding(false)}
@@ -389,7 +416,6 @@ export const UpdateQuestions = () => {
               {editingId === q.id ? (
                 // Editing View
                 <Form>
-                  {/* Similar structure to AddQuestionForm, but using editedData state */}
                   <Form.Group className="mb-3">
                     <Form.Label>Question Text</Form.Label>
                     <Form.Control
@@ -430,24 +456,48 @@ export const UpdateQuestions = () => {
                       </Col>
                     ))}
                   </Row>
-                  <Form.Group>
-                    <Form.Label>Correct Answer</Form.Label>
-                    <Form.Select
-                      value={editedData.correct_option}
-                      onChange={(e) =>
-                        setEditedData((p) => ({
-                          ...p,
-                          correct_option: e.target.value,
-                        }))
-                      }
-                    >
-                      {["a", "b", "c", "d"].map((l) => (
-                        <option key={l} value={l}>
-                          Option {l.toUpperCase()}
-                        </option>
-                      ))}
-                    </Form.Select>
-                  </Form.Group>
+
+                  {/* MODIFICATION START: Added Marks field to Edit view */}
+                  <Row>
+                    <Col md={6}>
+                      <Form.Group className="mb-3">
+                        <Form.Label>Correct Answer</Form.Label>
+                        <Form.Select
+                          value={editedData.correct_option}
+                          onChange={(e) =>
+                            setEditedData((p) => ({
+                              ...p,
+                              correct_option: e.target.value,
+                            }))
+                          }
+                        >
+                          {["a", "b", "c", "d"].map((l) => (
+                            <option key={l} value={l}>
+                              Option {l.toUpperCase()}
+                            </option>
+                          ))}
+                        </Form.Select>
+                      </Form.Group>
+                    </Col>
+                    <Col md={6}>
+                      <Form.Group className="mb-3">
+                        <Form.Label>Marks</Form.Label>
+                        <Form.Control
+                          type="number"
+                          value={editedData.marks}
+                          onChange={(e) =>
+                            setEditedData((p) => ({
+                              ...p,
+                              marks: Number(e.target.value),
+                            }))
+                          }
+                          min="1"
+                        />
+                      </Form.Group>
+                    </Col>
+                  </Row>
+                  {/* MODIFICATION END */}
+
                   <Stack
                     direction="horizontal"
                     gap={2}
@@ -467,7 +517,14 @@ export const UpdateQuestions = () => {
               ) : (
                 // Display View
                 <div>
-                  <h5>{q.question_text}</h5>
+                  {/* MODIFIED: Display question marks using a Badge */}
+                  <div className="d-flex justify-content-between align-items-start mb-2">
+                    <h5 className="mb-0">{q.question_text}</h5>
+                    <Badge bg="secondary" pill>
+                      {q.marks} {q.marks > 1 ? "marks" : "mark"}
+                    </Badge>
+                  </div>
+
                   {q.image_url && (
                     <Image
                       src={q.image_url}
@@ -487,7 +544,7 @@ export const UpdateQuestions = () => {
                             : ""
                         }
                       >
-                        {opt}
+                        {String.fromCharCode(65 + index)}. {opt}
                       </ListGroup.Item>
                     ))}
                   </ListGroup>
