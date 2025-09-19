@@ -44,11 +44,9 @@ const sidebarMenuItems = [
   // Note: Profile is handled separately in the header but uses the same view logic
 ];
 
-const navigate = useNavigate();
 const handleLogout = () => {
   localStorage.removeItem("user");
   localStorage.removeItem("token");
-  navigate("/");
 };
 
 // --- Reusable Sidebar Content ---
