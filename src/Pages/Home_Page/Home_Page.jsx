@@ -193,7 +193,10 @@ const HomePage = () => {
                   My Profile
                 </NavDropdown.Item>
                 <NavDropdown.Divider />
-                <NavDropdown.Item href="#logout" className="text-danger">
+                <NavDropdown.Item
+                  onClick={handleLogout}
+                  className="text-danger"
+                >
                   Logout
                 </NavDropdown.Item>
               </NavDropdown>
