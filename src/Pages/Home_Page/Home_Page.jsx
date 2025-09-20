@@ -194,7 +194,7 @@ const HomePage = () => {
                 </NavDropdown.Item>
                 <NavDropdown.Divider />
                 <NavDropdown.Item
-                  onClick={() => handleLogout}
+                  onClick={() => handleLogout()}
                   className="text-danger"
                 >
                   Logout
