@@ -146,6 +146,7 @@ const HomePage = () => {
         <SidebarContent
           activeItem={activeItem}
           handleMenuClick={handleMenuClick}
+          handleLogout={handleLogout}
         />
       </div>
       <Offcanvas
