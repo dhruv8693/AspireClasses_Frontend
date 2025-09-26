@@ -212,7 +212,7 @@ const WhyChooseUs = () => (
           </Col>
         ))}
       </Row>
-      <CredibilitySection />
+      {/* <CredibilitySection /> */}
     </Container>
   </AnimatedSection>
 );
