@@ -1,104 +1,91 @@
-/* src/components/TestInterface.css */
+/* --- GENERAL FIXES --- */
+.test-interface-container {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  height: 100vh;
+  overflow: hidden; /* Prevent body lock */
+  display: flex;
+  flex-direction: column;
+}
 
-/* --- LEGEND & CUSTOM STATUS STYLES --- */
+/* Allow row children to scroll independently */
+.main-row {
+  flex: 1;
+  min-height: 0;
+}
+.main-row > div {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
 
-/* Small colored boxes for the legend in the question palette */
+/* --- LEGEND & STATUS COLORS --- */
 .legend-box {
   display: inline-block;
   width: 15px;
   height: 15px;
-  margin-right: 8px;
+  margin-right: 6px;
   border-radius: 3px;
   vertical-align: middle;
 }
 
-/* Custom style for the button that is both answered and marked for review */
-/* We use the purple color for consistency */
 .answered-review, .btn.answered-review {
-  background-color: #6f42c1;
-  color: white !important;
-  border-color: #6f42c1;
+  background-color: #6f42c1 !important;
+  border-color: #6f42c1 !important;
+  color: #fff !important;
 }
 
-/* Matching purple color for the legend box */
 .answered-review-legend {
-    background-color: #6f42c1;
+  background-color: #6f42c1;
 }
 
-
-/* --- SECURITY STYLES --- */
-
-/* Prevent text selection and copying throughout the test container */
-.test-interface-container {
-  -webkit-user-select: none; /* Safari */
-  -moz-user-select: none;    /* Firefox */
-  -ms-user-select: none;     /* IE10+/Edge */
-  user-select: none;         /* Standard */
-}
-
-
-/* --- MOBILE SIDEBAR & OVERLAY STYLES --- */
-
-/* Overlay to dim the background when the sidebar is open on mobile */
+/* --- MOBILE SIDEBAR --- */
 .palette-overlay {
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background-color: rgba(0, 0, 0, 0.5);
-  z-index: 1045; /* Below the sidebar but above the content */
+  top: 0; left: 0;
+  width: 100vw; height: 100vh;
+  background-color: rgba(0,0,0,0.5);
+  z-index: 1045;
 }
 
-/* Toggle button for opening the palette on mobile */
 .palette-toggle-btn {
   position: fixed;
-  top: 50%; /* Position halfway down the screen */
-  left: 0;   /* Stick to the left edge */
-  transform: translateY(-50%); /* Nudge it up for perfect centering */
+  top: 50%;
+  left: 0;
+  transform: translateY(-50%);
   z-index: 1040;
-  
-  /* Style as a handle */
   padding: 1rem 0.75rem;
   border-top-left-radius: 0;
   border-bottom-left-radius: 0;
-  box-shadow: 2px 0 10px rgba(0, 0, 0, 0.2);
+  box-shadow: 2px 0 10px rgba(0,0,0,0.2);
   transition: transform 0.3s ease-in-out;
 }
 
-/* When sidebar is open, slide the toggle button out of view */
 .sidebar-open .palette-toggle-btn {
   transform: translateY(-50%) translateX(-100%);
 }
 
-
-/* --- RESPONSIVE STYLES for screens smaller than 992px --- */
 @media (max-width: 991.98px) {
-  /* Transform the palette column into a fixed sidebar */
   .palette-sidebar {
     position: fixed;
-    top: 0;
-    left: 0;
+    top: 0; left: 0;
     width: 300px;
     max-width: 80%;
     height: 100vh;
-    z-index: 1050; /* Highest z-index to appear on top */
-    background-color: #ffffff;
-    padding: 0; /* Override column padding */
+    z-index: 1050;
+    background: #fff;
     border-right: 1px solid #dee2e6;
-    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
-    
-    /* Start off-screen */
+    box-shadow: 0 0 15px rgba(0,0,0,0.2);
     transform: translateX(-100%);
     transition: transform 0.3s ease-in-out;
   }
 
-  /* When the 'open' class is added, slide it into view */
   .palette-sidebar.open {
     transform: translateX(0);
   }
 
-  /* Make the card inside the sidebar fit perfectly */
   .palette-sidebar .card {
     border-radius: 0;
     border: none;
